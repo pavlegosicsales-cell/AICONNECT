@@ -1169,6 +1169,13 @@
       height: 100%; min-height: 260px;
       position: relative; z-index: 1; box-sizing: border-box;
     }
+    /* Pixel-reveal canvas — only on text-only Selected Work cards (added via JS) */
+    .bento-item .pixel-canvas {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      z-index: 0; pointer-events: none;
+      opacity: 0.5;  /* subtle background sparkle, not distracting */
+    }
 
     /* ── TEAM ── */
     #about { position: relative; overflow: hidden; padding: 220px 0; }
@@ -4191,6 +4198,92 @@ void main() {
       });
     }, { threshold: 0.3 });
     cards.forEach(c => obs.observe(c));
+  })();
+
+  /* ── PIXEL CARD HOVER (text-only Selected Work cards) ──
+     Vanilla port of React-Bits PixelCard. Gold, subtle, hover-triggered.
+     Skipped on mobile to keep Android light. */
+  (function() {
+    if (IS_MOBILE) return;
+    const GAP = 5, SPEED = 42, COLORS = '#E4B820,#C49A06,#8B6D04';
+
+    class Pixel {
+      constructor(w, h, ctx, x, y, color, speed, delay) {
+        this.ctx = ctx; this.x = x; this.y = y; this.color = color;
+        this.speed = (Math.random() * 0.8 + 0.1) * speed;
+        this.size = 0; this.sizeStep = Math.random() * 0.4;
+        this.minSize = 0.5; this.maxSizeInteger = 2;
+        this.maxSize = Math.random() * (this.maxSizeInteger - this.minSize) + this.minSize;
+        this.delay = delay; this.counter = 0;
+        this.counterStep = Math.random() * 4 + (w + h) * 0.01;
+        this.isIdle = false; this.isReverse = false; this.isShimmer = false;
+      }
+      draw() {
+        const off = this.maxSizeInteger * 0.5 - this.size * 0.5;
+        this.ctx.fillStyle = this.color;
+        this.ctx.fillRect(this.x + off, this.y + off, this.size, this.size);
+      }
+      appear() {
+        this.isIdle = false;
+        if (this.counter <= this.delay) { this.counter += this.counterStep; return; }
+        if (this.size >= this.maxSize) this.isShimmer = true;
+        if (this.isShimmer) this.shimmer(); else this.size += this.sizeStep;
+        this.draw();
+      }
+      disappear() {
+        this.isShimmer = false; this.counter = 0;
+        if (this.size <= 0) { this.isIdle = true; return; }
+        this.size -= 0.1; this.draw();
+      }
+      shimmer() {
+        if (this.size >= this.maxSize) this.isReverse = true;
+        else if (this.size <= this.minSize) this.isReverse = false;
+        this.size += this.isReverse ? -this.speed : this.speed;
+      }
+    }
+    const effSpeed = v => (v <= 0 || PREFERS_REDUCED) ? 0 : (v >= 100 ? 0.1 : v * 0.001);
+
+    document.querySelectorAll('.bento-item .bento-text-body').forEach(body => {
+      const card = body.closest('.bento-item');
+      if (!card) return;
+      const canvas = document.createElement('canvas');
+      canvas.className = 'pixel-canvas';
+      card.insertBefore(canvas, card.firstChild);
+      const ctx = canvas.getContext('2d');
+      let pixels = [], raf = null, timePrev = performance.now();
+
+      function init() {
+        const r = card.getBoundingClientRect();
+        const w = Math.floor(r.width), h = Math.floor(r.height);
+        if (!w || !h) return;
+        canvas.width = w; canvas.height = h;
+        const cols = COLORS.split(',');
+        pixels = [];
+        for (let x = 0; x < w; x += GAP) {
+          for (let y = 0; y < h; y += GAP) {
+            const color = cols[Math.floor(Math.random() * cols.length)];
+            const dx = x - w / 2, dy = y - h / 2;
+            const delay = PREFERS_REDUCED ? 0 : Math.sqrt(dx * dx + dy * dy);
+            pixels.push(new Pixel(w, h, ctx, x, y, color, effSpeed(SPEED), delay));
+          }
+        }
+      }
+      function loop(fn) {
+        raf = requestAnimationFrame(() => loop(fn));
+        const now = performance.now(), passed = now - timePrev, interval = 1000 / 60;
+        if (passed < interval) return;
+        timePrev = now - (passed % interval);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        let allIdle = true;
+        for (const p of pixels) { p[fn](); if (!p.isIdle) allIdle = false; }
+        if (allIdle) cancelAnimationFrame(raf);
+      }
+      function handle(name) { cancelAnimationFrame(raf); raf = requestAnimationFrame(() => loop(name)); }
+      card.addEventListener('mouseenter', () => handle('appear'));
+      card.addEventListener('mouseleave', () => handle('disappear'));
+      init();
+      new ResizeObserver(init).observe(card);
+    });
   })();
 
   /* ── HERO SCROLL BUTTON ── */
