@@ -1800,7 +1800,7 @@
     }
     .test-stat-val {
       font-family: var(--fd); font-size: 2rem; font-weight: 700;
-      color: var(--head); letter-spacing: -0.02em; line-height: 1;
+      color: var(--head); letter-spacing: -0.02em; line-height: 1.18;
       display: block; margin-bottom: 5px;
     }
     .test-stat-lbl {
@@ -2041,16 +2041,60 @@
     }
     @media (max-width: 768px) {
       .wrap { padding: 0 20px; }
-      .nav-in { padding: 0 20px; }
+      /* Header: logo left · Contact centered · hamburger right (no overflow) */
+      .nav-in {
+        grid-template-columns: auto 1fr auto;
+        gap: 10px; padding: 0 14px;
+      }
       .nav-links { display: none; }
-      .hamburger { display: flex; }
+      .nav-right { display: contents; }
+      .nav-in > a:first-child { grid-column: 1; justify-self: start; }
+      .btn-liq-outer { grid-column: 2; justify-self: center; }
+      .hamburger { display: flex; grid-column: 3; justify-self: end; }
+      .nav-logo { height: 40px; }
       .sec { padding: 72px 0; }
       .hero { padding: 120px 0 60px; }
       .hero h1 { font-size: clamp(3rem, 9vw, 4.5rem); }
       .hero-stats { flex-direction: column; gap: 20px; padding-top: 24px; }
       .hs-item { padding: 0; border-left: none !important; }
+      /* Service tags centered; scroll hint moved below the content */
+      .hero-svc-row { justify-content: center; padding-top: 26px; }
+      .scroll-hint { position: static; transform: none; margin: 34px auto 0; }
+      /* Section 2 orb scaled to fit the viewport */
+      .svc-orbital { min-height: 300px; }
+      .orb-stage { transform: scale(0.66); margin: -72px 0; }
+      .svc-orbital::before { width: 420px; height: 420px; }
+      /* Selected Work: single column so cards never overlap/squish */
+      .bento-grid { grid-template-columns: 1fr; }
+      .bento-col-2 { grid-column: span 1; }
+      .bento-text-body { min-height: 0; }
+      /* Hide the desktop scroll progress rail on mobile */
+      .scroll-track { display: none; }
+      /* Client Stories: center the CTA, give stat cards breathing room */
+      .test-left { align-items: center; }
+      .test-left .btn-glow { align-self: center !important; }
+      .test-mini-stats { width: 100%; }
+      .test-mini-stat { padding: 22px 10px; }
       .team-card { min-width: 100%; }
-      .footer-grid { grid-template-columns: 1fr; }
+      /* Contact: space the heading / button / details apart like desktop */
+      .contact-left { gap: 22px; justify-content: flex-start; }
+      .contact-left .sec-label { margin-bottom: 0; }
+      .contact-left h2 { margin-bottom: 0; }
+      /* Footer: compact link groups into cards so it's far shorter */
+      footer { padding-top: 56px; }
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px; margin-bottom: 32px;
+      }
+      .footer-grid > div:first-child { grid-column: 1 / -1; }
+      .footer-tagline { max-width: none; }
+      .foot-col {
+        background: rgba(255,255,255,0.025);
+        border: 1px solid var(--border);
+        border-radius: 14px; padding: 16px 16px 18px;
+      }
+      .foot-col h4 { margin-bottom: 12px; color: var(--gold); }
+      .foot-col ul { gap: 9px; }
       .form-row { grid-template-columns: 1fr; }
       .hero-btns { flex-direction: column; align-items: flex-start; }
       .footer-text-section { height: 110px; padding-top: 16px; margin-top: 4px; }
@@ -2931,7 +2975,7 @@
   // Device tiering (IS_IOS / IS_ANDROID above) is kept ready to re-enable once
   // the site is finished and we optimise mobile performance.
   const TIER = 'desktop';
-  const GPU_DPR = 2;
+  const GPU_DPR = 3;
   document.documentElement.classList.add('tier-' + TIER);
 
   const _visState = new WeakMap();
