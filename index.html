@@ -2223,8 +2223,9 @@
 </div>
 
 <!-- SERVICES -->
-<section class="sec" id="services">
-  <div class="wrap">
+<section class="sec" id="services" style="position:relative;overflow:hidden;">
+  <canvas id="dotGridCanvas" style="position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;"></canvas>
+  <div class="wrap" style="position:relative;z-index:1;">
     <div class="svc-grid">
       <div class="svc-left">
         <div class="sec-label">Our Craft</div>
@@ -3505,6 +3506,109 @@
       requestAnimationFrame(frame);
     }
     requestAnimationFrame(frame);
+  })();
+
+  /* ── DOT GRID BACKGROUND (Services / section 2) ──
+     Vanilla port of React-Bits DotGrid. Dots glow gold near the cursor and
+     get pushed with a spring-back (custom physics — no GSAP InertiaPlugin).
+     Visibility-gated; skipped on mobile to keep Android light. */
+  (function() {
+    const canvas = document.getElementById('dotGridCanvas');
+    if (!canvas) return;
+    if (IS_MOBILE) { canvas.style.display = 'none'; return; }
+    const section = canvas.closest('section');
+    const ctx = canvas.getContext('2d');
+
+    const DOT = 4, GAP = 22, PROX = 130;
+    const BASE = { r: 0x3a, g: 0x2d, b: 0x07 };   // dark muted gold
+    const ACTIVE = { r: 0xE4, g: 0xB8, b: 0x20 };  // bright gold
+    const SPEED_TRIGGER = 100, RETURN = 0.12, STIFF = 0.08, DAMP = 0.82;
+
+    let dots = [], dpr = 1;
+    const ptr = { x: -9999, y: -9999, lastX: 0, lastY: 0, lastT: 0, vx: 0, vy: 0, speed: 0 };
+
+    function build() {
+      const r = section.getBoundingClientRect();
+      const w = Math.floor(r.width), h = Math.floor(r.height);
+      if (!w || !h) return;
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = w * dpr; canvas.height = h * dpr;
+      canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      const cell = DOT + GAP;
+      const cols = Math.floor((w + GAP) / cell), rows = Math.floor((h + GAP) / cell);
+      const startX = (w - (cell * cols - GAP)) / 2 + DOT / 2;
+      const startY = (h - (cell * rows - GAP)) / 2 + DOT / 2;
+      dots = [];
+      for (let yi = 0; yi < rows; yi++)
+        for (let xi = 0; xi < cols; xi++)
+          dots.push({ cx: startX + xi * cell, cy: startY + yi * cell, ox: 0, oy: 0, vx: 0, vy: 0 });
+    }
+    build();
+    new ResizeObserver(build).observe(section);
+
+    section.addEventListener('mousemove', e => {
+      const r = canvas.getBoundingClientRect();
+      const now = performance.now();
+      const dt = ptr.lastT ? now - ptr.lastT : 16;
+      ptr.x = e.clientX - r.left; ptr.y = e.clientY - r.top;
+      ptr.vx = (ptr.x - ptr.lastX) / dt * 1000;
+      ptr.vy = (ptr.y - ptr.lastY) / dt * 1000;
+      ptr.speed = Math.hypot(ptr.vx, ptr.vy);
+      ptr.lastX = ptr.x; ptr.lastY = ptr.y; ptr.lastT = now;
+      // Fling nearby dots when the cursor moves fast
+      if (ptr.speed > SPEED_TRIGGER) {
+        for (const d of dots) {
+          const dist = Math.hypot(d.cx - ptr.x, d.cy - ptr.y);
+          if (dist < PROX) {
+            const f = (1 - dist / PROX) * 0.06;
+            d.vx += (d.cx - ptr.x + ptr.vx * 0.004) * f;
+            d.vy += (d.cy - ptr.y + ptr.vy * 0.004) * f;
+          }
+        }
+      }
+    }, { passive: true });
+    section.addEventListener('mouseleave', () => { ptr.x = -9999; ptr.y = -9999; });
+    section.addEventListener('click', e => {
+      const r = canvas.getBoundingClientRect();
+      const cx = e.clientX - r.left, cy = e.clientY - r.top;
+      for (const d of dots) {
+        const dist = Math.hypot(d.cx - cx, d.cy - cy);
+        if (dist < 220) {
+          const f = Math.max(0, 1 - dist / 220) * 3.2;
+          d.vx += (d.cx - cx) * f * 0.12;
+          d.vy += (d.cy - cy) * f * 0.12;
+        }
+      }
+    });
+
+    const proxSq = PROX * PROX;
+    function draw() {
+      requestAnimationFrame(draw);
+      if (!shouldRender(section)) return;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (const d of dots) {
+        // Spring offsets back to origin
+        d.vx += (-d.ox) * STIFF; d.vy += (-d.oy) * STIFF;
+        d.vx *= DAMP; d.vy *= DAMP;
+        d.ox += d.vx * RETURN; d.oy += d.vy * RETURN;
+        const dx = d.cx - ptr.x, dy = d.cy - ptr.y;
+        const dsq = dx * dx + dy * dy;
+        let fill = `rgb(${BASE.r},${BASE.g},${BASE.b})`;
+        if (dsq <= proxSq) {
+          const t = 1 - Math.sqrt(dsq) / PROX;
+          const r = Math.round(BASE.r + (ACTIVE.r - BASE.r) * t);
+          const g = Math.round(BASE.g + (ACTIVE.g - BASE.g) * t);
+          const b = Math.round(BASE.b + (ACTIVE.b - BASE.b) * t);
+          fill = `rgb(${r},${g},${b})`;
+        }
+        ctx.fillStyle = fill;
+        ctx.beginPath();
+        ctx.arc(d.cx + d.ox, d.cy + d.oy, DOT / 2, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+    draw();
   })();
 
   /* ── ANTIGRAVITY PARTICLE BACKGROUND (work/projects section) ── */
