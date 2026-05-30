@@ -1195,7 +1195,19 @@
     }
 
     /* ── TEAM ── */
-    #about { position: relative; overflow: hidden; padding: 220px 0; }
+    #about { position: relative; overflow: hidden; padding: 120px 0; }
+    /* Orb sits above the cards with the title centered inside it */
+    .crew-orb {
+      position: relative;
+      width: min(440px, 82vw); aspect-ratio: 1;
+      margin: 0 auto 36px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .crew-orb canvas { z-index: 0; }
+    .crew-orb-center {
+      position: relative; z-index: 2; text-align: center; padding: 0 16px;
+    }
+    .crew-orb-center .sec-label { margin-bottom: 10px; }
     .team-grid {
       display: flex; justify-content: center; flex-wrap: wrap; gap: 18px;
     }
@@ -1786,6 +1798,7 @@
     }
     .test-layout {
       display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: start;
+      position: relative; z-index: 2; /* above the lamp's fade overlay (z-index 1) which was clipping the stat cards */
     }
     .test-left {
       position: sticky; top: 100px;
@@ -2041,8 +2054,10 @@
     }
     @media (max-width: 768px) {
       /* Clamp the document to the viewport so nothing forces a wider page
-         (which made the browser load zoomed-in with a bigger left margin). */
-      html, body { overflow-x: hidden; max-width: 100%; }
+         (which made the browser load zoomed-in). overflow-x: clip (not hidden)
+         so it doesn't create a scroll container that breaks the sticky
+         testimonial card-stacking effect. */
+      html, body { overflow-x: clip; max-width: 100%; }
       .wrap { padding: 0 20px; }
       /* Header: logo left · Contact centered · hamburger right, all vertically
          centered (flex so the button can't drop to a second row). */
@@ -2707,11 +2722,13 @@
 
 <!-- TEAM -->
 <section class="sec sec-alt" id="about">
-  <canvas id="crewOrbCanvas" style="position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0.55;mix-blend-mode:screen;"></canvas>
   <div class="wrap" style="position:relative;z-index:1;">
-    <div style="margin-bottom:50px;text-align:center;">
-      <div class="sec-label" style="justify-content:center;">The Crew</div>
-      <h2 class="g-up" style="font-family:var(--fd);font-size:clamp(2.2rem,3.8vw,3.6rem);font-weight:600;letter-spacing:-0.02em;color:var(--head);line-height:1.1;">Meet Our Team</h2>
+    <div class="crew-orb">
+      <canvas id="crewOrbCanvas" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:0.7;mix-blend-mode:screen;"></canvas>
+      <div class="crew-orb-center">
+        <div class="sec-label" style="justify-content:center;">The Crew</div>
+        <h2 class="g-up" style="font-family:var(--fd);font-size:clamp(1.9rem,5vw,3.2rem);font-weight:600;letter-spacing:-0.02em;color:var(--head);line-height:1.1;">Meet Our Team</h2>
+      </div>
     </div>
     <div class="team-grid" style="justify-content:center;">
       <div class="team-card g-up">
@@ -4339,21 +4356,9 @@ void main() {
     resize();
     window.addEventListener('resize', resize);
 
-    // Orb centered on the team grid (not the full section)
-    let orbCX = 0.5, orbCY = 0.5; // screen-space normalized (Y from top)
-    function updateOrbCenter() {
-      const grid = document.querySelector('.team-grid');
-      const section = document.getElementById('about');
-      if (!grid || !section) { orbCX = 0.5; orbCY = 0.5; gl.uniform2f(uCenter, 0.5, 0.5); return; }
-      const sR = section.getBoundingClientRect();
-      const gR = grid.getBoundingClientRect();
-      const relY = (gR.top + gR.height * 0.5 - sR.top) / sR.height;
-      orbCX = 0.5;
-      orbCY = relY; // screen-space Y (from top), used by hit-test
-      gl.uniform2f(uCenter, 0.5, 1.0 - relY); // flip Y for WebGL shader
-    }
-    updateOrbCenter();
-    window.addEventListener('resize', () => { resize(); updateOrbCenter(); });
+    // Orb is now a self-contained square element — centered in its own canvas
+    let orbCX = 0.5, orbCY = 0.5;
+    gl.uniform2f(uCenter, 0.5, 0.5);
 
     let tgtHov=0, curHov=0, curRot=0, lastT=0;
     function updateOrbHover(e) {
