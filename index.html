@@ -3320,6 +3320,7 @@
       varying vec2 vUv;
       uniform float u_time;
       uniform float u_ratio;
+      uniform float u_px_scale;
       uniform vec2 u_pointer_position;
       uniform float u_scroll_progress;
 
@@ -3345,6 +3346,7 @@
       void main() {
         vec2 uv = .5 * vUv;
         uv.x *= u_ratio;
+        uv *= u_px_scale;
         vec2 pointer = vUv - u_pointer_position;
         pointer.x *= u_ratio;
         float p = clamp(length(pointer), 0., 1.);
@@ -3385,6 +3387,7 @@
 
     const uTime   = gl.getUniformLocation(prog, 'u_time');
     const uRatio  = gl.getUniformLocation(prog, 'u_ratio');
+    const uPxScale= gl.getUniformLocation(prog, 'u_px_scale');
     const uPtr    = gl.getUniformLocation(prog, 'u_pointer_position');
     const uScroll = gl.getUniformLocation(prog, 'u_scroll_progress');
 
@@ -3396,7 +3399,11 @@
       canvas.width  = heroEl.offsetWidth  * dpr;
       canvas.height = heroEl.offsetHeight * dpr;
       gl.viewport(0, 0, canvas.width, canvas.height);
-      gl.uniform1f(uRatio, canvas.width / canvas.height);
+      const ratio = canvas.width / canvas.height;
+      gl.uniform1f(uRatio, ratio);
+      // Portrait screens compress the pattern in X (looks sparse). Zoom the
+      // pattern out so phones show the same dense vortex as desktop.
+      gl.uniform1f(uPxScale, ratio < 1 ? (1.0 + (1.0 - ratio) * 1.7) : 1.0);
     }
     resize();
     window.addEventListener('resize', resize);
