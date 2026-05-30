@@ -2882,6 +2882,31 @@
 <script>
   gsap.registerPlugin(ScrollTrigger);
 
+  /* ── PERF: device + visibility gating ──
+     Android/low-power devices choke when many WebGL + canvas RAF loops all run
+     at once. We (1) detect mobile to scale things down, and (2) only let an
+     animation loop do work while its section is on (or near) screen. */
+  const IS_MOBILE = window.matchMedia('(max-width: 760px)').matches
+                 || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  const PREFERS_REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const _visState = new WeakMap();
+  const _visObserver = ('IntersectionObserver' in window)
+    ? new IntersectionObserver(entries => {
+        entries.forEach(e => _visState.set(e.target, e.isIntersecting));
+      }, { rootMargin: '150px 0px 150px 0px' })
+    : null;
+  // Returns true when `el` is visible/near viewport. Registers it on first call.
+  function onScreen(el) {
+    if (!el || !_visObserver) return true;
+    if (!_visState.has(el)) { _visState.set(el, true); _visObserver.observe(el); }
+    return _visState.get(el);
+  }
+  let _docVisible = !document.hidden;
+  document.addEventListener('visibilitychange', () => { _docVisible = !document.hidden; });
+  // Single point a loop checks before doing expensive work.
+  function shouldRender(sectionEl) { return _docVisible && onScreen(sectionEl); }
+
   /* ── PAGE LOAD (hero elements have CSS initial states via .hero .g-*) ── */
   const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
   tl.to('#navbar', { y: 0, duration: 0.8, ease: 'power2.out' }, 0.1)
@@ -3254,7 +3279,7 @@
     const ptr = { x: 0.5, y: 0.5, tx: 0.5, ty: 0.5 };
 
     function resize() {
-      const dpr = Math.min(window.devicePixelRatio, 2);
+      const dpr = Math.min(window.devicePixelRatio, IS_MOBILE ? 1 : 2);
       canvas.width  = heroEl.offsetWidth  * dpr;
       canvas.height = heroEl.offsetHeight * dpr;
       gl.viewport(0, 0, canvas.width, canvas.height);
@@ -3272,14 +3297,16 @@
     gl.enable(gl.BLEND);
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
+    const _sec = canvas.closest('section');
     function render() {
+      requestAnimationFrame(render);
+      if (!shouldRender(_sec)) return;
       ptr.x += (ptr.tx - ptr.x) * 0.04;
       ptr.y += (ptr.ty - ptr.y) * 0.04;
       gl.uniform1f(uTime, performance.now());
       gl.uniform2f(uPtr, ptr.x, 1.0 - ptr.y);
       gl.uniform1f(uScroll, window.pageYOffset / (2 * window.innerHeight));
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-      requestAnimationFrame(render);
     }
     render();
   })();
@@ -3478,7 +3505,7 @@
     };
 
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: false, alpha: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, IS_MOBILE ? 1 : 1.5));
     renderer.setClearColor(0x000000, 0);
 
     const scene = new THREE.Scene();
@@ -3547,7 +3574,8 @@
       camera.aspect = w / h;
       camera.updateProjectionMatrix();
       // Scale particle count with area so density matches the original look.
-      const targetCount = Math.max(350, Math.min(1400, Math.round(DENSITY * w * h)));
+      const _capCount = IS_MOBILE ? 600 : 1400;
+      const targetCount = Math.max(IS_MOBILE ? 220 : 350, Math.min(_capCount, Math.round(DENSITY * w * h)));
       if (targetCount !== activeCount) buildMesh(targetCount);
       initParticles();
     }
@@ -3558,6 +3586,7 @@
 
     function animate() {
       requestAnimationFrame(animate);
+      if (!shouldRender(section)) return;
       const elapsed = clock.getElapsedTime();
       const vp = getViewport();
 
@@ -3637,7 +3666,10 @@
     function resize() { canvas.width = btn.offsetWidth; canvas.height = btn.offsetHeight; }
     resize();
     new ResizeObserver(resize).observe(btn);
+    const _sec = canvas.closest('section');
     function render() {
+      requestAnimationFrame(render);
+      if (!shouldRender(_sec)) return;
       t += hov ? 0.032 : 0.009;
       const s = Math.sin, c = Math.cos;
       const w = canvas.width, h = canvas.height;
@@ -3665,7 +3697,6 @@
       ctx.strokeStyle = `rgba(196,154,6,${hov ? 0.82 : 0.38})`; ctx.lineWidth = 1; ctx.stroke();
       ctx.restore();
       if (wrapper) wrapper.style.filter = hov ? 'drop-shadow(0 0 14px rgba(196,154,6,0.38))' : 'drop-shadow(0 0 6px rgba(196,154,6,0.14))';
-      requestAnimationFrame(render);
     }
     render();
   }
@@ -3697,7 +3728,10 @@
     resize();
     new ResizeObserver(resize).observe(btn);
 
+    const _sec = canvas.closest('section');
     function render() {
+      requestAnimationFrame(render);
+      if (!shouldRender(_sec)) return;
       t += hov ? 0.032 : 0.009;
       const s = Math.sin, c = Math.cos;
       const w = canvas.width, h = canvas.height;
@@ -3746,8 +3780,6 @@
           ? 'drop-shadow(0 0 14px rgba(196,154,6,0.38))'
           : 'drop-shadow(0 0 6px rgba(196,154,6,0.14))';
       }
-
-      requestAnimationFrame(render);
     }
     render();
   })();
@@ -3905,7 +3937,10 @@
     }
 
     let t = 0;
+    const _statsSec = canvas.closest('section');
     function tick() {
+      requestAnimationFrame(tick);
+      if (!shouldRender(_statsSec)) return;
       t += 0.005;
       // Autonomous slow drift: very subtle virtual movement when no mouse
       autoT += 0.0008;
@@ -3956,7 +3991,6 @@
         }
         ctx.stroke();
       }
-      requestAnimationFrame(tick);
     }
 
     setSize(); setLines(); tick();
@@ -4069,7 +4103,7 @@ void main() {
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
     function resize() {
-      const dpr = Math.min(window.devicePixelRatio||1, 2);
+      const dpr = Math.min(window.devicePixelRatio||1, IS_MOBILE ? 1 : 2);
       const W = container.offsetWidth, H = container.offsetHeight;
       canvas.width = W*dpr; canvas.height = H*dpr;
       canvas.style.width = W+'px'; canvas.style.height = H+'px';
@@ -4114,7 +4148,10 @@ void main() {
     }
     document.addEventListener('mousemove', updateOrbHover, { passive: true });
 
+    const _crewSec = canvas.closest('section');
     function frame(t) {
+      requestAnimationFrame(frame);
+      if (!shouldRender(_crewSec)) { lastT = t; return; }
       const dt=(t-lastT)*0.001; lastT=t;
       curHov += (tgtHov-curHov)*0.08;
       if (curHov>0.5) curRot += dt*0.25;
@@ -4123,7 +4160,6 @@ void main() {
       gl.uniform1f(uHov, curHov);
       gl.uniform1f(uRot, curRot);
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-      requestAnimationFrame(frame);
     }
     requestAnimationFrame(frame);
   })();
