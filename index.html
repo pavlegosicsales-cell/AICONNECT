@@ -396,7 +396,7 @@
       font-family: var(--fb); font-size: 14px; font-weight: 500;
       color: var(--text2); text-decoration: none; cursor: pointer;
       border: none; background: transparent;
-      transition: color 0.25s, transform 0.2s cubic-bezier(0.34,1.56,0.64,1);
+      transition: color 0.25s, transform 0.65s cubic-bezier(0.16,1,0.3,1);
     }
     .btn-liq-ghost::before {
       content: ''; position: absolute; inset: 0; border-radius: 500px;
@@ -815,14 +815,28 @@
       font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
       color: var(--text);
     }
-    .scroll-hint-line {
-      width: 1px; height: 40px;
-      background: linear-gradient(to bottom, var(--gold), transparent);
-      animation: scrollPulse 2s ease-in-out infinite;
+    .scroll-btn {
+      width: 42px; height: 42px; border-radius: 50%;
+      border: 1px solid rgba(119,119,119,0.35);
+      background: transparent; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text);
+      transition: border-color 0.35s cubic-bezier(0.16,1,0.3,1),
+                  color 0.35s cubic-bezier(0.16,1,0.3,1),
+                  transform 0.35s cubic-bezier(0.16,1,0.3,1),
+                  box-shadow 0.35s cubic-bezier(0.16,1,0.3,1);
+      animation: scrollBtnPulse 3s ease-in-out infinite;
     }
-    @keyframes scrollPulse {
-      0%,100% { opacity: 0.3; transform: scaleY(1); }
-      50% { opacity: 1; transform: scaleY(1.2); }
+    .scroll-btn:hover {
+      border-color: rgba(119,119,119,0.7);
+      color: var(--text2);
+      transform: translateY(4px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+      animation: none;
+    }
+    @keyframes scrollBtnPulse {
+      0%,100% { opacity: 0.55; transform: translateY(0); }
+      50%      { opacity: 1;    transform: translateY(5px); }
     }
 
     /* ── MARQUEE ── */
@@ -848,7 +862,7 @@
     /* ── SERVICES ── */
     .svc-grid { display: grid; grid-template-columns: 1fr 1.15fr; gap: 80px; align-items: center; }
     .svc-left { display: flex; flex-direction: column; gap: 0; }
-    .svc-left .sec-label { margin-bottom: 4px; }
+    .svc-left .sec-label { margin-bottom: 14px; }
     .svc-left h2 { margin-bottom: 6px; }
     .svc-left p { margin-bottom: 14px; }
     .svc-left h2 {
@@ -895,8 +909,9 @@
     /* ── STATS ── */
     .stats-wrap {
       display: grid; grid-template-columns: repeat(3, 1fr);
-      gap: 2px; background: rgba(255,255,255,0.03);
+      gap: 1px; background: rgba(196,154,6,0.12);
       border-radius: 20px; overflow: hidden;
+      border: 1px solid rgba(196,154,6,0.12);
     }
     .stat-cell {
       padding: 56px 52px;
@@ -905,7 +920,7 @@
       cursor: default;
       transition: background 0.4s cubic-bezier(0.16,1,0.3,1);
     }
-    .stat-cell:hover { background: #0d0d0d; }
+    .stat-cell:hover { background: #0e0e0e; }
     /* Large faded background number */
     .stat-cell::after {
       content: attr(data-bg);
@@ -987,59 +1002,190 @@
     .filter-btn.active, .filter-btn:hover {
       border-color: var(--gold); color: var(--gold);
     }
-    .proj-list { display: flex; flex-direction: column; gap: 10px; }
-    .proj-card {
-      background: var(--s1); border: 1px solid var(--border);
+    /* ── BENTO GRID ── */
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: auto;
+      gap: 12px;
+    }
+    .bento-item {
+      background: var(--s2);
+      border: none;
       border-radius: 20px; overflow: hidden;
-      display: grid; grid-template-columns: 1fr 1fr;
-      cursor: pointer; transition: border-color 0.3s;
-      min-height: 240px;
+      position: relative;
+      box-shadow: 0 0 0 1px var(--border),
+                  0 24px 60px rgba(0,0,0,0),
+                  0 0 50px rgba(196,154,6,0);
+      transition: transform 1.2s cubic-bezier(0.16,1,0.3,1),
+                  box-shadow 0.7s cubic-bezier(0.16,1,0.3,1);
+      cursor: pointer; text-decoration: none; display: block;
     }
-    .proj-card:hover { border-color: var(--brd2); }
-    .proj-card:hover .proj-arr { transform: translate(4px,-4px); color: var(--gold); }
-    .proj-info {
-      padding: 40px 44px;
-      display: flex; flex-direction: column; justify-content: space-between;
+    .bento-item::before {
+      content: '';
+      position: absolute; inset: 0; z-index: 0; pointer-events: none;
+      background-image: radial-gradient(circle, rgba(196,154,6,0.055) 1px, transparent 1px);
+      background-size: 18px 18px;
+      opacity: 0; transition: opacity 1.0s;
     }
-    .proj-tag {
-      display: inline-block;
-      font-family: var(--fb); font-size: 10px; font-weight: 600;
+    .bento-item:hover::before { opacity: 1; }
+    .bento-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 0 1px rgba(196,154,6,0.4),
+                  0 24px 60px rgba(0,0,0,0.55),
+                  0 0 50px rgba(196,154,6,0.08);
+    }
+    /* Override reveal transition so box-shadow (border) eases on hover.
+       .js-reveal .sec .g-up wins specificity otherwise and drops box-shadow. */
+    .js-reveal .sec .bento-item {
+      transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1),
+                  transform 0.7s cubic-bezier(0.16,1,0.3,1),
+                  filter 0.7s cubic-bezier(0.16,1,0.3,1),
+                  box-shadow 0.7s cubic-bezier(0.16,1,0.3,1);
+    }
+    .bento-col-2 { grid-column: span 2; }
+    .bento-img {
+      position: relative; height: 260px; overflow: hidden;
+    }
+    .bento-img img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center top;
+      transform: scale(1.025);
+      transition: transform 1.6s cubic-bezier(0.16,1,0.3,1);
+    }
+    .bento-item:hover .bento-img img { transform: scale(1.075); }
+    .bento-img::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+      height: 90px;
+      background: linear-gradient(to bottom, transparent, var(--s2));
+      pointer-events: none; z-index: 1;
+    }
+    .bento-body {
+      padding: 20px 24px 26px;
+      position: relative; z-index: 1;
+    }
+    .bento-top {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 14px;
+    }
+    .bento-icon {
+      width: 34px; height: 34px; border-radius: 10px;
+      background: rgba(196,154,6,0.07);
+      border: 1px solid rgba(196,154,6,0.14);
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.8s, border-color 0.8s;
+    }
+    .bento-item:hover .bento-icon {
+      background: rgba(196,154,6,0.13);
+      border-color: rgba(196,154,6,0.3);
+    }
+    .bento-status {
+      font-size: 10px; font-weight: 700; font-family: var(--fb);
       letter-spacing: 0.14em; text-transform: uppercase;
-      color: var(--gold); background: rgba(196,154,6,0.08);
-      border: 1px solid rgba(196,154,6,0.2);
-      padding: 5px 12px; border-radius: 100px; margin-bottom: 20px;
+      padding: 4px 11px; border-radius: 100px;
+      background: rgba(196,154,6,0.09);
+      border: 1px solid rgba(196,154,6,0.18);
+      color: var(--gold);
+      transition: background 0.8s, border-color 0.8s;
     }
-    .proj-name {
-      font-family: var(--fd);
-      font-size: clamp(1.8rem, 2.8vw, 2.6rem);
-      font-weight: 600; color: var(--head);
-      letter-spacing: -0.03em; line-height: 1.1;
-      margin-bottom: 10px;
+    .bento-item:hover .bento-status {
+      background: rgba(196,154,6,0.16);
+      border-color: rgba(196,154,6,0.38);
     }
-    .proj-desc { font-size: 14px; color: var(--text); line-height: 1.7; margin-bottom: 28px; }
-    .proj-link {
-      display: inline-flex; align-items: center; gap: 8px;
-      font-family: var(--fb); font-size: 13px; font-weight: 500;
-      color: var(--text2); transition: color 0.2s;
+    .bento-title {
+      font-family: var(--fd); font-size: 22px; font-weight: 600;
+      color: var(--head); letter-spacing: -0.02em; line-height: 1.2;
+      margin-bottom: 8px;
     }
-    .proj-link:hover { color: var(--gold); }
-    .proj-arr { transition: transform 0.25s, color 0.25s; }
-    .proj-visual { position: relative; overflow: hidden; }
+    .bento-meta {
+      font-family: var(--fb); font-size: 12px; font-weight: 400;
+      color: var(--text); letter-spacing: 0; margin-left: 8px;
+    }
+    .bento-desc {
+      font-size: 13.5px; color: var(--text); line-height: 1.72;
+      margin-bottom: 18px;
+    }
+    .bento-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 8px;
+    }
+    .bento-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+    .bento-tag {
+      font-size: 11px; color: var(--text);
+      padding: 4px 10px; border-radius: 100px;
+      background: rgba(255,255,255,0.025);
+      border: 1px solid var(--border);
+      transition: border-color 0.8s, color 0.8s;
+    }
+    .bento-item:hover .bento-tag {
+      border-color: var(--brd2); color: var(--text2);
+    }
+    .bento-cta {
+      display: inline-flex; align-items: center; gap: 9px;
+      font-family: var(--fb); font-size: 12.5px; font-weight: 600;
+      letter-spacing: 0.02em; color: var(--goldb);
+      padding: 6px 6px 6px 16px; border-radius: 100px;
+      background: rgba(196,154,6,0.06);
+      border: 1px solid rgba(196,154,6,0.18);
+      white-space: nowrap;
+      opacity: 0; transform: translateX(14px);
+      transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1),
+                  transform 0.7s cubic-bezier(0.16,1,0.3,1),
+                  background 0.5s, border-color 0.5s, box-shadow 0.5s;
+    }
+    .bento-item:hover .bento-cta {
+      opacity: 1; transform: translateX(0);
+      background: rgba(196,154,6,0.12);
+      border-color: rgba(196,154,6,0.4);
+      box-shadow: 0 0 24px rgba(196,154,6,0.15);
+    }
+    .bento-cta-arrow {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 26px; height: 26px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--goldb), var(--gold));
+      color: #1a1305; flex-shrink: 0;
+      box-shadow: 0 2px 8px rgba(196,154,6,0.35);
+      overflow: hidden; position: relative;
+      transition: transform 0.6s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .bento-item:hover .bento-cta-arrow { transform: rotate(45deg) scale(1.08); }
+    .bento-cta-arrow svg {
+      width: 14px; height: 14px;
+      transition: transform 0.55s cubic-bezier(0.16,1,0.3,1);
+    }
+    /* Arrow slides out top-right and a copy slides in from bottom-left */
+    .bento-item:hover .bento-cta-arrow svg { animation: ctaArrowLoop 0.6s cubic-bezier(0.16,1,0.3,1); }
+    @keyframes ctaArrowLoop {
+      0%   { transform: translate(0,0); }
+      45%  { transform: translate(120%,-120%); }
+      46%  { transform: translate(-120%,120%); }
+      100% { transform: translate(0,0); }
+    }
+    /* Text-only bento card */
+    .bento-text-body {
+      padding: 28px 28px 28px;
+      display: flex; flex-direction: column;
+      justify-content: space-between;
+      height: 100%; min-height: 260px;
+      position: relative; z-index: 1; box-sizing: border-box;
+    }
 
     /* ── TEAM ── */
-    #about { position: relative; overflow: hidden; }
+    #about { position: relative; overflow: hidden; padding: 220px 0; }
     .team-grid {
       display: flex; justify-content: center; flex-wrap: wrap; gap: 18px;
     }
     .team-card {
       flex: 1; min-width: 270px; max-width: 360px;
       background: var(--s1);
-      border: 1px solid var(--border);
+      border: none;
       border-radius: 24px; overflow: hidden;
       position: relative;
-      transition: border-color 0.45s cubic-bezier(0.16,1,0.3,1),
-                  transform 0.45s cubic-bezier(0.16,1,0.3,1),
-                  box-shadow 0.45s cubic-bezier(0.16,1,0.3,1);
+      box-shadow: 0 0 0 1px var(--border),
+                  0 30px 70px rgba(0,0,0,0),
+                  0 0 50px rgba(196,154,6,0);
+      transition: transform 0.65s cubic-bezier(0.16,1,0.3,1),
+                  box-shadow 0.5s cubic-bezier(0.16,1,0.3,1);
       cursor: default;
     }
     .team-card::before {
@@ -1047,27 +1193,37 @@
       position: absolute; inset: 0; z-index: 0; border-radius: 24px;
       background: radial-gradient(ellipse at 50% 0%, rgba(196,154,6,0.1) 0%, transparent 65%);
       opacity: 0;
-      transition: opacity 0.5s cubic-bezier(0.16,1,0.3,1);
+      transition: opacity 0.75s cubic-bezier(0.16,1,0.3,1);
     }
-    /* Subtle corner glow on hover */
     .team-card::after {
       content: '';
       position: absolute; top: 0; right: 0; width: 130px; height: 130px;
       background: radial-gradient(ellipse at 100% 0%, rgba(196,154,6,0.14) 0%, transparent 70%);
       opacity: 0;
-      transition: opacity 0.5s cubic-bezier(0.16,1,0.3,1);
+      transition: opacity 0.75s cubic-bezier(0.16,1,0.3,1);
       pointer-events: none; z-index: 5;
     }
     .team-card:hover {
-      border-color: rgba(196,154,6,0.45);
       transform: translateY(-10px);
-      box-shadow: 0 30px 70px rgba(0,0,0,0.55), 0 0 0 1px rgba(196,154,6,0.08) inset,
+      box-shadow: 0 0 0 1px rgba(196,154,6,0.45),
+                  0 30px 70px rgba(0,0,0,0.55),
                   0 0 50px rgba(196,154,6,0.07);
+    }
+    /* Override reveal transition so box-shadow (border) eases on hover.
+       .js-reveal .sec .g-up wins specificity otherwise and drops box-shadow. */
+    .js-reveal .sec .team-card {
+      transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1),
+                  transform 0.65s cubic-bezier(0.16,1,0.3,1),
+                  filter 0.7s cubic-bezier(0.16,1,0.3,1),
+                  box-shadow 0.5s cubic-bezier(0.16,1,0.3,1);
     }
     .team-card:hover::before { opacity: 1; }
     .team-card:hover::after { opacity: 1; }
+    .team-photo img {
+      transition: transform 0.75s cubic-bezier(0.16,1,0.3,1);
+    }
     .team-photo {
-      height: 230px; position: relative; overflow: hidden;
+      height: 290px; position: relative; overflow: hidden;
       display: flex; align-items: center; justify-content: center;
     }
     /* Scanline overlay */
@@ -1089,16 +1245,33 @@
     }
     /* Number badge */
     .team-card-num {
-      position: absolute; top: 16px; left: 20px; z-index: 4;
-      font-family: var(--fb); font-size: 10px; font-weight: 700;
-      letter-spacing: 0.16em; color: rgba(196,154,6,0.5);
-      transition: color 0.35s, letter-spacing 0.35s cubic-bezier(0.16,1,0.3,1),
-                  text-shadow 0.35s;
+      position: absolute; top: 18px; left: 20px; z-index: 6;
+      font-family: var(--fb); font-size: 11px; font-weight: 700;
+      letter-spacing: 0.22em; color: rgba(255,255,255,0.9);
+      text-shadow: 0 1px 10px rgba(0,0,0,0.9);
+      background: rgba(0,0,0,0.35);
+      backdrop-filter: blur(6px);
+      padding: 4px 9px; border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.12);
+      opacity: 0; transform: translateY(-8px);
+      transition: color 0.5s cubic-bezier(0.16,1,0.3,1),
+                  border-color 0.5s cubic-bezier(0.16,1,0.3,1),
+                  letter-spacing 0.5s cubic-bezier(0.16,1,0.3,1),
+                  opacity 0.55s 0.25s ease,
+                  transform 0.55s 0.25s cubic-bezier(0.16,1,0.3,1);
+    }
+    .team-card.num-visible .team-card-num {
+      opacity: 1; transform: translateY(0);
     }
     .team-card:hover .team-card-num {
       color: var(--goldb);
-      letter-spacing: 0.24em;
-      text-shadow: 0 0 12px rgba(228,184,32,0.55);
+      border-color: rgba(228,184,32,0.4);
+      letter-spacing: 0.3em;
+    }
+    .team-photo-fade {
+      position: absolute; bottom: 0; left: 0; right: 0; height: 80px; z-index: 2;
+      background: linear-gradient(to bottom, transparent, var(--s1));
+      pointer-events: none;
     }
     .team-avatar {
       width: 96px; height: 96px; border-radius: 50%;
@@ -1132,22 +1305,22 @@
     }
     /* Animated gold separator */
     .team-info-sep {
-      width: 0; height: 1px;
+      width: 20px; height: 1px;
       background: linear-gradient(90deg, var(--gold), transparent);
-      margin-bottom: 14px;
-      transition: width 0.55s 0.1s cubic-bezier(0.16,1,0.3,1);
+      margin-bottom: 16px;
+      transition: width 0.65s cubic-bezier(0.16,1,0.3,1);
     }
-    .team-card:hover .team-info-sep { width: 36px; }
+    .team-card:hover .team-info-sep { width: 48px; }
     .team-role {
       font-size: 10px; color: var(--gold); font-weight: 600;
-      letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 5px;
+      letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 8px;
     }
     .team-name {
-      font-family: var(--fd); font-size: 22px; font-weight: 600;
-      color: var(--head); letter-spacing: -0.01em; line-height: 1.2;
+      font-family: var(--fd); font-size: 28px; font-weight: 600;
+      color: var(--head); letter-spacing: -0.02em; line-height: 1.1;
       margin-bottom: 10px;
     }
-    .team-bio { font-size: 13px; color: var(--text); line-height: 1.7; }
+    .team-bio { font-size: 13.5px; color: var(--text); line-height: 1.75; }
 
     /* ── FAQ v2 — centered premium accordion ── */
     .faq-head {
@@ -1161,9 +1334,10 @@
     .faq-head h2 {
       font-family: var(--fd); font-size: clamp(2.2rem,3.8vw,3.6rem);
       font-weight: 600; letter-spacing: -0.02em; color: var(--head); line-height: 1.1;
+      margin-bottom: 12px;
     }
     .faq-head .faq-subtitle {
-      margin-top: 18px; font-size: 15px; color: var(--text); max-width: 480px;
+      margin-top: 0; font-size: 15px; color: var(--text); max-width: 480px;
       margin-left: auto; margin-right: auto;
     }
     .faq-grid {
@@ -1195,12 +1369,24 @@
       display: flex; align-items: center; gap: 16px;
       cursor: pointer; text-align: left;
     }
+    @keyframes faqNumGlow {
+      0%,100% { text-shadow: none; }
+      50%      { text-shadow: 0 0 8px rgba(228,184,32,0.55), 0 0 16px rgba(196,154,6,0.25); }
+    }
     .faq-num {
       font-family: var(--fb); font-size: 11px; font-weight: 600;
       letter-spacing: 0.12em; color: var(--goldd);
       min-width: 26px; opacity: 0.7;
+      transition: color 0.35s ease, opacity 0.35s ease, text-shadow 0.35s ease;
     }
-    .faq-card.open .faq-num { color: var(--goldb); opacity: 1; }
+    .faq-card:hover .faq-num {
+      color: var(--goldb); opacity: 1;
+      text-shadow: 0 0 10px rgba(228,184,32,0.4);
+    }
+    .faq-card.open .faq-num {
+      color: var(--goldb); opacity: 1;
+      animation: faqNumGlow 2.8s ease-in-out infinite;
+    }
     .faq-question {
       flex: 1; font-family: var(--fb); font-size: 16px; font-weight: 500;
       color: var(--head); line-height: 1.45;
@@ -1248,12 +1434,11 @@
     .faq-card.open .faq-answer { opacity: 1; transform: none; }
 
     /* ── CONTACT ── */
-    .contact-grid { display: grid; grid-template-columns: 1fr 1.1fr; gap: 80px; align-items: start; }
-    .contact-left { display: flex; flex-direction: column; gap: 0; }
-    .contact-left .sec-label { margin-bottom: 4px; }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1.1fr; gap: 80px; align-items: stretch; }
+    .contact-left { display: flex; flex-direction: column; gap: 0; justify-content: space-between; }
+    .contact-left .sec-label { margin-bottom: 14px; }
     .contact-left h2 { margin-bottom: 6px; }
-    .contact-left p { margin-bottom: 14px; }
-    .contact-left .btn-primary { margin-bottom: 20px; }
+    .contact-left p { margin-bottom: 0; }
     .contact-left h2 {
       font-family: var(--fd);
       font-size: clamp(2.5rem, 4vw, 4rem);
@@ -1409,56 +1594,124 @@
     .cf-submit:hover .cf-shine { transition: left 0.5s ease; left: 150%; }
 
     /* ── TESTIMONIALS ── */
-    #testimonials { padding-top: 0; padding-bottom: 400px; }
+    #testimonials { padding-top: 0; padding-bottom: 130px; }
+    /* ── LAMP KEYFRAMES ── */
+    @keyframes lampFlicker {
+      0%,100%  { opacity: 1;    filter: brightness(1); }
+      85%      { opacity: 1;    filter: brightness(1); }
+      87%      { opacity: 0.4;  filter: brightness(0.45); }
+      88%      { opacity: 0.9;  filter: brightness(0.92); }
+      89.5%    { opacity: 0.15; filter: brightness(0.18); }
+      90%      { opacity: 0.8;  filter: brightness(0.82); }
+      91%      { opacity: 0.08; filter: brightness(0.1); }
+      91.5%    { opacity: 0.88; filter: brightness(0.9); }
+      92%      { opacity: 0.45; filter: brightness(0.5); }
+      93%      { opacity: 1;    filter: brightness(1); }
+    }
+    @keyframes lampPulse {
+      0%,100% { opacity: 1;    transform: translateX(-50%) scaleX(1);    filter: brightness(1); }
+      50%     { opacity: 0.42; transform: translateX(-50%) scaleX(0.94); filter: brightness(0.45); }
+    }
+    @keyframes lampGlowPulse {
+      0%,100% { opacity: 1;    filter: blur(12px) brightness(1); }
+      50%     { opacity: 0.32; filter: blur(22px) brightness(0.38); }
+    }
+    @keyframes lampBeamPulse {
+      0%,100% { opacity: 1; }
+      50%     { opacity: 0.28; }
+    }
+    @keyframes lampHotPulse {
+      0%,100% { opacity: 1;    transform: translateX(-50%) scale(1);    filter: brightness(1); }
+      50%     { opacity: 0.38; transform: translateX(-50%) scale(0.85); filter: brightness(0.4); }
+    }
     /* Lamp visual */
     .lamp-wrap {
-      position: relative; width: 100%; height: 460px; overflow: hidden;
-      margin-bottom: -80px; /* pull heading up into the glow area */
+      position: relative; width: 100%; height: 430px; overflow: hidden;
+      margin-bottom: -220px;
     }
-    /* Horizontal lamp bar at top */
-    .lamp-line {
+    /* Ceiling mount — tiny dot, very subtle */
+    .lamp-mount {
       position: absolute; top: 0; left: 50%; transform: translateX(-50%);
-      height: 2px; width: 600px;
+      width: 3px; height: 3px;
+      background: rgba(228,184,32,0.5);
+      border-radius: 50%;
+      box-shadow: 0 0 4px rgba(228,184,32,0.35);
+      opacity: 0; transition: opacity 0.4s 0.2s;
+    }
+    .lamp-wrap.lamp-on .lamp-mount { opacity: 0.6; }
+    /* Horizontal lamp bar */
+    .lamp-line {
+      position: absolute; top: 4px; left: 50%; transform: translateX(-50%);
+      height: 3px; width: 480px;
       background: linear-gradient(90deg,
         transparent,
-        rgba(196,154,6,0.6) 12%,
-        rgba(228,184,32,0.95) 30%,
-        rgba(255,225,70,1) 50%,
-        rgba(228,184,32,0.95) 70%,
-        rgba(196,154,6,0.6) 88%,
+        rgba(196,154,6,0.4) 6%,
+        rgba(228,184,32,0.88) 22%,
+        rgba(255,240,80,1) 42%,
+        rgba(255,255,160,1) 50%,
+        rgba(255,240,80,1) 58%,
+        rgba(228,184,32,0.88) 78%,
+        rgba(196,154,6,0.4) 94%,
         transparent);
       box-shadow:
-        0 0 18px rgba(255,225,70,0.9),
-        0 0 50px rgba(228,184,32,0.65),
-        0 0 110px rgba(196,154,6,0.3);
+        0 0 4px 2px rgba(255,255,100,1),
+        0 0 14px rgba(255,220,60,0.9),
+        0 0 40px rgba(228,184,32,0.65),
+        0 0 100px rgba(196,154,6,0.28);
+      filter: blur(6px);
       opacity: 0; transition: opacity 0.65s 0.3s ease;
     }
-    .lamp-wrap.lamp-on .lamp-line { opacity: 1; }
-    /* Glow bloom — diffuse halo above the line */
+    .lamp-wrap.lamp-on .lamp-line {
+      opacity: 1;
+      animation: lampPulse 3.4s ease-in-out infinite 0.8s,
+                 lampFlicker 5s steps(1) infinite 2.2s;
+    }
+    /* Bright hotspot at center — the bulb */
+    .lamp-hotspot {
+      position: absolute; top: 0px; left: 50%; transform: translateX(-50%);
+      width: 16px; height: 8px; border-radius: 50%;
+      background: rgba(255,255,200,1);
+      box-shadow:
+        0 0 5px 3px rgba(255,255,140,1),
+        0 0 16px 6px rgba(255,240,60,0.9),
+        0 0 36px 12px rgba(228,200,30,0.6),
+        0 0 70px 24px rgba(196,154,6,0.3);
+      opacity: 0; transition: opacity 0.5s 0.55s;
+    }
+    .lamp-wrap.lamp-on .lamp-hotspot {
+      opacity: 1;
+      animation: lampFlicker 5s steps(1) infinite 2.2s,
+                 lampHotPulse 3.4s ease-in-out infinite 0.8s;
+    }
+    /* Glow bloom — diffuse halo */
     .lamp-glow {
-      position: absolute; top: -30px; left: 50%; transform: translateX(-50%);
-      width: 500px; height: 100px; border-radius: 50%;
-      background: radial-gradient(ellipse at 50% 70%,
-        rgba(255,225,70,0.9) 0%,
-        rgba(228,184,32,0.55) 25%,
-        rgba(196,154,6,0.2) 55%,
-        transparent 78%);
-      filter: blur(16px);
+      position: absolute; top: -28px; left: 50%; transform: translateX(-50%);
+      width: 700px; height: 130px; border-radius: 50%;
+      background: radial-gradient(ellipse at 50% 80%,
+        rgba(255,240,80,0.95) 0%,
+        rgba(255,220,50,0.68) 8%,
+        rgba(228,184,32,0.42) 22%,
+        rgba(196,154,6,0.15) 46%,
+        transparent 72%);
+      filter: blur(12px);
       opacity: 0; transition: opacity 0.95s 0.45s ease;
     }
-    .lamp-wrap.lamp-on .lamp-glow { opacity: 1; }
-    /* Left beam — smooth radial falloff, NO clip-path */
+    .lamp-wrap.lamp-on .lamp-glow {
+      opacity: 1;
+      animation: lampFlicker 5s steps(1) infinite 2.2s,
+                 lampGlowPulse 3.4s ease-in-out infinite 0.8s;
+    }
+    /* Left beam */
     .lb-l {
-      position: absolute; top: 0; right: 50%;
-      width: 780px; height: 460px;
-      background: radial-gradient(ellipse 100% 100% at 100% 0%,
-        rgba(255,220,60,0.52) 0%,
-        rgba(228,184,32,0.32) 14%,
-        rgba(210,165,20,0.2) 28%,
-        rgba(196,154,6,0.12) 44%,
-        rgba(196,154,6,0.05) 60%,
-        rgba(196,154,6,0.01) 74%,
-        transparent 84%);
+      position: absolute; top: 4px; right: 50%;
+      width: 900px; height: 520px;
+      background: radial-gradient(ellipse 90% 100% at 100% 0%,
+        rgba(255,230,70,0.5) 0%,
+        rgba(228,184,32,0.28) 10%,
+        rgba(210,165,20,0.14) 24%,
+        rgba(196,154,6,0.06) 40%,
+        rgba(196,154,6,0.02) 58%,
+        transparent 74%);
       transform-origin: 100% 0%;
       transform: scaleX(0); opacity: 0;
       transition: transform 2.2s 0.12s cubic-bezier(0.16,1,0.3,1),
@@ -1466,16 +1719,15 @@
     }
     /* Right beam */
     .lb-r {
-      position: absolute; top: 0; left: 50%;
-      width: 780px; height: 460px;
-      background: radial-gradient(ellipse 100% 100% at 0% 0%,
-        rgba(255,220,60,0.52) 0%,
-        rgba(228,184,32,0.32) 14%,
-        rgba(210,165,20,0.2) 28%,
-        rgba(196,154,6,0.12) 44%,
-        rgba(196,154,6,0.05) 60%,
-        rgba(196,154,6,0.01) 74%,
-        transparent 84%);
+      position: absolute; top: 4px; left: 50%;
+      width: 900px; height: 520px;
+      background: radial-gradient(ellipse 90% 100% at 0% 0%,
+        rgba(255,230,70,0.5) 0%,
+        rgba(228,184,32,0.28) 10%,
+        rgba(210,165,20,0.14) 24%,
+        rgba(196,154,6,0.06) 40%,
+        rgba(196,154,6,0.02) 58%,
+        transparent 74%);
       transform-origin: 0% 0%;
       transform: scaleX(0); opacity: 0;
       transition: transform 2.2s 0.12s cubic-bezier(0.16,1,0.3,1),
@@ -1483,6 +1735,8 @@
     }
     .lamp-wrap.lamp-on .lb-l, .lamp-wrap.lamp-on .lb-r {
       transform: scaleX(1); opacity: 1;
+      animation: lampFlicker 5s steps(1) infinite 2.5s,
+                 lampBeamPulse 3.4s ease-in-out infinite 1.2s;
     }
     /* Fade bottom edge into section */
     .lamp-wrap::after {
@@ -1493,13 +1747,13 @@
     }
     /* Testimonials layout */
     .test-head {
-      text-align: center; padding: 40px 0 60px; position: relative; z-index: 1;
+      text-align: center; padding: 4px 0 40px; position: relative; z-index: 1;
     }
-    .test-head .sec-label { justify-content: center; margin-bottom: 14px; }
+    .test-head .sec-label { justify-content: center; margin-bottom: 10px; }
     .test-head h2 {
       font-family: var(--fd); font-size: clamp(2.4rem,4vw,4rem);
       font-weight: 600; letter-spacing: -0.02em; color: var(--head); line-height: 1.1;
-      margin-bottom: 18px;
+      margin-bottom: 8px;
     }
     .test-head h2 em { font-style: italic; color: var(--gold); font-weight: 400; }
     .test-head > p {
@@ -1641,25 +1895,27 @@
     }
     .footer-copy { font-size: 12px; color: var(--text); letter-spacing: 0.02em; }
 
-    /* TextHoverEffect container — sits below footer-bar, no overlap */
+    /* TextHoverEffect container — overflow:visible so drop-shadow isn't clipped above text */
     .footer-text-section {
-      height: 160px;
+      height: 190px;
       margin-top: 8px;
+      padding-top: 30px;
       position: relative; z-index: 2;
-      overflow: hidden;
+      overflow: visible;
     }
     .footer-text-section svg { display: block; overflow: visible; }
     /* Glow on SVG hover */
-    #footerSvg:hover { filter: drop-shadow(0 0 28px rgba(196,154,6,0.42)); }
-    #footerSvg:hover #ft-outline { opacity: 0.7 !important; }
-    /* Draw-in animation triggered by IntersectionObserver */
+    #footerSvg { transition: filter 1.2s 0.25s cubic-bezier(0.16,1,0.3,1); }
+    #footerSvg:hover { filter: drop-shadow(0 0 18px rgba(196,154,6,0.32)); }
+    #footerSvg:hover #ft-outline { opacity: 0.6 !important; }
+    /* Draw-in animation triggered by IntersectionObserver — 1.4s delay before starting */
     #ft-anim {
       stroke-dasharray: 9000;
       stroke-dashoffset: 9000;
-      transition: stroke-dashoffset 3.8s cubic-bezier(0.16,1,0.3,1);
+      transition: stroke-dashoffset 18s 1.4s cubic-bezier(0.4,0,0.1,1);
     }
     #ft-anim.ft-draw { stroke-dashoffset: 0; }
-    #ft-outline { transition: opacity 0.35s ease; }
+    #ft-outline { transition: opacity 0.9s 0.2s cubic-bezier(0.16,1,0.3,1); }
 
     /* ── GOLD DIVIDER ── */
     .gold-line {
@@ -1763,7 +2019,7 @@
       .footer-grid { grid-template-columns: 1fr; }
       .form-row { grid-template-columns: 1fr; }
       .hero-btns { flex-direction: column; align-items: flex-start; }
-      .footer-text-section { height: 80px; margin-top: 4px; }
+      .footer-text-section { height: 110px; padding-top: 16px; margin-top: 4px; }
       .proj-top { flex-direction: column; align-items: flex-start; }
       .stat-cell { padding: 40px 24px; }
     }
@@ -1903,7 +2159,7 @@
 
         <!-- Floating stat badges -->
         <div class="hc-badge" style="bottom:-22px;left:-22px;">
-          <div class="b-n"><span class="count-num" data-target="140">140</span>+</div>
+          <div class="b-n"><span class="count-num" data-target="50">50</span>+</div>
           <div class="b-l">Projects done</div>
         </div>
         <div class="hc-badge hc-badge-gold" style="top:-14px;right:-14px;">
@@ -1919,7 +2175,11 @@
   </div>
   <div class="scroll-hint">
     <span>Scroll</span>
-    <div class="scroll-hint-line"></div>
+    <button class="scroll-btn" id="heroScrollBtn" aria-label="Scroll to next section">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 5v14"/><path d="M5 12l7 7 7-7"/>
+      </svg>
+    </button>
   </div>
   <div class="hero-line"></div>
 </section>
@@ -1982,32 +2242,32 @@
 <div class="gold-line"></div>
 
 <!-- STATS -->
-<section class="sec sec-alt" id="stats" style="overflow:hidden;">
+<section class="sec sec-alt" id="stats" style="overflow:hidden;background:var(--black);">
   <canvas id="statsWaves" style="position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0.85;"></canvas>
   <div class="wrap" style="position:relative;z-index:1;">
-    <div class="sec-label" style="margin-bottom:48px;">By The Numbers</div>
+    <div class="sec-label">By The Numbers</div>
     <div class="stats-wrap">
       <div class="stat-cell g-scale" data-bg="140">
         <div class="stat-cell-glow"></div>
         <div class="stat-cell-border"></div>
         <div class="stat-num">
-          <span class="count-num" data-target="140">140</span><span class="stat-suf">+</span>
+          <span class="count-num" data-target="50">50</span><span class="stat-suf">+</span>
         </div>
         <div class="stat-lbl">Projects completed</div>
       </div>
-      <div class="stat-cell g-scale" data-bg="6">
+      <div class="stat-cell g-scale" data-bg="3">
         <div class="stat-cell-glow"></div>
         <div class="stat-cell-border"></div>
         <div class="stat-num">
-          <span class="count-num" data-target="6">6</span><span class="stat-suf">+</span>
+          <span class="count-num" data-target="3">3</span><span class="stat-suf">+</span>
         </div>
         <div class="stat-lbl">Years in business</div>
       </div>
-      <div class="stat-cell g-scale" data-bg="48">
+      <div class="stat-cell g-scale" data-bg="50">
         <div class="stat-cell-glow"></div>
         <div class="stat-cell-border"></div>
         <div class="stat-num">
-          <span class="count-num" data-target="48">48</span><span class="stat-suf">+</span>
+          <span class="count-num" data-target="50">50</span><span class="stat-suf">+</span>
         </div>
         <div class="stat-lbl">Happy clients</div>
       </div>
@@ -2026,47 +2286,166 @@
         <div class="sec-label">Selected Work</div>
         <h2 class="g-up">Our Projects</h2>
       </div>
-      <a href="#contact" class="btn-ghost g-fade">All projects &rarr;</a>
     </div>
-    <div class="proj-filters g-up">
-      <button class="filter-btn active">All</button>
-      <button class="filter-btn">Branding</button>
-      <button class="filter-btn">Web Design</button>
-      <button class="filter-btn">Development</button>
-    </div>
-    <div class="proj-list">
-      <div class="proj-card g-clip">
-        <div class="proj-info">
-          <div>
-            <div class="proj-tag">Web Design</div>
-            <div class="proj-name">CryoX</div>
-            <div class="proj-desc">E-commerce platform with custom product visualization and frictionless checkout experience.</div>
-          </div>
-          <a href="#" class="proj-link">View case study <span class="proj-arr">&#8599;</span></a>
+    <div class="bento-grid">
+
+      <!-- MonX — featured wide card -->
+      <a href="https://www.mon-x.app" target="_blank" rel="noopener" class="bento-item bento-col-2 g-up">
+        <div class="bento-img">
+          <img src="aiconnect selected work monx.png" alt="MonX — Enterprise Monitoring Platform">
         </div>
-        <div class="proj-visual" style="background:linear-gradient(160deg,#050c18 0%,#081525 50%,#040d20 100%);">
-          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(50,120,220,.18) 0%,transparent 65%);"></div>
-          <div style="position:absolute;bottom:28px;right:28px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px 20px;backdrop-filter:blur(8px);">
-            <div style="font-family:var(--fd);font-size:14px;font-weight:600;color:#fff;">+240% Sales</div>
+        <div class="bento-body">
+          <div class="bento-top">
+            <div class="bento-icon">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(196,154,6,0.85)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            </div>
+            <span class="bento-status">Live</span>
+          </div>
+          <div class="bento-title">MonX <span class="bento-meta">mon-x.app</span></div>
+          <div class="bento-desc">Enterprise monitoring platform with AI-powered incident detection and real-time performance dashboards built for modern engineering teams.</div>
+          <div class="bento-footer">
+            <div class="bento-tags">
+              <span class="bento-tag">#SaaS</span>
+              <span class="bento-tag">#Dashboard</span>
+              <span class="bento-tag">#B2B</span>
+              <span class="bento-tag">#WebApp</span>
+            </div>
+            <span class="bento-cta">View Project
+              <span class="bento-cta-arrow">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+              </span>
+            </span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Full-stack deliverables card -->
+      <div class="bento-item g-up">
+        <div class="bento-text-body">
+          <div>
+            <div class="bento-top">
+              <div class="bento-icon">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(196,154,6,0.85)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+              </div>
+              <span class="bento-status">Delivered</span>
+            </div>
+            <div class="bento-title" style="font-size:19px;margin-top:8px;">Full-Stack Build</div>
+            <div class="bento-desc">UI/UX design, front-end development, and brand system — zero to launch in 6 weeks.</div>
+          </div>
+          <div class="bento-footer">
+            <div class="bento-tags">
+              <span class="bento-tag">#Design</span>
+              <span class="bento-tag">#Dev</span>
+              <span class="bento-tag">#Brand</span>
+            </div>
           </div>
         </div>
       </div>
-      <div class="proj-card g-clip">
-        <div class="proj-info">
+
+      <!-- Hospitality approach card -->
+      <div class="bento-item g-up">
+        <div class="bento-text-body">
           <div>
-            <div class="proj-tag">Branding + Web</div>
-            <div class="proj-name">Refract Studio</div>
-            <div class="proj-desc">Full brand identity and website for a creative production house launching in Berlin.</div>
+            <div class="bento-top">
+              <div class="bento-icon">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(196,154,6,0.85)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/></svg>
+              </div>
+              <span class="bento-status">Hospitality</span>
+            </div>
+            <div class="bento-title" style="font-size:19px;margin-top:8px;">Built to Book</div>
+            <div class="bento-desc">Immersive visuals, fast load times and a conversion-focused booking flow for a premium getaway brand.</div>
           </div>
-          <a href="#" class="proj-link">View case study <span class="proj-arr">&#8599;</span></a>
-        </div>
-        <div class="proj-visual" style="background:linear-gradient(160deg,#160f02 0%,#201505 50%,#130e02 100%);">
-          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(196,154,6,.15) 0%,transparent 65%);"></div>
-          <div style="position:absolute;bottom:28px;right:28px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px 20px;backdrop-filter:blur(8px);">
-            <div style="font-family:var(--fd);font-size:14px;font-weight:600;color:#fff;">Brand Identity</div>
+          <div class="bento-footer">
+            <div class="bento-tags">
+              <span class="bento-tag">#Travel</span>
+              <span class="bento-tag">#Booking</span>
+              <span class="bento-tag">#UX</span>
+            </div>
           </div>
         </div>
       </div>
+
+      <!-- Monte Zone — featured wide card -->
+      <a href="https://www.monte-zone.com" target="_blank" rel="noopener" class="bento-item bento-col-2 g-up">
+        <div class="bento-img">
+          <img src="aiconnect selected work montezone.png" alt="Monte Zone — Luxury Chalets in Montenegro">
+        </div>
+        <div class="bento-body">
+          <div class="bento-top">
+            <div class="bento-icon">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(196,154,6,0.85)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m8 3 4 8 5-5 5 15H2L8 3z"/></svg>
+            </div>
+            <span class="bento-status">Live</span>
+          </div>
+          <div class="bento-title">Monte Zone <span class="bento-meta">monte-zone.com</span></div>
+          <div class="bento-desc">Luxury A-frame chalets in the mountains of Montenegro — a cinematic booking site that turns scenery into reservations.</div>
+          <div class="bento-footer">
+            <div class="bento-tags">
+              <span class="bento-tag">#Hospitality</span>
+              <span class="bento-tag">#WebDesign</span>
+              <span class="bento-tag">#Branding</span>
+            </div>
+            <span class="bento-cta">View Project
+              <span class="bento-cta-arrow">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+              </span>
+            </span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Ramago — featured wide card -->
+      <a href="https://www.ramagorentacar.com" target="_blank" rel="noopener" class="bento-item bento-col-2 g-up">
+        <div class="bento-img">
+          <img src="aiconnect selected work ramago.png" alt="Ramago — Rent a Car">
+        </div>
+        <div class="bento-body">
+          <div class="bento-top">
+            <div class="bento-icon">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(196,154,6,0.85)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/></svg>
+            </div>
+            <span class="bento-status">Live</span>
+          </div>
+          <div class="bento-title">Ramago <span class="bento-meta">Rent a Car</span></div>
+          <div class="bento-desc">Sleek, high-contrast rental platform with an instant booking experience and a fleet showcase that puts every vehicle in the spotlight.</div>
+          <div class="bento-footer">
+            <div class="bento-tags">
+              <span class="bento-tag">#Automotive</span>
+              <span class="bento-tag">#Booking</span>
+              <span class="bento-tag">#WebDesign</span>
+            </div>
+            <span class="bento-cta">View Project
+              <span class="bento-cta-arrow">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+              </span>
+            </span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Performance card -->
+      <div class="bento-item g-up">
+        <div class="bento-text-body">
+          <div>
+            <div class="bento-top">
+              <div class="bento-icon">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(196,154,6,0.85)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              </div>
+              <span class="bento-status">Performance</span>
+            </div>
+            <div class="bento-title" style="font-size:19px;margin-top:8px;">Fast by Design</div>
+            <div class="bento-desc">Every build ships optimized for speed, SEO and conversions — so your site works as hard as you do.</div>
+          </div>
+          <div class="bento-footer">
+            <div class="bento-tags">
+              <span class="bento-tag">#Speed</span>
+              <span class="bento-tag">#SEO</span>
+              <span class="bento-tag">#Convert</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
@@ -2080,13 +2459,15 @@
     <div class="lb-r"></div>
     <div class="lamp-glow"></div>
     <div class="lamp-line"></div>
+    <div class="lamp-hotspot"></div>
+    <div class="lamp-mount"></div>
   </div>
   <!-- Section header (centered) -->
   <div class="wrap">
     <div class="test-head">
       <div class="sec-label" style="display:inline-flex;">Client Stories</div>
       <h2>What clients <em>actually say</em></h2>
-      <p>Trusted by 100+ clients who've seen measurable results — from brand-new startups to scaling teams.</p>
+      <p>Trusted by 50+ clients who've seen measurable results — from brand-new startups to scaling teams.</p>
     </div>
     <!-- Two-column layout -->
     <div class="test-layout">
@@ -2094,15 +2475,15 @@
       <div class="test-left">
         <div class="test-mini-stats">
           <div class="test-mini-stat">
-            <span class="test-stat-val">100+</span>
+            <span class="test-stat-val">50+</span>
             <span class="test-stat-lbl">Happy clients</span>
           </div>
           <div class="test-mini-stat">
-            <span class="test-stat-val">$250M</span>
+            <span class="test-stat-val">$1M</span>
             <span class="test-stat-lbl">Revenue added</span>
           </div>
           <div class="test-mini-stat">
-            <span class="test-stat-val">4.9</span>
+            <span class="test-stat-val">4.8</span>
             <span class="test-stat-lbl">Avg rating</span>
           </div>
         </div>
@@ -2154,7 +2535,7 @@
               </div>
             </div>
             <div class="tc-stars">
-              <span class="tc-star-val">4.9</span>
+              <span class="tc-star-val">4.8</span>
               <span class="tc-star-row">
                 <svg class="tc-star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
                 <svg class="tc-star" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
@@ -2225,54 +2606,37 @@
 <section class="sec sec-alt" id="about">
   <canvas id="crewOrbCanvas" style="position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0.55;mix-blend-mode:screen;"></canvas>
   <div class="wrap" style="position:relative;z-index:1;">
-    <div style="margin-bottom:52px;">
-      <div class="sec-label">The Crew</div>
+    <div style="margin-bottom:50px;text-align:center;">
+      <div class="sec-label" style="justify-content:center;">The Crew</div>
       <h2 class="g-up" style="font-family:var(--fd);font-size:clamp(2.2rem,3.8vw,3.6rem);font-weight:600;letter-spacing:-0.02em;color:var(--head);line-height:1.1;">Meet Our Team</h2>
     </div>
-    <div class="team-grid">
+    <div class="team-grid" style="justify-content:center;">
       <div class="team-card g-up">
-        <div class="team-photo" style="background:linear-gradient(160deg,#0e0e0e 0%,#100f03 60%,#161200 100%);">
+        <div class="team-photo" style="background:#0a0a0a;">
+          <img src="aiconnect matija crew.jpeg" alt="Matija Tomišić" class="photo-zoomed" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center center;z-index:1;transform:scale(1.25);transform-origin:center center;">
           <div class="team-photo-scanlines"></div>
-          <div class="team-photo-glow"></div>
-          <div class="team-photo-letter">N</div>
+          <div class="team-photo-fade"></div>
           <div class="team-card-num">01</div>
-          <div class="team-avatar"><span>N</span></div>
         </div>
         <div class="team-info">
           <div class="team-info-sep"></div>
-          <div class="team-role">Creative Director</div>
-          <div class="team-name">Nikolas Guth</div>
-          <div class="team-bio">Leads visual strategy with 8+ years of brand and digital design experience across Europe.</div>
+          <div class="team-role">Creative Director & SEO Strategist</div>
+          <div class="team-name">Matija Tomišić</div>
+          <div class="team-bio">Blends creative vision with data-driven SEO to build brands that rank and resonate.</div>
         </div>
       </div>
       <div class="team-card g-up">
-        <div class="team-photo" style="background:linear-gradient(160deg,#0e0e0e 0%,#020b13 60%,#020d18 100%);">
+        <div class="team-photo" style="background:#0a0a0a;">
+          <img src="aiconnect crew pavle.jpeg" alt="Pavle Gošić" class="photo-base" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center center;z-index:1;">
           <div class="team-photo-scanlines"></div>
-          <div class="team-photo-glow"></div>
-          <div class="team-photo-letter">B</div>
+          <div class="team-photo-fade"></div>
           <div class="team-card-num">02</div>
-          <div class="team-avatar"><span>B</span></div>
         </div>
         <div class="team-info">
           <div class="team-info-sep"></div>
-          <div class="team-role">Lead Developer</div>
-          <div class="team-name">Blaise Marchetti</div>
-          <div class="team-bio">Full-stack developer specializing in high-performance web applications and CMS solutions.</div>
-        </div>
-      </div>
-      <div class="team-card g-up">
-        <div class="team-photo" style="background:linear-gradient(160deg,#0e0e0e 0%,#08030f 60%,#0a0413 100%);">
-          <div class="team-photo-scanlines"></div>
-          <div class="team-photo-glow"></div>
-          <div class="team-photo-letter">L</div>
-          <div class="team-card-num">03</div>
-          <div class="team-avatar"><span>L</span></div>
-        </div>
-        <div class="team-info">
-          <div class="team-info-sep"></div>
-          <div class="team-role">UX Strategist</div>
-          <div class="team-name">Lauren Shidler</div>
-          <div class="team-bio">Crafts intuitive user journeys backed by conversion research and behavioral data.</div>
+          <div class="team-role">UI/UX Designer & Web Developer</div>
+          <div class="team-name">Pavle Gošić</div>
+          <div class="team-bio">Designs and builds seamless digital experiences where aesthetics meet performance.</div>
         </div>
       </div>
     </div>
@@ -2297,7 +2661,7 @@
         <div class="faq-body">
           <div class="faq-inner">
             <div class="faq-accent"></div>
-            <p class="faq-answer">Every project starts with a discovery call where we understand your goals, audience and requirements. From there we move through strategy, design, development and launch — keeping you involved at each stage. Most projects take 4–8 weeks depending on scope.</p>
+            <p class="faq-answer">Every project starts with a discovery call where we understand your goals, audience and requirements. From there we move through strategy, design, development and launch — keeping you involved at each stage. Most projects take 2–4 weeks depending on scope.</p>
           </div>
         </div>
       </div>
@@ -2323,7 +2687,7 @@
         <div class="faq-body">
           <div class="faq-inner">
             <div class="faq-accent"></div>
-            <p class="faq-answer">We work on a project basis. Most website projects range from &euro;2,500 to &euro;15,000+. We provide a detailed proposal after the initial consultation so there are no surprises.</p>
+            <p class="faq-answer">We work on a project basis. Most websites range from $500 to $5,000. We provide a detailed proposal after the initial consultation so there are no surprises.</p>
           </div>
         </div>
       </div>
@@ -2336,7 +2700,7 @@
         <div class="faq-body">
           <div class="faq-inner">
             <div class="faq-accent"></div>
-            <p class="faq-answer">We build primarily with Next.js, React and Webflow. For e-commerce we use Shopify and WooCommerce. All sites are optimized for performance, SEO and accessibility from day one.</p>
+            <p class="faq-answer">We work primarily in Squarespace and Claude Code. All sites are optimized for performance, SEO and accessibility from day one.</p>
           </div>
         </div>
       </div>
@@ -2354,11 +2718,14 @@
         <div class="sec-label">Let's Create</div>
         <h2 class="g-up">Let's Talk Your<br><em>Next Project</em></h2>
         <p class="g-up">Ready to take your digital presence to the next level? Tell us about your project and we'll get back to you within 24 hours.</p>
-        <a href="mailto:hello@aiconnect.studio" class="btn-primary g-up" style="align-self:flex-start;">Send an email <span>&rarr;</span></a>
+        <div class="g-up" style="position:relative;display:inline-flex;align-self:flex-start;">
+          <canvas class="btn-liq-ghost-canvas" id="sendEmailCanvas" style="position:absolute;inset:0;border-radius:500px;pointer-events:none;"></canvas>
+          <a href="mailto:aiconnect.agency2@gmail.com" class="btn-liq-ghost" id="sendEmailBtn"><span>Send an email →</span></a>
+        </div>
         <div class="contact-detail g-up">
           <div class="c-detail">
             <div class="c-detail-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></div>
-            hello@aiconnect.studio
+            aiconnect.agency2@gmail.com
           </div>
           <div class="c-detail">
             <div class="c-detail-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
@@ -2443,8 +2810,8 @@
       <div class="foot-col"><h4>Company</h4><ul><li><a href="#">About</a></li><li><a href="#">Team</a></li><li><a href="#">Blog</a></li><li><a href="#contact">Contact</a></li></ul></div>
     </div>
     <div class="footer-bar">
-      <div class="footer-copy">&copy; 2025 AI Connect Studio. All rights reserved.</div>
-      <div class="footer-copy">hello@aiconnect.studio</div>
+      <div class="footer-copy">&copy; 2026 AI Connect Studio. All rights reserved.</div>
+      <div class="footer-copy">aiconnect.agency2@gmail.com</div>
     </div>
   </div>
   <div class="footer-text-section">
@@ -2452,13 +2819,23 @@
          xmlns="http://www.w3.org/2000/svg"
          style="width:100%;height:100%;display:block;cursor:pointer;user-select:none;overflow:visible;">
       <defs>
-        <radialGradient id="ftReveal" gradientUnits="userSpaceOnUse" cx="400" cy="55" r="200">
+        <radialGradient id="ftReveal" gradientUnits="userSpaceOnUse" cx="-600" cy="55" r="240">
           <stop offset="0%"   stop-color="white"/>
+          <stop offset="55%"  stop-color="white" stop-opacity="0.5"/>
           <stop offset="100%" stop-color="black"/>
         </radialGradient>
         <mask id="ftMask">
           <rect x="-100" y="-100" width="1200" height="400" fill="black"/>
           <rect x="-100" y="-100" width="1200" height="400" fill="url(#ftReveal)"/>
+        </mask>
+        <radialGradient id="ftDarkReveal" gradientUnits="userSpaceOnUse" cx="-600" cy="55" r="190">
+          <stop offset="0%"   stop-color="white"/>
+          <stop offset="72%"  stop-color="white"/>
+          <stop offset="100%" stop-color="black"/>
+        </radialGradient>
+        <mask id="ftDarkMask">
+          <rect x="-100" y="-100" width="1200" height="400" fill="black"/>
+          <rect x="-100" y="-100" width="1200" height="400" fill="url(#ftDarkReveal)"/>
         </mask>
         <radialGradient id="ftGold" gradientUnits="userSpaceOnUse" cx="400" cy="55" r="300">
           <stop offset="0%"   stop-color="#F7D060"/>
@@ -2472,18 +2849,26 @@
         fill="none" stroke="#2a2a2a" stroke-width="0.5"
         font-family="Outfit,Helvetica,Arial,sans-serif" font-size="96" font-weight="700"
         textLength="780" lengthAdjust="spacingAndGlyphs"
-        style="opacity:0;transition:opacity 0.4s ease;">AICONNECT</text>
+        style="opacity:0;transition:opacity 1.1s 0.3s cubic-bezier(0.16,1,0.3,1);">AICONNECT</text>
       <!-- Layer 2: animated gold stroke draw-in on scroll -->
       <text id="ft-anim" x="400" y="92" text-anchor="middle"
         fill="none" stroke="#C49A06" stroke-width="0.5"
         font-family="Outfit,Helvetica,Arial,sans-serif" font-size="96" font-weight="700"
         textLength="780" lengthAdjust="spacingAndGlyphs">AICONNECT</text>
-      <!-- Layer 3: mouse-follow gold gradient reveal -->
+      <!-- Layer 3: mouse-follow gold gradient reveal (fill + stroke) -->
       <text x="400" y="92" text-anchor="middle"
-        fill="none" stroke="url(#ftGold)" stroke-width="0.5"
+        fill="url(#ftGold)" fill-opacity="0.55"
+        stroke="url(#ftGold)" stroke-width="0.5"
         font-family="Outfit,Helvetica,Arial,sans-serif" font-size="96" font-weight="700"
         textLength="780" lengthAdjust="spacingAndGlyphs"
         mask="url(#ftMask)">AICONNECT</text>
+      <!-- Layer 4: mouse-follow dark stroke reveal (smooth blur transition) -->
+      <text id="ft-dark" x="400" y="92" text-anchor="middle"
+        fill="none" stroke="#000000" stroke-width="3"
+        font-family="Outfit,Helvetica,Arial,sans-serif" font-size="96" font-weight="700"
+        textLength="780" lengthAdjust="spacingAndGlyphs"
+        mask="url(#ftDarkMask)"
+        style="opacity:0;transition:opacity 0.85s 0.15s cubic-bezier(0.16,1,0.3,1);">AICONNECT</text>
     </svg>
   </div>
 </footer>
@@ -2512,9 +2897,8 @@
 
   // Split h2 text into word spans for the word-drop effect
   document.querySelectorAll('.sec h2').forEach(h2 => {
-    // Skip headings inside svc-left and contact-left — they must always be visible
-    // (word-split creates layout gaps when the text is invisible pre-animation)
-    if (h2.closest('.svc-left') || h2.closest('.contact-left')) {
+    // Skip headings where invisible word-split creates layout gaps
+    if (h2.closest('.svc-left') || h2.closest('.contact-left') || h2.closest('.faq-head')) {
       h2.classList.remove('g-up', 'g-left', 'g-right', 'g-scale', 'g-fade', 'g-clip');
       h2.style.opacity = '';
       h2.style.transform = '';
@@ -3084,13 +3468,13 @@
     if (!canvas || typeof THREE === 'undefined') return;
 
     const CFG = {
-      count: 1100, magnetRadius: 11, ringRadius: 5,
-      waveSpeed: 0.45, waveAmplitude: 2.2,
-      particleSize: 0.28, lerpSpeed: 0.025,
-      color: '#c1990b', autoAnimate: true,
-      particleVariance: 1, rotationSpeed: 0.28,
-      depthFactor: 1, pulseSpeed: 6.0,
-      fieldStrength: 2.0
+      count: 400, magnetRadius: 5.5, ringRadius: 2.6,
+      waveSpeed: 0.4, waveAmplitude: 0.2,
+      particleSize: 0.42, lerpSpeed: 0.04,
+      color: '#d7a804', autoAnimate: true,
+      particleVariance: 1, rotationSpeed: 0,
+      depthFactor: 1, pulseSpeed: 3.0,
+      fieldStrength: 9.8
     };
 
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: false, alpha: true });
@@ -3107,10 +3491,21 @@
       return { width: h * camera.aspect, height: h };
     }
 
-    const geo = new THREE.SphereGeometry(0.2, 8, 8);
+    const geo = new THREE.CapsuleGeometry(0.1, 0.4, 4, 8);
     const mat = new THREE.MeshBasicMaterial({ color: CFG.color });
-    const mesh = new THREE.InstancedMesh(geo, mat, CFG.count);
-    scene.add(mesh);
+    // Keep particle DENSITY constant regardless of section height.
+    // Baseline: 400 particles over the original (shorter) section area.
+    const DENSITY = 400 / (1440 * 760);
+    let mesh = null;
+    let activeCount = CFG.count;
+
+    function buildMesh(count) {
+      if (mesh) { scene.remove(mesh); mesh.dispose(); }
+      activeCount = count;
+      mesh = new THREE.InstancedMesh(geo, mat, count);
+      scene.add(mesh);
+    }
+    buildMesh(CFG.count);
 
     const dummy = new THREE.Object3D();
     let particles = [];
@@ -3118,7 +3513,7 @@
     function initParticles() {
       particles = [];
       const vp = getViewport();
-      for (let i = 0; i < CFG.count; i++) {
+      for (let i = 0; i < activeCount; i++) {
         const x = (Math.random() - 0.5) * vp.width;
         const y = (Math.random() - 0.5) * vp.height;
         const z = (Math.random() - 0.5) * 20;
@@ -3151,6 +3546,9 @@
       renderer.setSize(w, h, false);
       camera.aspect = w / h;
       camera.updateProjectionMatrix();
+      // Scale particle count with area so density matches the original look.
+      const targetCount = Math.max(350, Math.min(1400, Math.round(DENSITY * w * h)));
+      if (targetCount !== activeCount) buildMesh(targetCount);
       initParticles();
     }
     resize();
@@ -3217,6 +3615,61 @@
     animate();
   })();
 
+  /* ── LIQUID GHOST BUTTON (generic factory) ── */
+  function initLiqGhostBtn(canvasId, btnId) {
+    const canvas = document.getElementById(canvasId);
+    const btn    = document.getElementById(btnId);
+    if (!btn || !canvas) return;
+    const wrapper = canvas.parentElement;
+    const ctx = canvas.getContext('2d');
+    let t = 0, hov = false;
+    btn.addEventListener('mouseenter', () => hov = true);
+    btn.addEventListener('mouseleave', () => hov = false);
+    function pillPath(ctx, x, y, w, h) {
+      const r = h / 2;
+      ctx.moveTo(x + r, y);
+      ctx.arcTo(x + w, y,     x + w, y + h, r);
+      ctx.arcTo(x + w, y + h, x,     y + h, r);
+      ctx.arcTo(x,     y + h, x,     y,     r);
+      ctx.arcTo(x,     y,     x + w, y,     r);
+      ctx.closePath();
+    }
+    function resize() { canvas.width = btn.offsetWidth; canvas.height = btn.offsetHeight; }
+    resize();
+    new ResizeObserver(resize).observe(btn);
+    function render() {
+      t += hov ? 0.032 : 0.009;
+      const s = Math.sin, c = Math.cos;
+      const w = canvas.width, h = canvas.height;
+      ctx.clearRect(0, 0, w, h);
+      ctx.save();
+      ctx.beginPath(); pillPath(ctx, 0, 0, w, h); ctx.clip();
+      const x1 = w*(0.5+0.45*s(t)),        y1 = h*(0.5+0.35*c(t*1.3));
+      const x2 = w*(0.5+0.40*c(t*0.71)),   y2 = h*(0.5+0.40*s(t*1.68));
+      const x3 = w*(0.5+0.30*s(t*1.41)),   y3 = h*(0.5+0.25*c(t*0.89));
+      const pts = [[x1,y1],[x2,y2],[x3,y3]];
+      const alphaBase = hov ? 0.22 : 0.08;
+      pts.forEach(([px, py], i) => {
+        const radius = Math.max(w, h) * (0.85 + 0.1 * i);
+        const grad = ctx.createRadialGradient(px, py, 0, px, py, radius);
+        grad.addColorStop(0, `rgba(196,154,6,${alphaBase - i * 0.02})`);
+        grad.addColorStop(0.5, `rgba(139,109,4,${(alphaBase - i * 0.02) * 0.35})`);
+        grad.addColorStop(1, 'rgba(196,154,6,0)');
+        ctx.globalCompositeOperation = i === 0 ? 'source-over' : 'screen';
+        ctx.fillStyle = grad; ctx.fillRect(0, 0, w, h);
+      });
+      ctx.restore();
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.save();
+      ctx.beginPath(); pillPath(ctx, 0.5, 0.5, w - 1, h - 1);
+      ctx.strokeStyle = `rgba(196,154,6,${hov ? 0.82 : 0.38})`; ctx.lineWidth = 1; ctx.stroke();
+      ctx.restore();
+      if (wrapper) wrapper.style.filter = hov ? 'drop-shadow(0 0 14px rgba(196,154,6,0.38))' : 'drop-shadow(0 0 6px rgba(196,154,6,0.14))';
+      requestAnimationFrame(render);
+    }
+    render();
+  }
+
   /* ── LIQUID GHOST BUTTON (Work with us) ── */
   (function() {
     const wrapper = document.getElementById('workWithUsCanvas').parentElement;
@@ -3228,7 +3681,6 @@
     let t = 0, hov = false;
     btn.addEventListener('mouseenter', () => hov = true);
     btn.addEventListener('mouseleave', () => hov = false);
-
     function pillPath(ctx, x, y, w, h) {
       const r = h / 2;
       ctx.moveTo(x + r, y);
@@ -3238,7 +3690,6 @@
       ctx.arcTo(x,     y,     x + w, y,     r);
       ctx.closePath();
     }
-
     function resize() {
       canvas.width  = btn.offsetWidth;
       canvas.height = btn.offsetHeight;
@@ -3301,6 +3752,9 @@
     render();
   })();
 
+  /* ── LIQUID GHOST BUTTON (Send an email) ── */
+  initLiqGhostBtn('sendEmailCanvas', 'sendEmailBtn');
+
   /* ── CONTACT CARD 3D TILT ── */
   (function() {
     const outer = document.getElementById('cfCard');
@@ -3320,27 +3774,53 @@
     });
   })();
 
-  /* ── FOOTER TEXT HOVER EFFECT (AICONNECT draw + mouse gold reveal) ── */
+  /* ── FOOTER TEXT HOVER EFFECT (AICONNECT draw + mouse gold reveal + dark stroke) ── */
   (function() {
-    const svg     = document.getElementById('footerSvg');
-    const outline = document.getElementById('ft-outline');
-    const anim    = document.getElementById('ft-anim');
+    const svg        = document.getElementById('footerSvg');
+    const outline    = document.getElementById('ft-outline');
+    const anim       = document.getElementById('ft-anim');
+    const darkLayer  = document.getElementById('ft-dark');
     const revealGrad = document.getElementById('ftReveal');
+    const darkGrad   = document.getElementById('ftDarkReveal');
     if (!svg || !anim) return;
 
-    // Mouse enter/leave → outline opacity
-    svg.addEventListener('mouseenter', () => { outline.style.opacity = '0.6'; });
-    svg.addEventListener('mouseleave', () => { outline.style.opacity = '0'; });
+    // Mouse enter/leave → outline + dark layer opacity
+    svg.addEventListener('mouseenter', () => {
+      outline.style.opacity = '0.6';
+      if (darkLayer) darkLayer.style.opacity = '0.35';
+    });
+    svg.addEventListener('mouseleave', () => {
+      outline.style.opacity = '0';
+      if (darkLayer) darkLayer.style.opacity = '0';
+    });
 
-    // Mouse move → gradient follows cursor (convert screen→SVG user space)
+    // Lerp state — gradients chase the cursor slowly for an eased reveal
+    // Start off-screen so no gold shows before mouse enters
+    let tgtX = -600, tgtY = 55;
+    let curX = -600, curY = 55;
+    let rafFt = null;
+
     svg.addEventListener('mousemove', e => {
       const pt = svg.createSVGPoint();
-      pt.x = e.clientX;
-      pt.y = e.clientY;
+      pt.x = e.clientX; pt.y = e.clientY;
       const svgPt = pt.matrixTransform(svg.getScreenCTM().inverse());
-      revealGrad.setAttribute('cx', svgPt.x);
-      revealGrad.setAttribute('cy', svgPt.y);
+      tgtX = svgPt.x; tgtY = svgPt.y;
+      if (!rafFt) lerpGrad();
     });
+
+    function lerpGrad() {
+      const k = 0.055; // lower = slower/lazier
+      curX += (tgtX - curX) * k;
+      curY += (tgtY - curY) * k;
+      revealGrad.setAttribute('cx', curX);
+      revealGrad.setAttribute('cy', curY);
+      if (darkGrad) { darkGrad.setAttribute('cx', curX); darkGrad.setAttribute('cy', curY); }
+      if (Math.abs(tgtX - curX) > 0.3 || Math.abs(tgtY - curY) > 0.3) {
+        rafFt = requestAnimationFrame(lerpGrad);
+      } else {
+        rafFt = null;
+      }
+    }
 
     // Scroll into view → trigger stroke draw-in
     const drawObs = new IntersectionObserver(entries => {
@@ -3348,8 +3828,8 @@
         anim.classList.add('ft-draw');
         drawObs.disconnect();
       }
-    }, { threshold: 0.2 });
-    const ftSection = document.querySelector('.footer-text-section');
+    }, { threshold: 0, rootMargin: '0px 0px 300px 0px' });
+    const ftSection = document.querySelector('footer');
     if (ftSection) drawObs.observe(ftSection);
   })();
 
@@ -3397,10 +3877,10 @@
     }
 
     const xGap = 18, yGap = 30;
-    const waveAmpX = 70, waveAmpY = 45;
-    const waveSpeedY = 0.014;
-    const friction = 0.82, tension = 0.022;
-    const maxCursorMove = 260;
+    const waveAmpX = 6,  waveAmpY = 4;   // very subtle default movement
+    const waveSpeedY = 0.004;
+    const friction = 0.84, tension = 0.018;
+    const maxCursorMove = 400;            // very strong on mouse hover
 
     let W, H, cols, rows, pts;
     let mxn = 0.5, myn = 0.5;
@@ -3412,12 +3892,13 @@
       H = canvas.height = container.offsetHeight || 400;
     }
     function setLines() {
-      cols = Math.ceil(W / xGap) + 4; // +2 left, +2 right overflow
+      const extraLeft = 30; // extra columns to the left so lines always reach edge
+      cols = Math.ceil(W / xGap) + extraLeft + 4;
       rows = Math.ceil(H / yGap) + 2;
       pts = [];
       for (let r = 0; r < rows; r++)
         for (let c = 0; c < cols; c++) {
-          const ox = c * xGap - xGap; // start one column to the left of canvas edge
+          const ox = c * xGap - extraLeft * xGap;
           const oy = r * yGap;
           pts.push({ ox, oy, x: ox, y: oy, vx: 0, vy: 0 });
         }
@@ -3426,10 +3907,10 @@
     let t = 0;
     function tick() {
       t += 0.005;
-      // Autonomous slow drift: virtual cursor follows a lemniscate path
-      autoT += 0.004;
-      const autoCx = 0.5 + 0.35 * Math.sin(autoT * 0.65);
-      const autoCy = 0.5 + 0.22 * Math.sin(autoT * 1.1);
+      // Autonomous slow drift: very subtle virtual movement when no mouse
+      autoT += 0.0008;
+      const autoCx = 0.5 + 0.04 * Math.sin(autoT * 0.5);
+      const autoCy = 0.5 + 0.03 * Math.sin(autoT * 0.7);
       // Use real mouse when in section, auto drift when not
       const effMx = mouseInSection ? mxn : autoCx;
       const effMy = mouseInSection ? myn : autoCy;
@@ -3440,7 +3921,8 @@
         const ny = perlin2(p.ox / W * 3,               p.oy / H * 3 + t * waveSpeedY * 200);
         const mdx = effMx - px, mdy = effMy - p.oy / H;
         const d2 = mdx * mdx + mdy * mdy;
-        const pull = Math.max(0, 1 - Math.sqrt(d2) / 0.45) * maxCursorMove;
+        const pullRadius = mouseInSection ? 0.55 : 0.1;
+        const pull = Math.max(0, 1 - Math.sqrt(d2) / pullRadius) * maxCursorMove;
         const tx = p.ox + nx * waveAmpX + mdx * pull;
         const ty = p.oy + ny * waveAmpY + mdy * pull;
         p.vx += (tx - p.x) * tension; p.vy += (ty - p.y) * tension;
@@ -3505,6 +3987,7 @@ void main() { vUv = a_pos * 0.5 + 0.5; gl_Position = vec4(a_pos, 0.0, 1.0); }`;
     const frag = `precision highp float;
 uniform float iTime;
 uniform vec3 iResolution;
+uniform vec2 iCenterNorm;
 uniform float hover;
 uniform float rot;
 uniform float hoverIntensity;
@@ -3531,7 +4014,7 @@ const float iR=0.6, nS=0.65;
 float li1(float i,float a,float d){return i/(1.0+d*a);}
 float li2(float i,float a,float d){return i/(1.0+d*d*a);}
 void main() {
-  vec2 center = iResolution.xy * 0.5;
+  vec2 center = iResolution.xy * iCenterNorm;
   float size = min(iResolution.x, iResolution.y);
   vec2 uv = (vUv * iResolution.xy - center) / size * 2.0;
   float s=sin(rot),cv=cos(rot);
@@ -3574,12 +4057,14 @@ void main() {
     gl.enableVertexAttribArray(aPos);
     gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
 
-    const uTime = gl.getUniformLocation(prog,'iTime');
-    const uRes  = gl.getUniformLocation(prog,'iResolution');
-    const uHov  = gl.getUniformLocation(prog,'hover');
-    const uRot  = gl.getUniformLocation(prog,'rot');
-    const uHovI = gl.getUniformLocation(prog,'hoverIntensity');
+    const uTime   = gl.getUniformLocation(prog,'iTime');
+    const uRes    = gl.getUniformLocation(prog,'iResolution');
+    const uHov    = gl.getUniformLocation(prog,'hover');
+    const uRot    = gl.getUniformLocation(prog,'rot');
+    const uHovI   = gl.getUniformLocation(prog,'hoverIntensity');
+    const uCenter = gl.getUniformLocation(prog,'iCenterNorm');
     gl.uniform1f(uHovI, 0.5);
+    gl.uniform2f(uCenter, 0.5, 0.5); // default center, updated dynamically
     gl.enable(gl.BLEND);
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
@@ -3594,15 +4079,40 @@ void main() {
     resize();
     window.addEventListener('resize', resize);
 
+    // Orb centered on the team grid (not the full section)
+    let orbCX = 0.5, orbCY = 0.5; // screen-space normalized (Y from top)
+    function updateOrbCenter() {
+      const grid = document.querySelector('.team-grid');
+      const section = document.getElementById('about');
+      if (!grid || !section) { orbCX = 0.5; orbCY = 0.5; gl.uniform2f(uCenter, 0.5, 0.5); return; }
+      const sR = section.getBoundingClientRect();
+      const gR = grid.getBoundingClientRect();
+      const relY = (gR.top + gR.height * 0.5 - sR.top) / sR.height;
+      orbCX = 0.5;
+      orbCY = relY; // screen-space Y (from top), used by hit-test
+      gl.uniform2f(uCenter, 0.5, 1.0 - relY); // flip Y for WebGL shader
+    }
+    updateOrbCenter();
+    window.addEventListener('resize', () => { resize(); updateOrbCenter(); });
+
     let tgtHov=0, curHov=0, curRot=0, lastT=0;
-    container.addEventListener('mousemove', e => {
-      const r=container.getBoundingClientRect();
-      const sz=Math.min(r.width,r.height);
-      const ux=((e.clientX-r.left-r.width/2)/sz)*2;
-      const uy=((e.clientY-r.top-r.height/2)/sz)*2;
-      tgtHov = Math.sqrt(ux*ux+uy*uy)<0.9?1:0;
-    });
-    container.addEventListener('mouseleave',()=>{tgtHov=0;});
+    function updateOrbHover(e) {
+      const r = canvas.getBoundingClientRect();
+      if (e.clientX < r.left || e.clientX > r.right ||
+          e.clientY < r.top  || e.clientY > r.bottom) {
+        tgtHov = 0; return;
+      }
+      // Normalize mouse position within canvas (Y from top, matching screen space)
+      const uvX = (e.clientX - r.left) / r.width;
+      const uvY = (e.clientY - r.top)  / r.height;
+      // Compute distance from orb center in shader coordinate space
+      const sz = Math.min(r.width, r.height);
+      const shX = (uvX - orbCX) * r.width  / sz * 2;
+      const shY = (uvY - orbCY) * r.height / sz * 2;
+      // 0.88 covers the visible glow ring edge (iR=0.6 in shader)
+      tgtHov = Math.sqrt(shX*shX + shY*shY) < 0.88 ? 1 : 0;
+    }
+    document.addEventListener('mousemove', updateOrbHover, { passive: true });
 
     function frame(t) {
       const dt=(t-lastT)*0.001; lastT=t;
@@ -3617,6 +4127,24 @@ void main() {
     }
     requestAnimationFrame(frame);
   })();
+
+  /* ── TEAM CARD NUMBER REVEAL ── */
+  (function() {
+    const cards = document.querySelectorAll('.team-card');
+    if (!cards.length) return;
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('num-visible'); obs.unobserve(e.target); }
+      });
+    }, { threshold: 0.3 });
+    cards.forEach(c => obs.observe(c));
+  })();
+
+  /* ── HERO SCROLL BUTTON ── */
+  document.getElementById('heroScrollBtn')?.addEventListener('click', () => {
+    const next = document.getElementById('services');
+    if (next) next.scrollIntoView({ behavior: 'smooth' });
+  });
 
   /* ── HOVER GLOW BUTTON ── */
   document.querySelectorAll('.btn-ghost').forEach(btn => {

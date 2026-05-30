@@ -1,0 +1,18 @@
+# Dependencies
+node_modules/
+
+# Scratch / temp scripts used for screenshots
+temp2.mjs
+temp3.mjs
+temp4.mjs
+temp5.mjs
+temp_crew_shot.mjs
+temp_screenshot.mjs
+
+# Generated screenshots
+temporary screenshots/
+
+# OS
+.DS_Store
+Thumbs.db
+therapeutica/
