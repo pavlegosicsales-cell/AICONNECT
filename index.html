@@ -518,9 +518,19 @@
       display: flex; align-items: center; justify-content: center;
       min-height: 500px; position: relative;
     }
+    /* Dark vignette behind the orb so the dot-grid background doesn't drown it */
+    .svc-orbital::before {
+      content: ''; position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      width: 580px; height: 580px; border-radius: 50%;
+      background: radial-gradient(circle,
+        rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.85) 36%,
+        rgba(0,0,0,0.5) 56%, transparent 74%);
+      pointer-events: none; z-index: 0;
+    }
     .orb-stage {
       position: relative; width: 430px; height: 430px;
-      flex-shrink: 0;
+      flex-shrink: 0; z-index: 1;
     }
     /* Atmospheric background glow */
     .orb-stage::before {
@@ -534,14 +544,14 @@
       position: absolute; top: 50%; left: 50%;
       transform: translate(-50%,-50%);
       width: 380px; height: 380px; border-radius: 50%;
-      border: 1px solid rgba(196,154,6,0.22); pointer-events: none;
+      border: 1px solid rgba(196,154,6,0.4); pointer-events: none;
       animation: orb-drift 24s linear infinite;
     }
     .orb-ring-inner {
       position: absolute; top: 50%; left: 50%;
       transform: translate(-50%,-50%);
       width: 230px; height: 230px; border-radius: 50%;
-      border: 1px dashed rgba(196,154,6,0.12); pointer-events: none;
+      border: 1px dashed rgba(196,154,6,0.24); pointer-events: none;
       animation: orb-drift 14s linear infinite reverse;
     }
     @keyframes orb-drift {
@@ -861,7 +871,14 @@
 
     /* ── SERVICES ── */
     .svc-grid { display: grid; grid-template-columns: 1fr 1.15fr; gap: 80px; align-items: center; }
-    .svc-left { display: flex; flex-direction: column; gap: 0; }
+    .svc-left { display: flex; flex-direction: column; gap: 0; position: relative; }
+    /* Soft dark mask behind the heading/text so the dot-grid doesn't drown it */
+    .svc-left::before {
+      content: ''; position: absolute; inset: -40px -60px -30px -50px;
+      background: radial-gradient(ellipse 70% 65% at 32% 42%,
+        rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.6) 42%, transparent 78%);
+      z-index: -1; pointer-events: none;
+    }
     .svc-left .sec-label { margin-bottom: 14px; }
     .svc-left h2 { margin-bottom: 6px; }
     .svc-left p { margin-bottom: 14px; }
@@ -2012,16 +2029,17 @@
       .proj-visual { min-height: 180px; }
       .stats-wrap { grid-template-columns: 1fr; }
     }
+    /* Android only: kill the animated full-screen grain overlay (a fixed 200%
+       layer recompositing every frame stutters Android scroll) and drop the
+       backdrop blurs (near-opaque bg anyway). iOS keeps both — it handles them. */
+    html.tier-android body::before { display: none !important; }
+    html.tier-android .nav-in,
+    html.tier-android .cf-card-inner,
+    html.tier-android .team-card-num {
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+    }
     @media (max-width: 768px) {
-      /* Kill the animated full-screen grain overlay — a fixed 200% layer
-         recompositing every frame makes Android scroll stutter badly. */
-      body::before { display: none !important; }
-      /* Drop backdrop blurs on mobile — backgrounds are near-opaque anyway,
-         and blur on the fixed nav repaints every scroll frame. */
-      .nav-in, .cf-card-inner, .team-card-num {
-        backdrop-filter: none !important;
-        -webkit-backdrop-filter: none !important;
-      }
       .wrap { padding: 0 20px; }
       .nav-in { padding: 0 20px; }
       .nav-links { display: none; }
@@ -2260,7 +2278,6 @@
 
 <!-- STATS -->
 <section class="sec sec-alt" id="stats" style="overflow:hidden;background:var(--black);">
-  <canvas id="statsWaves" style="position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0.85;"></canvas>
   <div class="wrap" style="position:relative;z-index:1;">
     <div class="sec-label">By The Numbers</div>
     <div class="stats-wrap">
@@ -2903,9 +2920,19 @@
      Android/low-power devices choke when many WebGL + canvas RAF loops all run
      at once. We (1) detect mobile to scale things down, and (2) only let an
      animation loop do work while its section is on (or near) screen. */
+  const IS_IOS = /iPhone|iPad|iPod/i.test(navigator.userAgent)
+              || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  const IS_ANDROID = /Android/i.test(navigator.userAgent);
   const IS_MOBILE = window.matchMedia('(max-width: 760px)').matches
                  || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
   const PREFERS_REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Device tier — iPhone handles the full effects fine; Android gets "lite"
+  // (lower resolution / fewer particles); desktop runs everything at full.
+  const TIER = IS_ANDROID ? 'android' : (IS_IOS ? 'ios' : 'desktop');
+  // GPU pixel ratio per tier (lower = far cheaper fragment work).
+  const GPU_DPR = TIER === 'android' ? 0.6 : (TIER === 'ios' ? 1.3 : 2);
+  document.documentElement.classList.add('tier-' + TIER);
 
   const _visState = new WeakMap();
   const _visObserver = ('IntersectionObserver' in window)
@@ -3207,8 +3234,6 @@
   (function() {
     const canvas = document.getElementById('hero-bg-canvas');
     if (!canvas) return;
-    // Mobile: skip heavy full-screen WebGL background — it makes Android unscrollable.
-    if (IS_MOBILE) { canvas.style.display = 'none'; return; }
     const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
     if (!gl) return;
 
@@ -3298,7 +3323,7 @@
     const ptr = { x: 0.5, y: 0.5, tx: 0.5, ty: 0.5 };
 
     function resize() {
-      const dpr = Math.min(window.devicePixelRatio, IS_MOBILE ? 1 : 2);
+      const dpr = Math.min(window.devicePixelRatio, GPU_DPR);
       canvas.width  = heroEl.offsetWidth  * dpr;
       canvas.height = heroEl.offsetHeight * dpr;
       gl.viewport(0, 0, canvas.width, canvas.height);
@@ -3515,11 +3540,11 @@
   (function() {
     const canvas = document.getElementById('dotGridCanvas');
     if (!canvas) return;
-    if (IS_MOBILE) { canvas.style.display = 'none'; return; }
     const section = canvas.closest('section');
     const ctx = canvas.getContext('2d');
 
-    const DOT = 4, GAP = 22, PROX = 130;
+    // Android lite: bigger gap = far fewer dots to draw each frame.
+    const DOT = 4, GAP = (TIER === 'android' ? 34 : 22), PROX = 130;
     const BASE = { r: 0x3a, g: 0x2d, b: 0x07 };   // dark muted gold
     const ACTIVE = { r: 0xE4, g: 0xB8, b: 0x20 };  // bright gold
     const SPEED_TRIGGER = 100, RETURN = 0.12, STIFF = 0.08, DAMP = 0.82;
@@ -3531,7 +3556,7 @@
       const r = section.getBoundingClientRect();
       const w = Math.floor(r.width), h = Math.floor(r.height);
       if (!w || !h) return;
-      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      dpr = Math.min(window.devicePixelRatio || 1, GPU_DPR);
       canvas.width = w * dpr; canvas.height = h * dpr;
       canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -3615,8 +3640,6 @@
   (function() {
     const canvas = document.getElementById('antigravity-canvas');
     if (!canvas || typeof THREE === 'undefined') return;
-    // Mobile: skip Three.js particle field (extra WebGL context = Android jank).
-    if (IS_MOBILE) { canvas.style.display = 'none'; return; }
 
     const CFG = {
       count: 400, magnetRadius: 5.5, ringRadius: 2.6,
@@ -3629,7 +3652,7 @@
     };
 
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: false, alpha: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, IS_MOBILE ? 1 : 1.5));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, Math.min(GPU_DPR, 1.5)));
     renderer.setClearColor(0x000000, 0);
 
     const scene = new THREE.Scene();
@@ -3698,8 +3721,9 @@
       camera.aspect = w / h;
       camera.updateProjectionMatrix();
       // Scale particle count with area so density matches the original look.
-      const _capCount = IS_MOBILE ? 600 : 1400;
-      const targetCount = Math.max(IS_MOBILE ? 220 : 350, Math.min(_capCount, Math.round(DENSITY * w * h)));
+      const _capCount = TIER === 'android' ? 320 : (TIER === 'ios' ? 700 : 1400);
+      const _minCount = TIER === 'android' ? 160 : (TIER === 'ios' ? 260 : 350);
+      const targetCount = Math.max(_minCount, Math.min(_capCount, Math.round(DENSITY * w * h)));
       if (targetCount !== activeCount) buildMesh(targetCount);
       initParticles();
     }
@@ -4134,8 +4158,6 @@
   (function() {
     const canvas = document.getElementById('crewOrbCanvas');
     if (!canvas) return;
-    // Mobile: skip orb WebGL background (third WebGL context — drop it on Android).
-    if (IS_MOBILE) { canvas.style.display = 'none'; return; }
     const container = canvas.parentElement;
     const gl = canvas.getContext('webgl', { alpha: true, premultipliedAlpha: false });
     if (!gl) return;
@@ -4231,7 +4253,7 @@ void main() {
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
     function resize() {
-      const dpr = Math.min(window.devicePixelRatio||1, IS_MOBILE ? 1 : 2);
+      const dpr = Math.min(window.devicePixelRatio||1, GPU_DPR);
       const W = container.offsetWidth, H = container.offsetHeight;
       canvas.width = W*dpr; canvas.height = H*dpr;
       canvas.style.width = W+'px'; canvas.style.height = H+'px';
