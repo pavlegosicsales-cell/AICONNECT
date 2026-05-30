@@ -1195,19 +1195,13 @@
     }
 
     /* ── TEAM ── */
-    #about { position: relative; overflow: hidden; padding: 120px 0; }
-    /* Orb sits above the cards with the title centered inside it */
-    .crew-orb {
-      position: relative;
-      width: min(440px, 82vw); aspect-ratio: 1;
-      margin: 0 auto 36px;
-      display: flex; align-items: center; justify-content: center;
+    #about { position: relative; overflow: hidden; padding: 220px 0; }
+    /* Desktop: orb is an ambient full-section background */
+    #crewOrbCanvas {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      z-index: 0; pointer-events: none; opacity: 0.55; mix-blend-mode: screen;
     }
-    .crew-orb canvas { z-index: 0; }
-    .crew-orb-center {
-      position: relative; z-index: 2; text-align: center; padding: 0 16px;
-    }
-    .crew-orb-center .sec-label { margin-bottom: 10px; }
+    .crew-head { margin-bottom: 50px; text-align: center; }
     .team-grid {
       display: flex; justify-content: center; flex-wrap: wrap; gap: 18px;
     }
@@ -2086,8 +2080,17 @@
       .orb-stage { transform: scale(0.66); margin: -72px -73px; }
       .svc-orbital::before { width: 420px; height: 420px; }
       /* The Crew: trim the big desktop padding so content sits up top (no huge gap) */
-      #about { padding: 60px 0 80px; }
-      #about .wrap > div:first-child { margin-bottom: 30px; }
+      /* MOBILE ONLY: orb becomes a circle at top with the title centered in it,
+         cards below. (Desktop keeps the ambient full-section orb background.) */
+      #about { padding: 48px 0 70px; }
+      #crewOrbCanvas {
+        inset: auto; top: 48px; left: 50%; transform: translateX(-50%);
+        width: 300px; height: 300px; opacity: 0.9;
+      }
+      .crew-head {
+        height: 300px; margin-bottom: 26px;
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
+      }
       /* FAQ: bring "You Asked" heading closer to the questions */
       .faq-head { margin-bottom: 34px; }
       /* Selected Work: single column so cards never overlap/squish */
@@ -2722,13 +2725,11 @@
 
 <!-- TEAM -->
 <section class="sec sec-alt" id="about">
+  <canvas id="crewOrbCanvas"></canvas>
   <div class="wrap" style="position:relative;z-index:1;">
-    <div class="crew-orb">
-      <canvas id="crewOrbCanvas" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:0.7;mix-blend-mode:screen;"></canvas>
-      <div class="crew-orb-center">
-        <div class="sec-label" style="justify-content:center;">The Crew</div>
-        <h2 class="g-up" style="font-family:var(--fd);font-size:clamp(1.9rem,5vw,3.2rem);font-weight:600;letter-spacing:-0.02em;color:var(--head);line-height:1.1;">Meet Our Team</h2>
-      </div>
+    <div class="crew-head">
+      <div class="sec-label" style="justify-content:center;">The Crew</div>
+      <h2 class="g-up" style="font-family:var(--fd);font-size:clamp(2.2rem,3.8vw,3.6rem);font-weight:600;letter-spacing:-0.02em;color:var(--head);line-height:1.1;">Meet Our Team</h2>
     </div>
     <div class="team-grid" style="justify-content:center;">
       <div class="team-card g-up">
@@ -4347,18 +4348,33 @@ void main() {
 
     function resize() {
       const dpr = Math.min(window.devicePixelRatio||1, GPU_DPR);
-      const W = container.offsetWidth, H = container.offsetHeight;
+      // Read the canvas's CSS-rendered size (full section on desktop, 300px
+      // circle on mobile) so the buffer matches what CSS lays out.
+      const r = canvas.getBoundingClientRect();
+      const W = r.width || container.offsetWidth, H = r.height || container.offsetHeight;
       canvas.width = W*dpr; canvas.height = H*dpr;
-      canvas.style.width = W+'px'; canvas.style.height = H+'px';
       gl.viewport(0,0,canvas.width,canvas.height);
       gl.uniform3f(uRes, canvas.width, canvas.height, canvas.width/canvas.height);
     }
     resize();
     window.addEventListener('resize', resize);
 
-    // Orb is now a self-contained square element — centered in its own canvas
+    // Desktop: orb centered on the team grid (ambient bg). Mobile: orb is a
+    // square circle at top, so just centre it in its own canvas.
     let orbCX = 0.5, orbCY = 0.5;
-    gl.uniform2f(uCenter, 0.5, 0.5);
+    function updateOrbCenter() {
+      if (IS_MOBILE) { orbCX = 0.5; orbCY = 0.5; gl.uniform2f(uCenter, 0.5, 0.5); return; }
+      const grid = document.querySelector('.team-grid');
+      const section = document.getElementById('about');
+      if (!grid || !section) { orbCX = 0.5; orbCY = 0.5; gl.uniform2f(uCenter, 0.5, 0.5); return; }
+      const sR = section.getBoundingClientRect();
+      const gR = grid.getBoundingClientRect();
+      const relY = (gR.top + gR.height * 0.5 - sR.top) / sR.height;
+      orbCX = 0.5; orbCY = relY;
+      gl.uniform2f(uCenter, 0.5, 1.0 - relY);
+    }
+    updateOrbCenter();
+    window.addEventListener('resize', updateOrbCenter);
 
     let tgtHov=0, curHov=0, curRot=0, lastT=0;
     function updateOrbHover(e) {
