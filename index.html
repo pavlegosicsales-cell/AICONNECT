@@ -2043,11 +2043,6 @@
       /* Clamp the document to the viewport so nothing forces a wider page
          (which made the browser load zoomed-in with a bigger left margin). */
       html, body { overflow-x: hidden; max-width: 100%; }
-      /* TEMP: kill grain overlay + backdrop blurs on mobile for screenshots */
-      body::before { display: none !important; }
-      .nav-in, .cf-card-inner, .team-card-num {
-        backdrop-filter: none !important; -webkit-backdrop-filter: none !important;
-      }
       .wrap { padding: 0 20px; }
       /* Header: logo left · Contact centered · hamburger right, all vertically
          centered (flex so the button can't drop to a second row). */
@@ -3308,7 +3303,6 @@
   (function() {
     const canvas = document.getElementById('hero-bg-canvas');
     if (!canvas) return;
-    if (IS_MOBILE) { canvas.style.display = 'none'; return; } /* TEMP: mobile off for screenshots */
     const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
     if (!gl) return;
 
@@ -3615,7 +3609,6 @@
   (function() {
     const canvas = document.getElementById('dotGridCanvas');
     if (!canvas) return;
-    if (IS_MOBILE) { canvas.style.display = 'none'; return; } /* TEMP: mobile off for screenshots */
     const section = canvas.closest('section');
     const ctx = canvas.getContext('2d');
 
@@ -3716,7 +3709,6 @@
   (function() {
     const canvas = document.getElementById('antigravity-canvas');
     if (!canvas || typeof THREE === 'undefined') return;
-    if (IS_MOBILE) { canvas.style.display = 'none'; return; } /* TEMP: mobile off for screenshots */
 
     const CFG = {
       count: 400, magnetRadius: 5.5, ringRadius: 2.6,
@@ -4235,7 +4227,6 @@
   (function() {
     const canvas = document.getElementById('crewOrbCanvas');
     if (!canvas) return;
-    if (IS_MOBILE) { canvas.style.display = 'none'; return; } /* TEMP: mobile off for screenshots */
     const container = canvas.parentElement;
     const gl = canvas.getContext('webgl', { alpha: true, premultipliedAlpha: false });
     if (!gl) return;
