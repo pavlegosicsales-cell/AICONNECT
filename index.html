@@ -2046,40 +2046,55 @@
         backdrop-filter: none !important; -webkit-backdrop-filter: none !important;
       }
       .wrap { padding: 0 20px; }
-      /* Header: logo left · Contact centered · hamburger right (no overflow) */
+      /* Header: logo left · Contact centered · hamburger right, all vertically
+         centered (flex so the button can't drop to a second row). */
       .nav-in {
-        grid-template-columns: auto 1fr auto;
+        display: flex; align-items: center; justify-content: space-between;
         gap: 10px; padding: 0 14px;
       }
       .nav-links { display: none; }
       .nav-right { display: contents; }
-      .nav-in > a:first-child { grid-column: 1; justify-self: start; }
-      .btn-liq-outer { grid-column: 2; justify-self: center; }
-      .hamburger { display: flex; grid-column: 3; justify-self: end; }
+      .nav-in > a:first-child { order: 1; }
+      .btn-liq-outer { order: 2; flex-shrink: 0; }
+      .hamburger { display: flex; order: 3; flex-shrink: 0; }
       .nav-logo { height: 40px; }
       .sec { padding: 72px 0; }
-      .hero { padding: 120px 0 60px; }
+      /* Block layout so the scroll hint flows below the content (not beside it) */
+      .hero { padding: 120px 0 48px; display: block; }
       .hero h1 { font-size: clamp(3rem, 9vw, 4.5rem); }
       .hero-stats { flex-direction: column; gap: 20px; padding-top: 24px; }
       .hs-item { padding: 0; border-left: none !important; }
       /* Service tags centered; scroll hint moved below the content */
       .hero-svc-row { justify-content: center; padding-top: 26px; }
       .scroll-hint { position: static; transform: none; margin: 34px auto 0; }
-      /* Section 2 orb scaled to fit the viewport */
-      .svc-orbital { min-height: 300px; }
-      .orb-stage { transform: scale(0.66); margin: -72px 0; }
+      /* Section 2 orb scaled + negative margins so the oversized box collapses
+         to its visual size and centres properly (was overflowing right) */
+      .svc-orbital { min-height: 300px; overflow: hidden; }
+      .orb-stage { transform: scale(0.66); margin: -72px -73px; }
       .svc-orbital::before { width: 420px; height: 420px; }
       /* Selected Work: single column so cards never overlap/squish */
       .bento-grid { grid-template-columns: 1fr; }
       .bento-col-2 { grid-column: span 1; }
       .bento-text-body { min-height: 0; }
+      /* Reorder so image and text cards alternate (Monte Zone before Built to Book) */
+      .bento-grid > :nth-child(1) { order: 1; }  /* MonX (img) */
+      .bento-grid > :nth-child(2) { order: 2; }  /* Full-Stack (text) */
+      .bento-grid > :nth-child(3) { order: 4; }  /* Built to Book (text) */
+      .bento-grid > :nth-child(4) { order: 3; }  /* Monte Zone (img) */
+      .bento-grid > :nth-child(5) { order: 5; }  /* Ramago (img) */
+      .bento-grid > :nth-child(6) { order: 6; }  /* Fast by Design (text) */
       /* Hide the desktop scroll progress rail on mobile */
       .scroll-track { display: none; }
       /* Client Stories: center the CTA, give stat cards breathing room */
       .test-left { align-items: center; }
       .test-left .btn-glow { align-self: center !important; }
       .test-mini-stats { width: 100%; }
-      .test-mini-stat { padding: 22px 10px; }
+      /* Stronger, clearly-visible border so the top edge never looks cut */
+      .test-mini-stat {
+        padding: 22px 10px;
+        background: rgba(255,255,255,0.025);
+        border: 1px solid rgba(196,154,6,0.3);
+      }
       .team-card { min-width: 100%; }
       /* Contact: space the heading / button / details apart like desktop */
       .contact-left { gap: 22px; justify-content: flex-start; }
@@ -2100,6 +2115,8 @@
       }
       .foot-col h4 { margin-bottom: 12px; color: var(--gold); }
       .foot-col ul { gap: 9px; }
+      /* Footer bar: copyright + email centered, stacked */
+      .footer-bar { flex-direction: column; gap: 6px; justify-content: center; text-align: center; }
       .form-row { grid-template-columns: 1fr; }
       .hero-btns { flex-direction: column; align-items: flex-start; }
       .footer-text-section { height: 110px; padding-top: 16px; margin-top: 4px; }
@@ -2890,7 +2907,7 @@
       </div>
       <div class="foot-col"><h4>Work</h4><ul><li><a href="#">Portfolio</a></li><li><a href="#">Case Studies</a></li><li><a href="#">Process</a></li></ul></div>
       <div class="foot-col"><h4>Services</h4><ul><li><a href="#">Web Design</a></li><li><a href="#">Development</a></li><li><a href="#">Branding</a></li><li><a href="#">SEO</a></li></ul></div>
-      <div class="foot-col"><h4>Company</h4><ul><li><a href="#">About</a></li><li><a href="#">Team</a></li><li><a href="#">Blog</a></li><li><a href="#contact">Contact</a></li></ul></div>
+      <div class="foot-col"><h4>Company</h4><ul><li><a href="#about">About</a></li><li><a href="#about">Team</a></li><li><a href="#contact">Contact</a></li></ul></div>
     </div>
     <div class="footer-bar">
       <div class="footer-copy">&copy; 2026 AI Connect Studio. All rights reserved.</div>
