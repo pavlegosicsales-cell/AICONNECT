@@ -2006,6 +2006,15 @@
       .stats-wrap { grid-template-columns: 1fr; }
     }
     @media (max-width: 768px) {
+      /* Kill the animated full-screen grain overlay — a fixed 200% layer
+         recompositing every frame makes Android scroll stutter badly. */
+      body::before { display: none !important; }
+      /* Drop backdrop blurs on mobile — backgrounds are near-opaque anyway,
+         and blur on the fixed nav repaints every scroll frame. */
+      .nav-in, .cf-card-inner, .team-card-num {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+      }
       .wrap { padding: 0 20px; }
       .nav-in { padding: 0 20px; }
       .nav-links { display: none; }
@@ -3190,6 +3199,8 @@
   (function() {
     const canvas = document.getElementById('hero-bg-canvas');
     if (!canvas) return;
+    // Mobile: skip heavy full-screen WebGL background — it makes Android unscrollable.
+    if (IS_MOBILE) { canvas.style.display = 'none'; return; }
     const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
     if (!gl) return;
 
@@ -3493,6 +3504,8 @@
   (function() {
     const canvas = document.getElementById('antigravity-canvas');
     if (!canvas || typeof THREE === 'undefined') return;
+    // Mobile: skip Three.js particle field (extra WebGL context = Android jank).
+    if (IS_MOBILE) { canvas.style.display = 'none'; return; }
 
     const CFG = {
       count: 400, magnetRadius: 5.5, ringRadius: 2.6,
@@ -3869,6 +3882,8 @@
   (function() {
     const canvas = document.getElementById('statsWaves');
     if (!canvas) return;
+    // Mobile: skip per-frame Perlin wave grid (heavy 2D canvas work).
+    if (IS_MOBILE) { canvas.style.display = 'none'; return; }
     const container = canvas.parentElement;
     const ctx = canvas.getContext('2d');
 
@@ -4008,6 +4023,8 @@
   (function() {
     const canvas = document.getElementById('crewOrbCanvas');
     if (!canvas) return;
+    // Mobile: skip orb WebGL background (third WebGL context — drop it on Android).
+    if (IS_MOBILE) { canvas.style.display = 'none'; return; }
     const container = canvas.parentElement;
     const gl = canvas.getContext('webgl', { alpha: true, premultipliedAlpha: false });
     if (!gl) return;
