@@ -923,9 +923,11 @@
     .svc-left { display: flex; flex-direction: column; gap: 0; position: relative; }
     /* Soft dark mask behind the heading/text so the dot-grid doesn't drown it */
     .svc-left::before {
-      content: ''; position: absolute; inset: -50px -70px -70px -55px;
-      background: radial-gradient(ellipse 80% 85% at 34% 50%,
-        rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.82) 48%, rgba(0,0,0,0.45) 70%, transparent 84%);
+      content: ''; position: absolute; inset: -90px -130px -110px -110px;
+      background: radial-gradient(ellipse 62% 64% at 32% 48%,
+        rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.9) 30%, rgba(0,0,0,0.66) 52%,
+        rgba(0,0,0,0.32) 68%, rgba(0,0,0,0.1) 80%, transparent 92%);
+      filter: blur(34px);
       z-index: -1; pointer-events: none;
     }
     .svc-left .sec-label { margin-bottom: 14px; }
@@ -2296,23 +2298,17 @@
         <div class="hp-card hp-card-main">
           <div class="hp-chrome">
             <div class="hp-dot"></div><div class="hp-dot"></div><div class="hp-dot"></div>
-            <span class="hp-url">aiconnect.studio/work/cryox</span>
+            <span class="hp-url">mon-x.app</span>
           </div>
-          <div class="hp-body hp-body-main" style="background:linear-gradient(160deg,#050c18 0%,#081525 55%,#040d20 100%);">
-            <div class="hp-ui-nav"></div>
-            <div class="hp-ui-bar" style="background:linear-gradient(90deg,rgba(50,120,220,.14),rgba(30,80,180,.06));"></div>
-            <div class="hp-ui-grid">
-              <div class="hp-ui-cell" style="background:rgba(50,100,200,.06);"></div>
-              <div class="hp-ui-cell" style="background:rgba(50,100,200,.04);"></div>
-              <div class="hp-ui-cell" style="background:rgba(50,100,200,.08);"></div>
-            </div>
-            <div class="hp-ui-glow" style="width:130px;height:130px;background:radial-gradient(circle,rgba(50,120,220,.14) 0%,transparent 65%);"></div>
-            <div style="position:absolute;bottom:14px;right:14px;background:rgba(50,120,220,.12);border:1px solid rgba(50,120,220,.25);border-radius:8px;padding:8px 12px;">
+          <div class="hp-body hp-body-main" style="background:#0a0a0a;overflow:hidden;">
+            <img src="aiconnect selected work monx.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:left top;">
+            <div style="position:absolute;inset:0;background:linear-gradient(160deg,rgba(5,12,24,.15),rgba(4,13,32,.45));"></div>
+            <div style="position:absolute;bottom:14px;right:14px;background:rgba(50,120,220,.12);border:1px solid rgba(50,120,220,.25);border-radius:8px;padding:8px 12px;backdrop-filter:blur(4px);">
               <div style="font-family:var(--fd);font-size:12px;font-weight:600;color:#7ab3ff;">+240% Sales</div>
             </div>
           </div>
           <div class="hp-footer">
-            <span class="hp-pname">CryoX</span>
+            <span class="hp-pname">MonX</span>
             <span class="hp-ptag">E-Commerce</span>
           </div>
         </div>
@@ -2322,14 +2318,12 @@
           <div class="hp-chrome">
             <div class="hp-dot"></div><div class="hp-dot"></div><div class="hp-dot"></div>
           </div>
-          <div class="hp-body hp-body-sm" style="background:linear-gradient(160deg,#160f02 0%,#201505 55%,#130e02 100%);">
-            <div class="hp-ui-glow" style="width:90px;height:90px;background:radial-gradient(circle,rgba(196,154,6,.16) 0%,transparent 65%);"></div>
-            <div style="position:absolute;bottom:10px;right:10px;background:rgba(196,154,6,.08);border:1px solid rgba(196,154,6,.22);border-radius:7px;padding:6px 10px;">
-              <div style="font-family:var(--fd);font-size:11px;font-weight:600;color:var(--gold);">Brand Identity</div>
-            </div>
+          <div class="hp-body hp-body-sm" style="background:#0a0a0a;overflow:hidden;">
+            <img src="aiconnect selected work montezone.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;">
+            <div style="position:absolute;inset:0;background:linear-gradient(160deg,rgba(0,0,0,.12),rgba(0,0,0,.42));"></div>
           </div>
           <div class="hp-footer">
-            <span class="hp-pname" style="font-size:12px;">Refract Studio</span>
+            <span class="hp-pname" style="font-size:12px;">Monte Zone</span>
           </div>
         </div>
 
@@ -2338,14 +2332,12 @@
           <div class="hp-chrome">
             <div class="hp-dot"></div><div class="hp-dot"></div><div class="hp-dot"></div>
           </div>
-          <div class="hp-body hp-body-sm" style="background:linear-gradient(160deg,#0a0a18 0%,#0d0d22 55%,#07071a 100%);">
-            <div class="hp-ui-glow" style="width:90px;height:90px;background:radial-gradient(circle,rgba(120,80,220,.12) 0%,transparent 65%);"></div>
-            <div style="position:absolute;bottom:10px;right:10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:7px;padding:6px 10px;">
-              <div style="font-family:var(--fd);font-size:11px;font-weight:600;color:var(--text2);">UI/UX Design</div>
-            </div>
+          <div class="hp-body hp-body-sm" style="background:#0a0a0a;overflow:hidden;">
+            <img src="aiconnect selected work ramago.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;">
+            <div style="position:absolute;inset:0;background:linear-gradient(160deg,rgba(0,0,0,.12),rgba(0,0,0,.42));"></div>
           </div>
           <div class="hp-footer">
-            <span class="hp-pname" style="font-size:12px;">Nova Interface</span>
+            <span class="hp-pname" style="font-size:12px;">Ramago</span>
           </div>
         </div>
 
@@ -2992,8 +2984,7 @@
         <img src="brand%20assets%20aiconnect/transparent%20aiconnect%20logo.png" alt="AI Connect" class="footer-logo">
         <p class="footer-tagline">A digital design agency creating websites and experiences that drive measurable growth.</p>
         <div class="footer-socials">
-          <a href="#" class="fsoc" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg></a>
-          <a href="#" class="fsoc" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+          <a href="https://www.linkedin.com/in/pavle-go%C5%A1i%C4%87-66b34439b/" target="_blank" rel="noopener" class="fsoc" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg></a>
           <a href="#" class="fsoc" aria-label="Behance"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8.5 13.5A2.5 2.5 0 0 0 11 11c0-1.38-1.12-2.5-2.5-2.5H5v8h3.5A2.5 2.5 0 0 0 11 14a2.5 2.5 0 0 0-2.5-2.5zM7 10h1.5a1 1 0 0 1 0 2H7v-2zm1.5 6H7v-2h1.5a1 1 0 0 1 0 2zm5.5-4c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5H14zm0 1h5a3 3 0 0 1-3 2.5 3 3 0 0 1-3-2.5h1zm5.5 1a3 3 0 0 1-5.29 1.88L17 14a3 3 0 0 1 3-3v2h-3a3 3 0 0 0 5.5 1z"/></svg></a>
         </div>
       </div>
@@ -3351,9 +3342,9 @@
   hamburger.addEventListener('click', () => mobileMenu.classList.toggle('open'));
   function closeMobile() { mobileMenu.classList.remove('open'); }
 
-  /* ── LANGUAGE SWITCHER ──
-     Sets the active language state + UI only. Content translation is NOT wired
-     yet — Serbian copy will be plugged into applyLanguage() later. */
+  /* ── LANGUAGE SWITCHER + I18N (EN ⇄ SR) ──
+     Translates by walking text nodes so structure/animations/icons stay intact.
+     Names, brand, project names and #hashtags are left in the original. */
   (function() {
     const sw = document.getElementById('langSwitch');
     const trigger = document.getElementById('langTrigger');
@@ -3363,20 +3354,150 @@
     const FLAG = { en: '🇺🇸', sr: '🇷🇸' };
     const CODE = { en: 'EN', sr: 'SR' };
 
+    const SR = {
+      // Nav / common
+      "Services":"Usluge","Work":"Radovi","Clients":"Klijenti","Team":"Tim","FAQ":"Česta pitanja",
+      "Contact →":"Kontakt →","Contact":"Kontakt","Company":"Kompanija",
+      // Hero
+      "Making":"Pravimo","Digital":"digitalne","Bangers":"bengere",
+      "Available for new projects":"Dostupni za nove projekte",
+      "We design and build high-performance websites and digital experiences that turn visitors into customers and brands into icons.":"Dizajniramo i gradimo brze sajtove i digitalna iskustva koja pretvaraju posetioce u kupce, a brendove u ikone.",
+      "Start a project":"Započni projekat","View our work":"Pogledaj naše radove",
+      "Brand Identity":"Brend identitet","Web Design":"Web dizajn","Development":"Razvoj",
+      "Projects done":"Završenih projekata","5.0 ★ Rating":"5.0 ★ Ocena","+240% Sales":"+240% prodaje",
+      "Scroll":"Skroluj",
+      // Marquee / keywords
+      "Branding":"Brendiranje","UI/UX Design":"UI/UX dizajn","Digital Strategy":"Digitalna strategija",
+      "Motion Design":"Motion dizajn","E-Commerce":"E-trgovina",
+      // Services
+      "Our Craft":"Naši radovi",
+      "We build what your":"Gradimo ono što","business":"vašem biznisu","needs":"treba",
+      "From concept to launch, we handle every aspect of your digital presence — design, development and growth strategy.":"Od koncepta do lansiranja, vodimo računa o svakom aspektu vašeg digitalnog prisustva — dizajn, razvoj i strategija rasta.",
+      "Work with us →":"Sarađuj sa nama →","dismiss":"zatvori",
+      "Brand Design":"Dizajn brenda","SEO & Strategy":"SEO i strategija",
+      "Logo, visual identity, brand guidelines and complete design systems that set you apart.":"Logo, vizuelni identitet, brend smernice i kompletni dizajn sistemi koji vas izdvajaju.",
+      "Pixel-perfect websites and interfaces that convert visitors into clients with elegant user experiences.":"Besprekorni sajtovi i interfejsi koji pretvaraju posetioce u klijente kroz elegantna korisnička iskustva.",
+      "Fast, secure and scalable websites built on modern technologies with full CMS integration.":"Brzi, sigurni i skalabilni sajtovi izgrađeni na modernim tehnologijama uz punu CMS integraciju.",
+      "Data-driven growth strategy and technical SEO that puts you consistently ahead of the competition.":"Strategija rasta zasnovana na podacima i tehnički SEO koji vas dosledno drži ispred konkurencije.",
+      // Stats
+      "By The Numbers":"U brojkama","Projects completed":"Završenih projekata",
+      "Years in business":"Godina poslovanja","Happy clients":"Zadovoljnih klijenata",
+      // Selected Work
+      "Selected Work":"Izabrani radovi","Our Projects":"Naši radovi",
+      "Live":"UŽIVO","Delivered":"ISPORUČENO","Performance":"PERFORMANSE","Hospitality":"UGOSTITELJSTVO",
+      "View Project":"Pogledaj projekat",
+      "Full-Stack Build":"Full-Stack izrada",
+      "UI/UX design, front-end development, and brand system — zero to launch in 6 weeks.":"UI/UX dizajn, front-end razvoj i brend sistem — od nule do lansiranja za 6 nedelja.",
+      "Enterprise monitoring platform with AI-powered incident detection and real-time performance dashboards built for modern engineering teams.":"Enterprise platforma za monitoring sa detekcijom incidenata pokretanom veštačkom inteligencijom i kontrolnim tablama performansi u realnom vremenu, napravljena za moderne inženjerske timove.",
+      "Built to Book":"Napravljeno za rezervacije",
+      "Immersive visuals, fast load times and a conversion-focused booking flow for a premium getaway brand.":"Upečatljivi vizuali, brzo učitavanje i tok rezervacija fokusiran na konverziju za premium brend za odmor.",
+      "Luxury A-frame chalets in the mountains of Montenegro — a cinematic booking site that turns scenery into reservations.":"Luksuzne A-frame kućice u planinama Crne Gore — filmski sajt za rezervacije koji pejzaž pretvara u rezervacije.",
+      "Fast by Design":"Brzina po dizajnu",
+      "Every build ships optimized for speed, SEO and conversions — so your site works as hard as you do.":"Svaki sajt isporučujemo optimizovan za brzinu, SEO i konverzije — da vaš sajt radi naporno kao i vi.",
+      "Sleek, high-contrast rental platform with an instant booking experience and a fleet showcase that puts every vehicle in the spotlight.":"Elegantna, visokokontrastna platforma za iznajmljivanje sa trenutnim rezervisanjem i prikazom voznog parka koji svako vozilo stavlja u prvi plan.",
+      // Client Stories
+      "Client Stories":"Priče klijenata",
+      "What clients":"Šta klijenti","actually say":"zaista kažu",
+      "Trusted by 50+ clients who've seen measurable results — from brand-new startups to scaling teams.":"Veruje nam 50+ klijenata koji su videli merljive rezultate — od potpuno novih startapa do timova u ekspanziji.",
+      "Revenue added":"Ostvareni prihod","Avg rating":"Prosečna ocena",
+      "Marketing Director, Nexus Labs":"Direktorka marketinga, Nexus Labs",
+      "Co-Founder, Prism Labs":"Suosnivač, Prism Labs",
+      "CMO, OrbitWave":"Direktorka marketinga, OrbitWave",
+      "CEO, Forge Digital":"Izvršni direktor, Forge Digital",
+      "Collaborating with AI Connect was seamless from day one. They understood our brand instantly and delivered a site that genuinely converted — our lead volume doubled within 60 days of launch.":"Saradnja sa AI Connect bila je besprekorna od prvog dana. Odmah su razumeli naš brend i isporučili sajt koji stvarno konvertuje — broj naših potencijalnih klijenata se udvostručio u roku od 60 dana od lansiranja.",
+      "The development quality is exceptional. Our platform performance improved dramatically and the UI they built has gotten consistent praise from investors and users alike.":"Kvalitet razvoja je izuzetan. Performanse naše platforme su se dramatično poboljšale, a interfejs koji su napravili dosledno hvale i investitori i korisnici.",
+      "A truly transformative partnership. The rebrand they led gave us a visual identity that finally matches our ambition — something our previous agency couldn't crack in two years.":"Istinski transformativno partnerstvo. Rebrending koji su vodili dao nam je vizuelni identitet koji konačno odgovara našim ambicijama — nešto što naša prethodna agencija nije uspela dve godine.",
+      "ROI-focused and incredibly detail-oriented. They pushed back on ideas that wouldn't convert and every suggestion they made was backed by data. Exactly the partner we needed.":"Fokusirani na povraćaj investicije i neverovatno posvećeni detaljima. Osporili su ideje koje ne bi konvertovale, a svaki njihov predlog bio je potkrepljen podacima. Tačno partner kakav nam je trebao.",
+      // Crew
+      "The Crew":"Tim","Meet Our Team":"Upoznajte naš tim",
+      "Blends creative vision with data-driven SEO to build brands that rank and resonate.":"Spaja kreativnu viziju sa SEO-om zasnovanim na podacima kako bi gradio brendove koji se dobro rangiraju i ostavljaju utisak.",
+      "Designs and builds seamless digital experiences where aesthetics meet performance.":"Dizajnira i gradi besprekorna digitalna iskustva gde se estetika susreće sa performansama.",
+      // FAQ
+      "You Asked":"Pitali ste","Common":"Česta","questions":"pitanja",
+      "Everything you need to know about working with us.":"Sve što treba da znate o saradnji sa nama.",
+      "What does a typical project look like?":"Kako izgleda tipičan projekat?",
+      "Every project starts with a discovery call where we understand your goals, audience and requirements. From there we move through strategy, design, development and launch — keeping you involved at each stage. Most projects take 2–4 weeks depending on scope.":"Svaki projekat počinje uvodnim pozivom na kom razumemo vaše ciljeve, publiku i zahteve. Odatle prolazimo kroz strategiju, dizajn, razvoj i lansiranje — uz vaše uključivanje u svakoj fazi. Većina projekata traje 2–4 nedelje, u zavisnosti od obima.",
+      "Do you offer ongoing support after launch?":"Da li nudite podršku nakon lansiranja?",
+      "Yes. We offer monthly maintenance retainers that include updates, performance monitoring, security patches and content changes. We're your long-term digital partner, not just a one-off vendor.":"Da. Nudimo mesečne pakete održavanja koji uključuju ažuriranja, praćenje performansi, bezbednosne zakrpe i izmene sadržaja. Mi smo vaš dugoročni digitalni partner, a ne samo jednokratni izvođač.",
+      "What is your pricing structure?":"Kako funkcioniše vaše cenovanje?",
+      "We work on a project basis. Most websites range from $500 to $5,000. We provide a detailed proposal after the initial consultation so there are no surprises.":"Radimo na projektnoj osnovi. Većina sajtova košta između 500 i 5.000 evra. Nakon početne konsultacije dostavljamo detaljnu ponudu, tako da nema iznenađenja.",
+      "Which technologies do you build with?":"Sa kojim tehnologijama radite?",
+      "We work primarily in Squarespace and Claude Code. All sites are optimized for performance, SEO and accessibility from day one.":"Radimo prvenstveno u Squarespace-u i Claude Code-u. Svi sajtovi su od prvog dana optimizovani za performanse, SEO i pristupačnost.",
+      // Contact
+      "Let's Create":"Započni projekat",
+      "Let's Talk Your":"Razgovarajmo o vašem","Next Project":"sledećem projektu",
+      "Ready to take your digital presence to the next level? Tell us about your project and we'll get back to you within 24 hours.":"Spremni da podignete svoje digitalno prisustvo na viši nivo? Recite nam o svom projektu i javićemo vam se u roku od 24 sata.",
+      "Send an email →":"Pošalji email →",
+      "Select a service":"Izaberite uslugu","Web Development":"Web razvoj","Full Project":"Ceo projekat",
+      "Send Message":"Pošalji poruku",
+      // placeholders
+      "First name":"Ime","Last name":"Prezime","Email address":"Email adresa",
+      "Tell us about your project, goals and timeline...":"Recite nam o vašem projektu, ciljevima i rokovima...",
+      // Footer
+      "A digital design agency creating websites and experiences that drive measurable growth.":"Digitalna dizajn agencija koja pravi sajtove i iskustva koja donose merljiv rast.",
+      "Portfolio":"Portfolio","Case Studies":"Naši projekti","Process":"Proces","About":"O nama",
+      "© 2026 AI Connect Studio. All rights reserved.":"© 2026 AI Connect Studio. Sva prava zadržana."
+    };
+
+    // expose a translate helper for JS-injected text (orb panel)
+    window.aicT = t => (window.aicLang === 'sr' && SR[t] !== undefined) ? SR[t] : t;
+
+    const SKIP = { SCRIPT:1, STYLE:1, CANVAS:1, NOSCRIPT:1 };
+    const orig = new WeakMap();
+    function pass(toSr) {
+      (function rec(n) {
+        if (n.nodeType === 3) {
+          const raw = n.nodeValue, t = raw.trim();
+          if (!t) return;
+          if (!orig.has(n)) { if (SR[t] === undefined) return; orig.set(n, raw); }
+          const o = orig.get(n), ot = o.trim();
+          n.nodeValue = (toSr && SR[ot] !== undefined) ? o.replace(ot, SR[ot]) : o;
+          return;
+        }
+        if (n.nodeType !== 1) return;
+        if (n.namespaceURI === 'http://www.w3.org/2000/svg') return;
+        if (SKIP[n.tagName] || n.classList.contains('lang-label')) return;
+        for (let c = n.firstChild; c; c = c.nextSibling) rec(c);
+      })(document.body);
+      // section labels are split into per-char spans — rebuild them translated
+      document.querySelectorAll('.sec-label').forEach(lbl => {
+        // char-split uses non-breaking spaces — normalise for dictionary lookup
+        if (!lbl.dataset.en) lbl.dataset.en = lbl.textContent.replace(/ /g, ' ').trim();
+        const NB = String.fromCharCode(160);
+        const en = lbl.dataset.en.split(NB).join(' ').trim();
+        const target = ((toSr && SR[en] !== undefined) ? SR[en] : en).split(' ').join(NB);
+        if (lbl.textContent.replace(/ /g, ' ').trim() === target) return;
+        const wasRevealed = lbl.classList.contains('revealed');
+        lbl.innerHTML = '';
+        target.split('').forEach(ch => {
+          const s = document.createElement('span');
+          s.className = 'sec-lchar' + (wasRevealed ? ' revealed' : '');
+          s.textContent = ch === ' ' ? ' ' : ch;
+          lbl.appendChild(s);
+        });
+      });
+      // placeholders
+      document.querySelectorAll('[placeholder]').forEach(el => {
+        const cur = el.getAttribute('placeholder');
+        if (!orig.has(el)) { if (SR[cur] === undefined) return; orig.set(el, cur); }
+        const o = orig.get(el);
+        el.setAttribute('placeholder', (toSr && SR[o] !== undefined) ? SR[o] : o);
+      });
+    }
+
     function applyLanguage(code) {
       if (!FLAG[code]) code = 'en';
+      window.aicLang = code;
       document.documentElement.setAttribute('data-lang', code);
       document.documentElement.lang = code === 'sr' ? 'sr' : 'en';
       flagEl.textContent = FLAG[code];
       codeEl.textContent = CODE[code];
-      document.querySelectorAll('.lang-option').forEach(o =>
-        o.classList.toggle('is-selected', o.dataset.lang === code));
-      document.querySelectorAll('.mm-lang-opt').forEach(o =>
-        o.classList.toggle('is-selected', o.dataset.lang === code));
+      document.querySelectorAll('.lang-option').forEach(o => o.classList.toggle('is-selected', o.dataset.lang === code));
+      document.querySelectorAll('.mm-lang-opt').forEach(o => o.classList.toggle('is-selected', o.dataset.lang === code));
+      pass(code === 'sr');
       try { localStorage.setItem('aic-lang', code); } catch (e) {}
-      /* TODO: translate page copy here once Serbian content is provided. */
+      document.dispatchEvent(new CustomEvent('aic:lang', { detail: code }));
     }
-    // expose for later wiring
     window.aicSetLanguage = applyLanguage;
 
     trigger.addEventListener('click', e => {
@@ -3394,7 +3515,8 @@
 
     let saved = 'en';
     try { saved = localStorage.getItem('aic-lang') || 'en'; } catch (e) {}
-    applyLanguage(saved);
+    // Defer initial apply so JS-rendered content (orb labels) exists first
+    requestAnimationFrame(() => applyLanguage(saved));
   })();
 
   /* ── LIQUID NAV BUTTON (JS-animated gold gradients, more motion) ── */
@@ -3672,6 +3794,13 @@
     const iDesc = document.getElementById('orbInfoDesc');
     const iClose= document.getElementById('orbInfoClose');
     if (iClose) iClose.addEventListener('click', () => toggle(activeId));
+    // Re-translate the open info panel when the language changes
+    document.addEventListener('aic:lang', () => {
+      if (activeId != null) {
+        const svc = SVCS.find(s => s.id === activeId);
+        if (svc) { iTitle.textContent = window.aicT(svc.label); iDesc.textContent = window.aicT(svc.desc); }
+      }
+    });
 
     // Add icon element to info panel
     const iIcon = document.createElement('div');
@@ -3698,8 +3827,8 @@
       } else {
         const svc = SVCS.find(s => s.id === id);
         if (!svc) return;
-        iTitle.textContent = svc.label;
-        iDesc.textContent  = svc.desc;
+        iTitle.textContent = window.aicT ? window.aicT(svc.label) : svc.label;
+        iDesc.textContent  = window.aicT ? window.aicT(svc.desc)  : svc.desc;
         iIcon.innerHTML = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${svc.icon}</svg>`;
         info.style.display = 'flex';
         info.classList.add('orb-info-active');
