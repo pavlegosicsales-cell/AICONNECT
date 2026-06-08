@@ -1416,6 +1416,7 @@
       --sunpillar-clr-1: var(--sunpillar-1); --sunpillar-clr-2: var(--sunpillar-2); --sunpillar-clr-3: var(--sunpillar-3);
       --sunpillar-clr-4: var(--sunpillar-4); --sunpillar-clr-5: var(--sunpillar-5); --sunpillar-clr-6: var(--sunpillar-6);
       --card-radius: 24px;
+      --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%23ffffff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 24l-8 8 8 8'/%3E%3Cpath d='M40 24l8 8-8 8'/%3E%3Crect x='76' y='20' width='28' height='20' rx='2'/%3E%3Cpath d='M86 46h8'/%3E%3Cpath d='M26 86l18-18 5 5-18 18h-5z'/%3E%3Ccircle cx='90' cy='88' r='12'/%3E%3Cpath d='M90 80v16M82 88h16'/%3E%3C/g%3E%3C/svg%3E");
       perspective: 600px; transform: translate3d(0,0,0.1px); position: relative;
       touch-action: none; width: 330px; max-width: 100%; flex: 0 0 auto;
     }
@@ -1444,45 +1445,31 @@
       inset: 0; position: absolute; background-image: var(--inner-gradient);
       background-color: rgba(0,0,0,0.9); transform: none;
     }
+    /* Holographic sheen masked through a tiling UI/UX symbol pattern.
+       No continuous animation (cheap) — it just appears on hover and the
+       rainbow shifts with the pointer via --background-y. */
     .pc-shine {
-      mask-image: none; transition: filter 0.8s ease;
-      filter: brightness(0.66) contrast(1.33) saturate(0.4) opacity(0.5);
-      animation: pc-holo-bg 18s linear infinite; mix-blend-mode: color-dodge;
+      z-index: 3; transform: translate3d(0,0,1px); overflow: hidden;
+      background-image: repeating-linear-gradient(0deg,
+        var(--sunpillar-clr-1) 0%, var(--sunpillar-clr-2) 16%, var(--sunpillar-clr-3) 33%,
+        var(--sunpillar-clr-4) 50%, var(--sunpillar-clr-5) 66%, var(--sunpillar-clr-6) 83%, var(--sunpillar-clr-1) 100%);
+      background-size: 100% 240%;
+      background-position: 0 var(--background-y);
+      -webkit-mask-image: var(--icon); mask-image: var(--icon);
+      -webkit-mask-size: 92px 92px; mask-size: 92px 92px;
+      -webkit-mask-repeat: repeat; mask-repeat: repeat;
+      mix-blend-mode: color-dodge;
+      opacity: 0; transition: opacity 0.45s ease;
     }
-    .pc-shine, .pc-shine::after {
-      --space: 5%; --angle: -45deg; transform: translate3d(0,0,1px); overflow: hidden; z-index: 3;
-      background-size: cover; background-position: center;
-      background-image:
-        repeating-linear-gradient(0deg, var(--sunpillar-clr-1) calc(var(--space)*1), var(--sunpillar-clr-2) calc(var(--space)*2), var(--sunpillar-clr-3) calc(var(--space)*3), var(--sunpillar-clr-4) calc(var(--space)*4), var(--sunpillar-clr-5) calc(var(--space)*5), var(--sunpillar-clr-6) calc(var(--space)*6), var(--sunpillar-clr-1) calc(var(--space)*7)),
-        repeating-linear-gradient(var(--angle), #0e152e 0%, hsl(180,10%,60%) 3.8%, hsl(180,29%,66%) 4.5%, hsl(180,10%,60%) 5.2%, #0e152e 10%, #0e152e 12%),
-        radial-gradient(farthest-corner circle at var(--pointer-x) var(--pointer-y), hsla(0,0%,0%,0.1) 12%, hsla(0,0%,0%,0.15) 20%, hsla(0,0%,0%,0.25) 120%);
-      background-position: 0 var(--background-y), var(--background-x) var(--background-y), center;
-      background-blend-mode: color, hard-light;
-      background-size: 500% 500%, 300% 300%, 200% 200%; background-repeat: repeat;
-    }
-    .pc-shine::before, .pc-shine::after { content: ''; background-position: center; background-size: cover; grid-area: 1/1; opacity: 0; transition: opacity 0.8s ease; }
-    .pc-card:hover .pc-shine, .pc-card.active .pc-shine { filter: brightness(0.85) contrast(1.5) saturate(0.5); animation-play-state: paused; }
-    .pc-card:hover .pc-shine::before, .pc-card.active .pc-shine::before, .pc-card:hover .pc-shine::after, .pc-card.active .pc-shine::after { opacity: 1; }
-    .pc-shine::before {
-      background-image:
-        linear-gradient(45deg, var(--sunpillar-4), var(--sunpillar-5), var(--sunpillar-6), var(--sunpillar-1), var(--sunpillar-2), var(--sunpillar-3)),
-        radial-gradient(circle at var(--pointer-x) var(--pointer-y), hsl(0,0%,70%) 0%, hsla(0,0%,30%,0.2) 90%);
-      background-size: 250% 250%, 100% 100%;
-      background-position: var(--pointer-x) var(--pointer-y), center;
-      background-blend-mode: color-dodge;
-      filter: brightness(calc(2 - var(--pointer-from-center))) contrast(calc(var(--pointer-from-center) + 2)) saturate(calc(0.5 + var(--pointer-from-center)));
-      mix-blend-mode: luminosity;
-    }
-    .pc-shine::after {
-      background-position: 0 var(--background-y), calc(var(--background-x)*0.4) calc(var(--background-y)*0.5), center;
-      background-size: 200% 300%, 700% 700%, 100% 100%; mix-blend-mode: difference; filter: brightness(0.8) contrast(1.5);
-    }
+    .pc-card:hover .pc-shine, .pc-card.active .pc-shine { opacity: 0.6; }
     .pc-glare {
       transform: translate3d(0,0,1.1px); overflow: hidden;
-      background-image: radial-gradient(farthest-corner circle at var(--pointer-x) var(--pointer-y), hsl(40,30%,80%) 12%, hsla(40,40%,25%,0.8) 90%);
-      mix-blend-mode: overlay; filter: brightness(0.8) contrast(1.2); z-index: 4;
+      background-image: radial-gradient(farthest-corner circle at var(--pointer-x) var(--pointer-y), rgba(255,235,170,0.22) 8%, rgba(40,30,8,0.0) 60%);
+      mix-blend-mode: overlay; z-index: 4;
+      opacity: 0; transition: opacity 0.45s ease;
     }
-    .pc-avatar-content { mix-blend-mode: luminosity; overflow: hidden; }
+    .pc-card:hover .pc-glare, .pc-card.active .pc-glare { opacity: 1; }
+    .pc-avatar-content { overflow: hidden; }
     .pc-avatar-content::after {
       content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
       background: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.15) 26%, transparent 45%);
