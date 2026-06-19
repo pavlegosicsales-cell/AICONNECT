@@ -1114,19 +1114,19 @@
     .bento-col-2 { grid-column: span 2; }
     .bento-img {
       position: relative; height: 260px; overflow: hidden;
-      transform: translateZ(0); /* own compositing layer — prevents 1px white line at card body boundary */
+      background: var(--s2); /* card bg colour fills any subpixel gap */
+      margin-bottom: -2px;   /* physically seal the 1px line between img and body */
     }
     .bento-img img {
       width: 100%; height: 100%;
       object-fit: cover; object-position: center top;
       transform: scale(1.025);
       transition: transform 1.6s cubic-bezier(0.16,1,0.3,1);
-      backface-visibility: hidden;
     }
     .bento-item:hover .bento-img img { transform: scale(1.075); }
     .bento-img::after {
-      content: ''; position: absolute; bottom: -2px; left: 0; right: 0;
-      height: 92px;
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+      height: 90px;
       background: linear-gradient(to bottom, transparent, var(--s2));
       pointer-events: none; z-index: 1;
     }
@@ -2272,12 +2272,12 @@
       /* Reorder so image and text cards alternate (Monte Zone before Built to Book) */
       .bento-grid > :nth-child(1) { order: 1; }  /* MonX (img) */
       .bento-grid > :nth-child(2) { order: 2; }  /* Full-Stack (text) */
-      .bento-grid > :nth-child(3) { order: 4; }  /* Built to Book (text) */
-      .bento-grid > :nth-child(4) { order: 3; }  /* Monte Zone (img) */
-      .bento-grid > :nth-child(5) { order: 5; }  /* Ramago (img) */
-      .bento-grid > :nth-child(6) { order: 6; }  /* Fast by Design (text) */
-      .bento-grid > :nth-child(7) { order: 7; }  /* Aya's Touch (img) */
-      .bento-grid > :nth-child(8) { order: 8; }  /* Made to Heal (text) */
+      .bento-grid > :nth-child(3) { order: 4; }  /* Made to Heal (text) — after Aya's img */
+      .bento-grid > :nth-child(4) { order: 3; }  /* Aya's Touch (img) — before its text */
+      .bento-grid > :nth-child(5) { order: 6; }  /* Built to Book (text) — after Monte Zone */
+      .bento-grid > :nth-child(6) { order: 5; }  /* Monte Zone (img) — before Built to Book */
+      .bento-grid > :nth-child(7) { order: 7; }  /* Ramago (img) */
+      .bento-grid > :nth-child(8) { order: 8; }  /* Fast by Design (text) */
       /* Hide the desktop scroll progress rail on mobile */
       .scroll-track { display: none; }
       /* Client Stories: center the CTA, give stat cards breathing room */
@@ -2648,6 +2648,58 @@
         </div>
       </div>
 
+      <!-- Wellness / personal brand design card (Naida companion — LEFT) -->
+      <div class="bento-item g-up">
+        <div class="bento-text-body">
+          <div>
+            <div class="bento-top">
+              <div class="bento-icon">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(196,154,6,0.85)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+              </div>
+              <span class="bento-status">Wellbeing</span>
+            </div>
+            <div class="bento-title" style="font-size:19px;margin-top:8px;">Made to Heal</div>
+            <div class="bento-desc">Warm, trust-first design for wellness professionals — a site that earns client confidence before the first session.</div>
+          </div>
+          <div class="bento-footer">
+            <div class="bento-tags">
+              <span class="bento-tag">#Therapy</span>
+              <span class="bento-tag">#Personal Brand</span>
+              <span class="bento-tag">#UX</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Aya's Touch / Naida Kundurović — gestalt therapy & wellness (RIGHT) -->
+      <a href="https://ayas-touch.squarespace.com" target="_blank" rel="noopener" class="bento-item bento-col-2 g-up">
+        <div class="bento-img">
+          <img src="aiconnect/Group 28 1.png" alt="Aya's Touch — Gestalt Psychotherapy & Bali Retreats">
+        </div>
+        <div class="bento-body">
+          <div class="bento-top">
+            <div class="bento-icon">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(196,154,6,0.85)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </div>
+            <span class="bento-status">Live</span>
+          </div>
+          <div class="bento-title">Aya's Touch <span class="bento-meta">ayas-touch.squarespace.com</span></div>
+          <div class="bento-desc">A complete digital home for gestalt psychotherapist Naida Kundurović — individual therapy, group workshops, lectures and transformative Bali retreat experiences, all under one identity.</div>
+          <div class="bento-footer">
+            <div class="bento-tags">
+              <span class="bento-tag">#Wellness</span>
+              <span class="bento-tag">#Coaching</span>
+              <span class="bento-tag">#WebDesign</span>
+            </div>
+            <span class="bento-cta">View Project
+              <span class="bento-cta-arrow">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+              </span>
+            </span>
+          </div>
+        </div>
+      </a>
+
       <!-- Hospitality approach card -->
       <div class="bento-item g-up">
         <div class="bento-text-body">
@@ -2752,57 +2804,6 @@
         </div>
       </div>
 
-      <!-- Aya's Touch / Naida Kundurović — gestalt therapy & wellness -->
-      <a href="https://ayas-touch.squarespace.com" target="_blank" rel="noopener" class="bento-item bento-col-2 g-up">
-        <div class="bento-img">
-          <img src="aiconnect/Group 28 1.png" alt="Aya's Touch — Gestalt Psychotherapy & Bali Retreats">
-        </div>
-        <div class="bento-body">
-          <div class="bento-top">
-            <div class="bento-icon">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(196,154,6,0.85)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-            </div>
-            <span class="bento-status">Live</span>
-          </div>
-          <div class="bento-title">Aya's Touch <span class="bento-meta">ayas-touch.squarespace.com</span></div>
-          <div class="bento-desc">A complete digital home for gestalt psychotherapist Naida Kundurović — individual therapy, group workshops, lectures and transformative Bali retreat experiences, all under one identity.</div>
-          <div class="bento-footer">
-            <div class="bento-tags">
-              <span class="bento-tag">#Wellness</span>
-              <span class="bento-tag">#Coaching</span>
-              <span class="bento-tag">#WebDesign</span>
-            </div>
-            <span class="bento-cta">View Project
-              <span class="bento-cta-arrow">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
-              </span>
-            </span>
-          </div>
-        </div>
-      </a>
-
-      <!-- Wellness / personal brand design card -->
-      <div class="bento-item g-up">
-        <div class="bento-text-body">
-          <div>
-            <div class="bento-top">
-              <div class="bento-icon">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(196,154,6,0.85)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-              </div>
-              <span class="bento-status">Wellbeing</span>
-            </div>
-            <div class="bento-title" style="font-size:19px;margin-top:8px;">Made to Heal</div>
-            <div class="bento-desc">Warm, trust-first design for wellness professionals — a site that earns client confidence before the first session.</div>
-          </div>
-          <div class="bento-footer">
-            <div class="bento-tags">
-              <span class="bento-tag">#Therapy</span>
-              <span class="bento-tag">#Personal Brand</span>
-              <span class="bento-tag">#UX</span>
-            </div>
-          </div>
-        </div>
-      </div>
 
     </div>
   </div>
