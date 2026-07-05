@@ -1,0 +1,338 @@
+```json
+{
+  "brand": {
+    "naziv": "20/44",
+    "tip": "Underground klub elektronske muzike",
+    "lokacija": {
+      "grad": "Beograd",
+      "deo_grada": "Savamala",
+      "drzava": "Srbija"
+    },
+    "opis": "20/44 je jedan od najprepoznatljivijih underground klubova elektronske muzike u Beogradu. Klub je godinama gradio identitet kao kultni splav na Savi, a nakon preseljenja u zatvoreni prostor zadržao je istu filozofiju, publiku i muzički pravac. Danas predstavlja mesto gde muzika, atmosfera i zajednica imaju apsolutni prioritet u odnosu na komercijalni noćni provod."
+  },
+
+  "identitet_brenda": {
+    "misija": "Stvoriti prostor u kome je muzika razlog okupljanja ljudi, a ne status, luksuz ili komercijalni sadržaj.",
+    "vizija": "Ostati jedan od najautentičnijih i najcenjenijih klubova elektronske muzike u regionu, bez odustajanja od underground vrednosti.",
+    "svrha": "Povezivanje ljudi kroz kvalitetnu elektronsku muziku, pažljivo kuriran program i jedinstvenu atmosferu."
+  },
+
+  "filozofija": {
+    "glavna_ideja": "Muzika je uvek ispred svega.",
+    "principi": [
+      "DJ je važniji od VIP gosta.",
+      "Ples je važniji od fotografisanja.",
+      "Atmosfera je važnija od luksuza.",
+      "Ljudi dolaze zbog muzike, a ne da budu viđeni.",
+      "Autentičnost je važnija od trendova.",
+      "Kvalitet je važniji od masovnosti."
+    ]
+  },
+
+  "arhetip_brenda": {
+    "primarni": "Kreator",
+    "sekundarni": "Istraživač",
+    "tercijarni": "Pobunjenik"
+  },
+
+  "licnost_brenda": {
+    "osobine": [
+      "Autentičan",
+      "Samouveren",
+      "Nenametljiv",
+      "Minimalistički",
+      "Kulturno osvešćen",
+      "Moderan",
+      "Nezavisan",
+      "Kreativan",
+      "Sirov",
+      "Urban",
+      "Inteligentan",
+      "Otvoren"
+    ],
+    "kada_bi_bio_osoba": "Bio bi osoba koja vikendom putuje zbog muzike, kupuje vinile, posećuje galerije, voli brutalističku arhitekturu, ne nosi odeću sa velikim logotipima, ne voli da se eksponira i mnogo više ceni dobru selekciju muzike nego luksuz."
+  },
+
+  "vrednosti": [
+    "Autentičnost",
+    "Kultura",
+    "Muzika",
+    "Zajednica",
+    "Kreativnost",
+    "Nezavisnost",
+    "Poštovanje umetnika",
+    "Sloboda izražavanja",
+    "Minimalizam",
+    "Kvalitet"
+  ],
+
+  "pozicioniranje": {
+    "opis": "20/44 nije klasičan noćni klub. On je kulturni prostor elektronske muzike i okupljalište ljudi koji dele sličan pogled na muziku, umetnost i noćni život.",
+    "nije": [
+      "Splav za provod uz flaše.",
+      "VIP klub.",
+      "Komercijalna diskoteka.",
+      "Mesto za influensere.",
+      "Mainstream klub."
+    ],
+    "jeste": [
+      "Underground klub.",
+      "Elektronska muzička institucija.",
+      "Prostor za ples.",
+      "Mesto za otkrivanje novih izvođača.",
+      "Zajednica ljubitelja elektronske muzike."
+    ]
+  },
+
+  "ciljna_publika": {
+    "godine": "24-40",
+    "profil": [
+      "Dizajneri",
+      "Programeri",
+      "Arhitekte",
+      "Fotografi",
+      "Muzičari",
+      "Marketinški stručnjaci",
+      "Freelanceri",
+      "Studenti umetničkih fakulteta",
+      "Kreativne industrije",
+      "Stranci koji posećuju Beograd"
+    ],
+    "interesovanja": [
+      "Elektronska muzika",
+      "Vinili",
+      "Savremena umetnost",
+      "Arhitektura",
+      "Film",
+      "Fotografija",
+      "Putovanja",
+      "Festivali",
+      "Minimalizam",
+      "Dizajn"
+    ],
+    "vrednosti": [
+      "Individualnost",
+      "Kultura",
+      "Autentičnost",
+      "Kvalitet",
+      "Sloboda",
+      "Poštovanje različitosti"
+    ],
+    "ne_vole": [
+      "VIP kulturu",
+      "Komercijalne klubove",
+      "Turbo folk",
+      "Mainstream EDM",
+      "Preskupe flaše",
+      "Poziranje",
+      "Influensersku kulturu"
+    ]
+  },
+
+  "emocije_koje_brend_budi": [
+    "Sloboda",
+    "Pripadnost",
+    "Autentičnost",
+    "Povezanost",
+    "Energija",
+    "Inspiracija",
+    "Radoznalost",
+    "Potpuno prepuštanje muzici"
+  ],
+
+  "muzicki_identitet": {
+    "primarni_pravci": [
+      "House",
+      "Deep House",
+      "Minimal",
+      "Minimal Techno",
+      "Tech House",
+      "Techno",
+      "Detroit Techno",
+      "Electro",
+      "Disco",
+      "Italo Disco",
+      "Progressive House",
+      "Breakbeat"
+    ],
+    "sekundarni_pravci": [
+      "Dub",
+      "Balearic",
+      "Garage",
+      "Soulful House"
+    ],
+    "izbegavati": [
+      "EDM",
+      "Big Room",
+      "Mainstream Pop",
+      "Turbo Folk",
+      "Komercijalne remikse"
+    ],
+    "filozofija": "Program se bira prema kvalitetu izvođača i selekciji muzike, a ne prema popularnosti."
+  },
+
+  "atmosfera": {
+    "opis": "Intimna, mračna, energična i potpuno fokusirana na ples i muziku.",
+    "karakteristike": [
+      "Prigušeno svetlo",
+      "Industrijski enterijer",
+      "Dim",
+      "Jak sound sistem",
+      "Blizina DJ-a i publike",
+      "Bez nepotrebnog luksuza",
+      "Autentična energija"
+    ]
+  },
+
+  "vizuelni_identitet": {
+    "stil": "Industrijski minimalizam sa underground estetikom.",
+    "boje": {
+      "primarne": [
+        "#000000",
+        "#111111",
+        "#FFFFFF"
+      ],
+      "sekundarne": [
+        "#5E5E5E",
+        "#8E8E8E"
+      ],
+      "akcenti": [
+        "#B5121B",
+        "#7A0000"
+      ]
+    },
+    "materijali": [
+      "Beton",
+      "Metal",
+      "Čelik",
+      "Tamno drvo",
+      "Dim",
+      "Mat površine"
+    ],
+    "fotografija": {
+      "stil": [
+        "Prirodni momenti",
+        "Ljudi koji plešu",
+        "DJ u radu",
+        "Crno-bela fotografija",
+        "Kontrast",
+        "Malo poziranja"
+      ]
+    },
+    "izbegavati": [
+      "Zlatne detalje",
+      "Sjajne površine",
+      "Neonske boje",
+      "Luksuzni izgled",
+      "Korporativni dizajn"
+    ]
+  },
+
+  "ton_komunikacije": {
+    "osobine": [
+      "Smiren",
+      "Samouveren",
+      "Nenametljiv",
+      "Minimalistički",
+      "Direktan",
+      "Kulturno osvešćen"
+    ],
+    "pisanje": [
+      "Kratke rečenice.",
+      "Bez marketing klišea.",
+      "Bez preteranog uzbuđenja.",
+      "Fokus na muzici.",
+      "Fokus na izvođačima.",
+      "Fokus na iskustvu."
+    ],
+    "nikada_ne_koristiti": [
+      "Najluđa žurka",
+      "VIP iskustvo",
+      "Ekskluzivni provod",
+      "Najjači klub",
+      "Luksuz",
+      "Influenserski rečnik"
+    ]
+  },
+
+  "zajednica": {
+    "opis": "Najveća vrednost 20/44 nije prostor već ljudi koji ga posećuju. Klub okuplja zajednicu koja deli slične muzičke i kulturne vrednosti.",
+    "kultura": [
+      "Poštovanje DJ-eva",
+      "Poštovanje publike",
+      "Otvorenost",
+      "Bez elitizma",
+      "Bez pokazivanja statusa",
+      "Muzika na prvom mestu"
+    ]
+  },
+
+  "marketing": {
+    "strategija": [
+      "Organski rast.",
+      "Preporuke publike.",
+      "Jak identitet.",
+      "Doslednost.",
+      "Fotografija i atmosfera umesto reklama."
+    ],
+    "najveci_fokus": [
+      "Lineup",
+      "DJ-evi",
+      "Atmosfera",
+      "Fotografije događaja",
+      "Kalendar dešavanja"
+    ],
+    "izbegavati": [
+      "Clickbait",
+      "Previše emodžija",
+      "Agresivne reklame",
+      "Marketing koji deluje jeftino",
+      "Prodaju luksuza"
+    ]
+  },
+
+  "kljucne_reci": [
+    "Underground",
+    "Elektronska muzika",
+    "House",
+    "Techno",
+    "Minimal",
+    "Beograd",
+    "Savamala",
+    "Kultura",
+    "Atmosfera",
+    "Community",
+    "Ples",
+    "Autentičnost",
+    "Muzika",
+    "Industrijski",
+    "Minimalizam",
+    "Noćni život",
+    "Sound System",
+    "Vinyl",
+    "Kuriran program",
+    "Nezavisna scena"
+  ],
+
+  "pravila_brenda": {
+    "uvek": [
+      "Muzika je glavni junak.",
+      "Autentičnost ispred trendova.",
+      "Minimalizam ispred kiča.",
+      "Atmosfera ispred luksuza.",
+      "Ljudi dolaze zbog muzike.",
+      "Poštovati underground kulturu.",
+      "Komunikacija mora biti smirena i samouverena."
+    ],
+    "nikada": [
+      "Ne predstavljati klub kao VIP destinaciju.",
+      "Ne koristiti luksuznu estetiku.",
+      "Ne koristiti agresivan marketing.",
+      "Ne koristiti generičke tekstove za noćni provod.",
+      "Ne stavljati fokus na flaše, separee ili status."
+    ]
+  },
+
+  "jedna_recenica": "20/44 je kultni beogradski underground klub u kome su muzika, zajednica i autentična atmosfera uvek važniji od komercijalnog noćnog života."
+}
+```

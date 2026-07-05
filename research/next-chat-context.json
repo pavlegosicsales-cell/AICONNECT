@@ -1,0 +1,151 @@
+{
+  "brief_for_next_session": "You are a senior web designer/developer continuing an in-progress build. Read this profile fully before acting. The project is a high-craft marketing website for a Belgrade underground techno club. It is already ~90% built, verified working via screenshots. Match the established design language and code patterns exactly; do not restart or redesign unprompted.",
+
+  "user": {
+    "language": "Serbian (latinica). Respond in Serbian. Code/comments may be Serbian.",
+    "role": "Client/founder acting as product owner; hands-on, iterates feature-by-feature, has design taste.",
+    "communication": "Direct, short asks. Wants you proactive but not destructive. Confirms big/irreversible actions.",
+    "github": "pavlegosicsales-cell"
+  },
+
+  "project": {
+    "name": "20/44",
+    "what": "Official website (homepage first) for 20/44 — a cult underground electronic-music club in Belgrade.",
+    "location_root": "c:/Users/pavle/Downloads/Claude Code/20/44",
+    "framework_context": "Lives inside the WAT framework (Workflows-Agents-Tools). Skills/workflows are markdown SOPs in skills/ and workflows/. .tmp/ is disposable scratch.",
+    "status": "Homepage built and verified. Iterating on polish/assets."
+  },
+
+  "brand": {
+    "identity": "Underground electronic-music institution. Savamala, Belgrade. Relocated to Karadjordjeva 44 (late 2024).",
+    "address": "Karadjordjeva 44, Savamala, Beograd",
+    "coordinates": "44.8168°N /// 20.4489°E (note the /// separator convention)",
+    "philosophy": "Muzika je uvek ispred svega. Music/atmosphere/community over commercial nightlife.",
+    "tone": "Short sentences, no marketing cliches, focus on music/artists/experience. NEVER use: VIP, najluza zurka, ekskluzivan provod, najjaci klub, luksuz, influencer slang.",
+    "brand_profile_file": "CONTEXT/context profile (full JSON brand bible — read it).",
+    "socials": "Instagram @20_44.nightclub, Facebook klub2044, RA."
+  },
+
+  "design_system": {
+    "direction": "thewarehouseproject.com (dark industrial, grainy, technical annotations, torn edges). Adapted, NOT copied — accent swapped to brand yellow.",
+    "colors": {
+      "ink_base": "#0a0b0b (near-black, nudged off pure black for depth)",
+      "panel": "#151717",
+      "line": "#262929",
+      "smoke": "#6b6b6b",
+      "ash": "#9a9a9a",
+      "bone": "#f2f2f2 (text)",
+      "accent": "#FED11C (yellow — client decision; deliberately OVERRIDES the red #B5121B from brand profile). Warehouse uses lime #D8FF00; we use yellow."
+    },
+    "fonts": "Archivo (bold grotesque, display+body via weights, UPPERCASE headings) + Geist Mono (technical labels/annotations). Loaded via next/font in app/layout.tsx.",
+    "style_rules": "SHARP (no rounded corners; global border-radius:0). Grainy. Diagonal hatch dividers. Torn/ragged section edges. Monochrome->color-on-hover gallery. Circular rotating badge/stamp. Full-screen yellow menu overlay.",
+    "global_overlays": "Fixed, pointer-events:none, applied site-wide in layout.tsx: .fx-grid (white line grid, cells 3:5 portrait rectangles 90x150px), .fx-dust (sparse white specks via feTurbulence thresholded), .fx-stain (large soft grungy clouds via low-freq feTurbulence), .grain (fine film grain). All procedural SVG/CSS (no image assets). Multi-speed parallax via animation-timeline:scroll(root). All respect prefers-reduced-motion.",
+    "motion": "150-300ms micro-interactions. Signature easing cubic-bezier(0.72,0,0.19,1). Scroll-reveal via [data-reveal]/[data-reveal-group] + IntersectionObserver adding .is-in. Badge intro on load. parallax-y on philosophy bg via animation-timeline:view().",
+    "textured_titles": ".text-tex utility = background-clip:text + feTurbulence texture (subtle eroded look). Applied ONLY to single-color display headings (NOT two-tone ones like About/Footer which have accent spans)."
+  },
+
+  "tech_stack": {
+    "framework": "Next.js 16.2.10 (App Router, TypeScript, Turbopack)",
+    "react": "19.2.4",
+    "styling": "Tailwind v4 (theme in app/globals.css @theme; NOT tailwind.config). @tailwindcss/postcss.",
+    "images": "next/image; sharp available for processing source assets.",
+    "no_gsap": "Deliberately NO GSAP/jQuery. Use IntersectionObserver + CSS scroll-driven animations instead.",
+    "dev": "npm run dev -> http://localhost:3000",
+    "build_check": "npm run build (must pass; use it after changes)",
+    "screenshot_tool": "node tools/screenshot.mjs <url> <label> <width> -> saves to .tmp/screenshots/. Finds cached Chrome win64-149 in ~/.cache/puppeteer. For element/section shots write a quick inline puppeteer script in .tmp/."
+  },
+
+  "architecture": {
+    "app": "app/layout.tsx (fonts, metadata, ScrollReveal, global fx overlays, grain), app/page.tsx (assembles sections), app/globals.css (theme + all utilities), app/icon.png (favicon = logo).",
+    "components_dir": "components/",
+    "components": {
+      "Nav": "fixed bar + off-top scrolled state (bg/blur when scrollY>30) + full-screen yellow menu overlay (Esc/scroll-lock).",
+      "Badge": "circular stamp: official 20/44 logo (public/images/logo.png) in center + rotating mono text ring.",
+      "Hero": "full-screen hero.jpg + dark gradient, centered Badge (badge-intro), tagline, yellow CTA, Scramble coordinates, corner crop marks. NO giant wordmark (logo carries it).",
+      "Scramble": "client; text resolves from random chars (WHP .scrambled equivalent).",
+      "Marquee": "infinite genre ticker (House/Techno/Minimal...).",
+      "InteractiveHouse": "SVG hotspots over public/images/house.png facade; hover->yellow tint, click->scrollIntoView(#lokal-<slug>). Accessible venue list beside it. Hotspot polygons in viewBox 1000x667 (data/lokali.ts).",
+      "About": "Filozofija; red bg image (philosophy.jpg) as torn strip (TornDivider top+bottom), scrim, parallax, principles list. Two-tone heading (skip text-tex).",
+      "TornDivider": "deterministic ragged SVG edge (fixed seed 4423, no hydration mismatch) that blends into --color-ink neighbor section.",
+      "Lokali": "7 alternating venue sections, each id=lokal-<slug>, data-reveal, ImgReveal image (monochrome->color hover), text-tex venue name.",
+      "Gallery": "monochrome->color-on-hover grid; ImgReveal; text-tex heading.",
+      "Contact": "Karadjordjeva 44, hours, socials, map link.",
+      "Footer": "giant 20/44 (accent slash), coordinates, hatch band, legal.",
+      "ImgReveal": "client wrapper for next/image; opacity+scale settle on load (.img-load/.img-in).",
+      "ScrollReveal": "client; IntersectionObserver toggles .is-in on [data-reveal]/[data-reveal-group].",
+      "icons": "inline SVG icons (Instagram, Facebook, ArrowUpRight, ArrowDown). NO emoji as icons.",
+      "Badge/Marquee/etc": "see components/ dir"
+    },
+    "data": {
+      "data/site.ts": "nav, socials, coordinates, address, radnoVreme, genres (marquee), tagline.",
+      "data/lokali.ts": "7 venues: broj, slug, naziv, sprat, pozicija, opis (original brand-tone copy), slika, hotspot.points."
+    }
+  },
+
+  "lokali": [
+    {"broj":"01","slug":"main-klub","naziv":"Main klub","sprat":"Prizemlje","image":"/images/club-1.jpg (placeholder-ish, club shot)"},
+    {"broj":"02","slug":"bar-44","naziv":"Bar 44","sprat":"Prizemlje levo","image":"/images/lokal-bar-44.jpg (dedicated)"},
+    {"broj":"03","slug":"pizzeria","naziv":"Pizzeria","sprat":"Prizemlje desno","image":"/images/club-2.jpg (TEMP placeholder — needs real photo)"},
+    {"broj":"04","slug":"vukosava-bar","naziv":"Vukosava bar","sprat":"1. sprat","image":"/images/lokal-vukosava-bar.jpg (dedicated)"},
+    {"broj":"05","slug":"galerija-20-44","naziv":"Galerija 20/44","sprat":"1. sprat","image":"/images/lokal-galerija.jpg (dedicated)"},
+    {"broj":"06","slug":"studio-stajga","naziv":"Studio Stajga","sprat":"2. sprat","image":"/images/lokal-studio-stajga.jpg (dedicated, very dark CRT-TV art shot)"},
+    {"broj":"07","slug":"lounge-bar","naziv":"Gore Lounge","sprat":"2. sprat","image":"/images/club-4.jpg (TEMP placeholder — needs real photo)"}
+  ],
+
+  "assets": {
+    "source_dir": "brand assets/ (originals). brand assets/inspo/ = ~80MB Warehouse Project screenshots (reference only; git-ignored, NOT pushed).",
+    "web_dir": "public/images/ (processed web copies).",
+    "logo": "public/images/logo.png (official 20/44 circular yellow/black split mark) + app/icon.png favicon.",
+    "house": "public/images/house.png (B&W architectural facade drawing for interactive hotspots).",
+    "hero": "public/images/hero.jpg (dark red club crowd/DJ).",
+    "philosophy": "public/images/philosophy.jpg (red disco-ball club, cropped to remove GEOMETRIA/ANUTA_PIX watermarks).",
+    "processing": "Use sharp to resize/crop new source images (~1200-1600px wide, mozjpeg q82) into public/images/, then wire in data/lokali.ts.",
+    "still_needed": "Real photos for Pizzeria (03) and Gore Lounge (07). Optional: hero loop VIDEO."
+  },
+
+  "key_decisions": [
+    "Yellow #FED11C accent overrides the brand profile's red — final, client decision.",
+    "Design direction = Warehouse Project, ADAPTED not copied. NEVER copy their code/assets/logo/text even 'with minor changes'. Reimplement techniques originally. Functional elements (grid, grain) can match visually via original CSS/SVG.",
+    "Stack = Next.js + Tailwind v4, no GSAP/jQuery.",
+    "Base color nudged from pure #000 to #0a0b0b for depth (so overlays read).",
+    "Grid cells = 3:5 portrait rectangles (90x150px), thin lines only (no intersection dots), matching WHP look.",
+    "Interactive house uses the B&W facade DRAWING; swap for a real facade photo later and refine hotspot coords.",
+    "7 lokali (Basta and Potpalublje were dropped by client).",
+    "Removed giant hero wordmark once official logo went into the badge (avoid double 20/44)."
+  ],
+
+  "constraints": [
+    "IP: do not reproduce Warehouse Project's proprietary code/CSS/JS/assets/logo/copy; original reimplementation only. Their screenshots stay out of git.",
+    "Windows environment; use POSIX-friendly commands via Bash tool; sharp/puppeteer available.",
+    "Always npm run build after changes; verify visually with screenshots (WAT workflow requires 2+ comparison rounds).",
+    "Respect prefers-reduced-motion in all animations.",
+    "Keep brand tone; avoid forbidden words listed in brand.tone."
+  ],
+
+  "work_completed": [
+    "Full homepage: Nav+menu, Hero (logo badge, scramble coords, crop marks), Marquee, InteractiveHouse (7 hotspots), About/Filozofija (red torn-strip bg + parallax), Lokali (7 sections), Gallery, Contact, Footer.",
+    "Global fx overlays: 3:5 grid + dust + soft stains + grain (procedural), multi-speed parallax, reduced-motion safe.",
+    "Torn/ragged section dividers (deterministic).",
+    "Scroll-reveal (IntersectionObserver), nav off-top state, badge intro, textured titles (background-clip:text), lazy scale-settle images (ImgReveal).",
+    "Official logo integrated into hero badge + favicon.",
+    "Dedicated images wired for: Bar 44, Vukosava, Galerija 20/44, Studio Stajga.",
+    "Site-teardown skill run on Warehouse Project -> research/2026-07-05-thewarehouseproject-teardown.md (full blueprint: tech stack, design tokens, effects, build plan).",
+    "Installed 7 ui/ux skills into 20/44/.claude/skills/ (ui-ux-pro-max is primary)."
+  ],
+
+  "next_priorities": [
+    "Real photos for Pizzeria (03) and Gore Lounge (07) -> process with sharp -> wire in data/lokali.ts.",
+    "Optional: hero loop video (user has it pending).",
+    "Optional: serif display font option (user deferred; currently Archivo grotesque).",
+    "Fine-tune overlay intensity / parallax speed if requested.",
+    "Future: separate per-lokal pages, event calendar/lineup, ticketing (out of current scope)."
+  ],
+
+  "important_context": [
+    "The AICONNECT GitHub repo (github.com/pavlegosicsales-cell/AICONNECT) ALREADY CONTAINS a different project (AIConnect agency site). Do NOT overwrite its main branch. 20/44 was pushed WITHOUT destroying AIConnect (confirm exact location with user — subfolder or branch).",
+    "Skills are WAT markdown SOPs (e.g., skills/site-teardown-skill.md.md, workflows/build_frontend_page.md). Read the relevant one before that kind of task.",
+    "Verify visually: start dev server, screenshot desktop(1440)+mobile(390), read PNGs, compare, iterate. Next.js dev shows an 'N' indicator bottom-left in screenshots — ignore it (dev only).",
+    "When editing text with background-clip:text (text-tex), avoid headings with colored child spans (breaks the two-tone).",
+    "There is a persistent memory file for this project at ~/.claude/.../memory/twenty-forty-four-site-project.md."
+  ]
+}
