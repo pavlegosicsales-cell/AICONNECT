@@ -1,11 +1,13 @@
 /*
   Lokali (delovi zgrade) 20/44 — Karađorđeva 44, Savamala.
-  Svaki lokal je zaseban deo objekta. Na interaktivnoj fasadi hover ga oboji,
-  klik vodi na njegovu sekciju (#lokal-<slug>).
+  Svaki lokal je zaseban deo objekta. Na interaktivnoj fasadi hover ga oboji CEO
+  (od ćoška do ćoška, po fasadnom polju), klik vodi na njegovu sekciju (#lokal-<slug>).
 
-  `hotspot.points` su SVG polygon tačke u koordinatnom sistemu viewBox="0 0 1000 667"
-  (odgovara odnosu slike house.png ~3:2). Doteruju se preko rendera.
+  `hotspot.points` su SVG polygon tačke u koordinatnom sistemu viewBox="0 0 1255 960"
+  (odgovara isečenoj liniji fasade house-line.png). Polja: prizemlje (3 bay-a),
+  sprat (3 bay-a), atika/vrh (traka). Doteruju se preko rendera.
 
+  `kratko` = kratak deskriptor (Ronin stil: sprat · naziv · kratko).
   Copy je originalan, u tonu brenda (kratke rečenice, fokus na muzici/atmosferi).
 */
 
@@ -15,6 +17,7 @@ export type Lokal = {
   naziv: string;
   sprat: string;
   pozicija: string;
+  kratko: string;
   opis: string;
   slika: string;
   hotspot: { points: string };
@@ -27,10 +30,11 @@ export const lokali: Lokal[] = [
     naziv: "Main klub",
     sprat: "Prizemlje",
     pozicija: "Centar",
+    kratko: "Glavni podijum",
     opis:
       "Srce prostora. Mračno, glasno, bez separea. Sound sistem, DJ i publika na dohvat ruke — sve što je potrebno da noć ode u pravom smeru.",
     slika: "/images/club-1.jpg",
-    hotspot: { points: "440,470 560,470 560,610 440,610" },
+    hotspot: { points: "492,598 745,598 745,946 492,946" },
   },
   {
     broj: "02",
@@ -38,10 +42,11 @@ export const lokali: Lokal[] = [
     naziv: "Bar 44",
     sprat: "Prizemlje",
     pozicija: "Levo",
+    kratko: "Bar & ploče",
     opis:
       "Prvo mesto na koje naiđeš. Bar bez pompe, sa pločama na zidu i ljudima koji ostaju do jutra. Odavde počinje veče.",
     slika: "/images/lokal-bar-44.jpg",
-    hotspot: { points: "190,470 430,470 430,610 190,610" },
+    hotspot: { points: "44,598 492,598 492,946 44,946" },
   },
   {
     broj: "03",
@@ -49,10 +54,11 @@ export const lokali: Lokal[] = [
     naziv: "Pizzeria",
     sprat: "Prizemlje",
     pozicija: "Desno",
+    kratko: "Kuhinja & predah",
     opis:
       "Kada noć potraje, ovde se dolazi po pauzu. Topao ugao u prizemlju — parče, predah, pa nazad na podijum.",
-    slika: "/images/club-2.jpg",
-    hotspot: { points: "580,470 820,470 820,610 580,610" },
+    slika: "/images/lokal-pizzeria.jpg",
+    hotspot: { points: "745,598 1212,598 1212,946 745,946" },
   },
   {
     broj: "04",
@@ -60,21 +66,23 @@ export const lokali: Lokal[] = [
     naziv: "Vukosava bar",
     sprat: "1. sprat",
     pozicija: "Levo",
+    kratko: "Bar, sprat iznad",
     opis:
       "Sprat iznad podijuma. Mirniji ton, isti duh — mesto gde se razgovor čuje, a muzika i dalje vodi.",
     slika: "/images/lokal-vukosava-bar.jpg",
-    hotspot: { points: "190,210 470,210 470,450 190,450" },
+    hotspot: { points: "44,158 468,158 468,590 44,590" },
   },
   {
     broj: "05",
     slug: "galerija-20-44",
     naziv: "Galerija 20/44",
     sprat: "1. sprat",
-    pozicija: "Desno",
+    pozicija: "Centar",
+    kratko: "Izložbeni prostor",
     opis:
       "Prostor za ono što nije samo zvuk. Izložbe, vizuelni radovi i program koji klub drži povezanim sa scenom oko sebe.",
     slika: "/images/lokal-galerija.jpg",
-    hotspot: { points: "540,210 820,210 820,450 540,450" },
+    hotspot: { points: "468,138 1212,138 1212,590 468,590" },
   },
   {
     broj: "06",
@@ -82,10 +90,11 @@ export const lokali: Lokal[] = [
     naziv: "Studio Štajga",
     sprat: "2. sprat",
     pozicija: "Levo",
+    kratko: "Studio & priprema",
     opis:
       "Radni prostor pod krovom. Mesto gde se snima, priprema i gde ideje dobiju oblik pre nego što dođu do publike.",
     slika: "/images/lokal-studio-stajga.jpg",
-    hotspot: { points: "195,70 485,70 485,205 195,205" },
+    hotspot: { points: "44,18 628,18 628,150 44,150" },
   },
   {
     broj: "07",
@@ -93,9 +102,10 @@ export const lokali: Lokal[] = [
     naziv: "Gore Lounge",
     sprat: "2. sprat",
     pozicija: "Desno",
+    kratko: "Lounge & pogled",
     opis:
       "Najviša tačka kuće. Predah od podijuma, pogled i ton koji usporava — bez da se izlazi iz priče.",
-    slika: "/images/club-4.jpg",
-    hotspot: { points: "515,70 810,70 810,205 515,205" },
+    slika: "/images/lokal-gore.jpg",
+    hotspot: { points: "628,18 1212,18 1212,150 628,150" },
   },
 ];

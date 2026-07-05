@@ -18,7 +18,7 @@ export default function Hero() {
   return (
     <section
       id="top"
-      className="relative flex min-h-dvh flex-col justify-between overflow-hidden"
+      className="sticky top-0 z-0 flex h-dvh flex-col justify-between overflow-hidden"
     >
       {/* Pozadinska slika */}
       <Image
@@ -29,8 +29,10 @@ export default function Hero() {
         sizes="100vw"
         className="object-cover"
       />
-      {/* Zatamnjenje */}
-      <div className="absolute inset-0 bg-gradient-to-b from-ink/70 via-ink/40 to-ink" />
+      {/* Zatamnjenje — lakše, da slika jače dođe do izražaja (dole ostaje tamnije zbog teksta) */}
+      <div className="absolute inset-0 bg-gradient-to-b from-ink/45 via-ink/15 to-ink/85" />
+      {/* Filmski grain na hero slici */}
+      <div className="section-grain" aria-hidden="true" />
 
       {/* Registracione oznake u uglovima */}
       <CropMark pos="left-4 top-20 border-l border-t md:left-6 md:top-24" />

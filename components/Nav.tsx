@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { site } from "@/data/site";
 import { ArrowUpRight, InstagramIcon, FacebookIcon } from "@/components/icons";
@@ -35,13 +36,22 @@ export default function Nav() {
             scrolled ? "bg-ink/85 py-3 backdrop-blur-md" : "py-4"
           }`}
         >
-          {/* Znak */}
+          {/* Znak — zvanični logo (gornji levi ugao) */}
           <a
             href="#top"
-            className="font-black text-xl tracking-tighter leading-none select-none"
+            className="inline-flex items-center select-none"
             aria-label="20/44 — početak"
           >
-            20<span className="text-accent">/</span>44
+            <Image
+              src="/images/logo.png"
+              alt="20/44"
+              width={160}
+              height={160}
+              priority
+              className={`w-auto transition-all duration-300 ${
+                scrolled ? "h-12" : "h-16"
+              }`}
+            />
           </a>
 
           <div className="flex items-center gap-3">

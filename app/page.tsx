@@ -13,10 +13,17 @@ export default function Home() {
     <>
       <Nav />
       <main>
-        <Hero />
+        {/*
+          Sticky-reveal stack (prve 3 sekcije). Hero se "zakači" (pinned) iza,
+          a Prostor i Filozofija — neprozirne — klize preko njega i otkrivaju se.
+          Pravac: WHP hero→sekcija reveal. Sadržaj visih sekcija skroluje normalno.
+        */}
+        <div className="reveal-stack">
+          <Hero />
+          <InteractiveHouse />
+          <About />
+        </div>
         <Marquee />
-        <InteractiveHouse />
-        <About />
         <Lokali />
         <Gallery />
         <Contact />

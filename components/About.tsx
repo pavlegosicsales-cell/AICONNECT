@@ -15,7 +15,7 @@ export default function About() {
   return (
     <section
       id="o-nama"
-      className="relative overflow-hidden bg-ink px-5 py-28 md:px-8 md:py-44"
+      className="torn-top relative z-20 overflow-hidden bg-ink px-5 py-28 md:px-8 md:py-44"
     >
       {/* Pozadinska slika (crvena atmosfera) + parallax */}
       <div className="absolute inset-0 -z-0">
@@ -28,13 +28,14 @@ export default function About() {
             className="object-cover"
           />
         </div>
-        {/* Scrim za čitljivost teksta */}
-        <div className="absolute inset-0 bg-ink/70" />
-        <div className="absolute inset-0 bg-gradient-to-r from-ink/80 via-ink/50 to-ink/70" />
+        {/* Scrim za čitljivost teksta — lakši, da crvena atmosfera jače dođe do izražaja */}
+        <div className="absolute inset-0 bg-ink/35" />
+        <div className="absolute inset-0 bg-gradient-to-r from-ink/70 via-ink/25 to-ink/55" />
+        {/* Filmski grain na slici */}
+        <div className="section-grain" aria-hidden="true" />
       </div>
 
-      {/* Iscepane ivice — stapaju se sa crnim susednim sekcijama */}
-      <TornDivider position="top" />
+      {/* Iscepana donja ivica — stapa se sa crnom sekcijom ispod (gornja ivica je clip-path .torn-top) */}
       <TornDivider position="bottom" />
 
       <div className="relative z-30 mx-auto max-w-6xl">
