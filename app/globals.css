@@ -197,6 +197,20 @@
 .corner-br { transform: translate(50%, 50%); border-left: none; border-top: none; }
 .corner-bl { transform: translate(-150%, 50%); border-right: none; border-top: none; }
 
+/* --- TextType (typewriter) --- */
+.text-type {
+  display: inline-block;
+  white-space: pre-wrap;
+}
+.text-type__cursor {
+  margin-left: 0.25rem;
+  display: inline-block;
+  opacity: 1;
+}
+.text-type__cursor--hidden {
+  display: none;
+}
+
 /* --- Diagonalni hatch (za divajdere i akcentne trake) --- */
 .hatch {
   background-image: repeating-linear-gradient(

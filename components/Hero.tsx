@@ -2,6 +2,7 @@ import Image from "next/image";
 import Badge from "@/components/Badge";
 import Scramble from "@/components/Scramble";
 import CtaButton from "@/components/CtaButton";
+import DecryptedText from "@/components/ui/decrypted-text";
 import { ArrowDown } from "@/components/icons";
 import { site } from "@/data/site";
 
@@ -48,9 +49,9 @@ export default function Hero() {
           className="max-w-[9rem] font-mono text-[10px] uppercase leading-relaxed tracking-widest text-ash md:text-xs"
         />
         <p className="text-right font-mono text-[10px] uppercase leading-relaxed tracking-widest text-ash md:text-xs">
-          Elektronska
+          <DecryptedText text="Elektronska" animateOn="view" speed={45} maxIterations={12} />
           <br />
-          muzička institucija
+          <DecryptedText text="muzička institucija" animateOn="view" speed={45} maxIterations={12} />
         </p>
       </div>
 
@@ -59,7 +60,13 @@ export default function Hero() {
         <h1 className="sr-only">20/44 — underground klub elektronske muzike, Savamala, Beograd</h1>
         <Badge className="badge-intro h-64 w-64 sm:h-72 sm:w-72 md:h-[22rem] md:w-[22rem]" />
         <p className="mt-8 max-w-md font-mono text-sm uppercase tracking-widest text-bone/80">
-          {site.tagline}
+          <DecryptedText
+            text={site.tagline}
+            animateOn="view"
+            sequential
+            speed={38}
+            revealDirection="center"
+          />
         </p>
         <div className="mt-8">
           <CtaButton
@@ -79,10 +86,15 @@ export default function Hero() {
       {/* Donji red — scroll cue + deo grada */}
       <div className="relative z-10 flex items-end justify-between px-5 pb-6 md:px-8 md:pb-8">
         <p className="font-mono text-[10px] uppercase tracking-widest text-ash md:text-xs">
-          {site.adresa.deo} · {site.adresa.grad}
+          <DecryptedText
+            text={`${site.adresa.deo} · ${site.adresa.grad}`}
+            animateOn="view"
+            speed={45}
+            maxIterations={12}
+          />
         </p>
         <p className="font-mono text-[10px] uppercase tracking-widest text-ash md:text-xs">
-          Skroluj ↓
+          <DecryptedText text="Skroluj ↓" animateOn="view" speed={45} maxIterations={12} />
         </p>
       </div>
     </section>

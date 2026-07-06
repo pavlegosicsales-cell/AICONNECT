@@ -1,4 +1,6 @@
 import { site } from "@/data/site";
+import DecryptedText from "@/components/ui/decrypted-text";
+import TextType from "@/components/ui/text-type";
 import { ArrowUpRight, InstagramIcon, FacebookIcon } from "@/components/icons";
 
 export default function Contact() {
@@ -6,14 +8,14 @@ export default function Contact() {
     <section id="kontakt" className="border-t border-line bg-ink px-5 py-24 md:px-8 md:py-32">
       <div className="mx-auto max-w-6xl">
         <p className="mb-4 font-mono text-xs uppercase tracking-widest text-accent">
-          [ Kontakt ]
+          <TextType text="[ Kontakt ]" as="span" loop={false} startOnVisible typingSpeed={55} cursorCharacter="_" />
         </p>
         <h2
           data-reveal
           className="text-tex max-w-3xl font-black uppercase leading-[0.92] tracking-tighter"
           style={{ fontSize: "clamp(2rem, 6vw, 4.5rem)" }}
         >
-          Vidimo se u Savamali.
+          <DecryptedText text="Vidimo se u Savamali." animateOn="view" sequential speed={34} />
         </h2>
 
         <div data-reveal-group className="mt-16 grid gap-x-12 gap-y-12 md:grid-cols-3">

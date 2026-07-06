@@ -1,5 +1,7 @@
 import ImgReveal from "@/components/ImgReveal";
 import LightRays from "@/components/ui/light-rays";
+import DecryptedText from "@/components/ui/decrypted-text";
+import TextType from "@/components/ui/text-type";
 
 const slike = [
   { src: "/images/club-1.jpg", alt: "Podijum pod plavim laserima i crvenim zavesama", span: "sm:col-span-2 sm:row-span-2" },
@@ -33,13 +35,13 @@ export default function Gallery() {
         <div data-reveal className="mb-12 flex flex-col justify-between gap-4 md:flex-row md:items-end">
           <div>
             <p className="mb-4 font-mono text-xs uppercase tracking-widest text-accent">
-              [ Galerija ]
+              <TextType text="[ Galerija ]" as="span" loop={false} startOnVisible typingSpeed={55} cursorCharacter="_" />
             </p>
             <h2
               className="text-tex font-black uppercase leading-[0.92] tracking-tighter"
               style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}
             >
-              Fotografija umesto reklame.
+              <DecryptedText text="Fotografija umesto reklame." animateOn="view" sequential speed={34} />
             </h2>
           </div>
           <p className="max-w-xs font-mono text-xs uppercase leading-relaxed tracking-widest text-ash">

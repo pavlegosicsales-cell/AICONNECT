@@ -1,4 +1,6 @@
 import ImgReveal from "@/components/ImgReveal";
+import DecryptedText from "@/components/ui/decrypted-text";
+import TextType from "@/components/ui/text-type";
 import { lokali } from "@/data/lokali";
 
 export default function Lokali() {
@@ -6,13 +8,13 @@ export default function Lokali() {
     <section id="lokali" className="bg-ink">
       <div data-reveal className="mx-auto max-w-6xl px-5 pt-24 md:px-8 md:pt-32">
         <p className="mb-4 font-mono text-xs uppercase tracking-widest text-accent">
-          [ Lokali · 07 ]
+          <TextType text="[ Lokali · 07 ]" as="span" loop={false} startOnVisible typingSpeed={55} cursorCharacter="_" />
         </p>
         <h2
           className="text-tex max-w-3xl font-black uppercase leading-[0.92] tracking-tighter"
           style={{ fontSize: "clamp(2rem, 5vw, 4rem)" }}
         >
-          Svaki sprat drži svoj ton.
+          <DecryptedText text="Svaki sprat drži svoj ton." animateOn="view" sequential speed={34} />
         </h2>
       </div>
 

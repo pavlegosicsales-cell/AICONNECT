@@ -1,6 +1,8 @@
 import Image from "next/image";
 import TornDivider from "@/components/TornDivider";
 import CtaButton from "@/components/CtaButton";
+import DecryptedText from "@/components/ui/decrypted-text";
+import TextType from "@/components/ui/text-type";
 import { ArrowUpRight } from "@/components/icons";
 
 const principi = [
@@ -41,7 +43,7 @@ export default function About() {
 
       <div className="relative z-30 mx-auto max-w-6xl">
         <p className="mb-10 font-mono text-xs uppercase tracking-widest text-accent">
-          [ Filozofija ]
+          <TextType text="[ Filozofija ]" as="span" loop={false} startOnVisible typingSpeed={55} cursorCharacter="_" />
         </p>
 
         <h2
@@ -49,7 +51,7 @@ export default function About() {
           className="max-w-4xl font-black uppercase leading-[0.92] tracking-tighter"
           style={{ fontSize: "clamp(2.25rem, 6vw, 5rem)" }}
         >
-          Nije klasičan klub.{" "}
+          <DecryptedText text="Nije klasičan klub." animateOn="view" sequential speed={34} />{" "}
           <span className="text-bone/55">
             Kulturni prostor elektronske muzike i okupljalište ljudi koji dele
             isti pogled na muziku i noć.

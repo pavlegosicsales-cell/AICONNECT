@@ -2,6 +2,8 @@
 
 import { useState, useRef, useLayoutEffect, useCallback } from "react";
 import { lokali } from "@/data/lokali";
+import DecryptedText from "@/components/ui/decrypted-text";
+import TextType from "@/components/ui/text-type";
 
 const VB_W = 1255;
 const VB_H = 960;
@@ -91,13 +93,13 @@ export default function InteractiveHouse() {
         >
           <div>
             <p className="mb-4 font-mono text-xs uppercase tracking-widest text-accent">
-              [ Prostor ]
+              <TextType text="[ Prostor ]" as="span" loop={false} startOnVisible typingSpeed={55} cursorCharacter="_" />
             </p>
             <h2
               className="text-tex max-w-2xl font-black uppercase leading-[0.92] tracking-tighter"
               style={{ fontSize: "clamp(1.8rem, 4vw, 3.2rem)" }}
             >
-              Jedna kuća, sedam lokala.
+              <DecryptedText text="Jedna kuća, sedam lokala." animateOn="view" sequential speed={34} />
             </h2>
           </div>
           <p className="max-w-xs font-mono text-xs uppercase leading-relaxed tracking-widest text-ash">
