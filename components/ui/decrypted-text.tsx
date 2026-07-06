@@ -8,7 +8,6 @@ import {
   useCallback,
   type CSSProperties,
 } from "react";
-import { motion } from "framer-motion";
 
 const styles: Record<string, CSSProperties> = {
   wrapper: { display: "inline-block", whiteSpace: "pre-wrap" },
@@ -250,7 +249,7 @@ export default function DecryptedText({
       : {};
 
   return (
-    <motion.span className={parentClassName} ref={containerRef} style={styles.wrapper} {...hoverProps}>
+    <span className={parentClassName} ref={containerRef} style={styles.wrapper} {...hoverProps}>
       <span style={styles.srOnly}>{displayText}</span>
       <span aria-hidden="true">
         {displayText.split("").map((char, index) => {
@@ -262,6 +261,6 @@ export default function DecryptedText({
           );
         })}
       </span>
-    </motion.span>
+    </span>
   );
 }

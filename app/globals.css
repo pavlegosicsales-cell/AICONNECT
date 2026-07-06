@@ -285,6 +285,19 @@
   filter: grayscale(0) contrast(1);
 }
 
+/*
+  Dodirni uređaji (mobilni): saturacija se ne dodaje na tap/hover, već POSTEPENO
+  kad slika uđe u kadar pri skrolu. JS dodaje .rc-in → duža filter tranzicija.
+*/
+@media (hover: none) {
+  .reveal-color {
+    transition: filter 0.9s ease;
+  }
+  .reveal-color.rc-in {
+    filter: grayscale(0) contrast(1);
+  }
+}
+
 /* --- Parallax pozadine (scroll-driven, graceful fallback) --- */
 @keyframes parallax-y {
   from {

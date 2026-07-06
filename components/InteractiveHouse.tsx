@@ -84,7 +84,7 @@ export default function InteractiveHouse() {
   return (
     <section
       id="kuca"
-      className="torn-top relative z-10 min-h-dvh bg-ink px-5 py-12 md:sticky md:top-0 md:px-8 md:py-16"
+      className="torn-top relative z-10 bg-ink px-5 py-12 md:sticky md:top-0 md:min-h-dvh md:px-8 md:py-16"
     >
       <div className="mx-auto max-w-6xl">
         <div

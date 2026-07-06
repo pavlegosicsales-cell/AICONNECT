@@ -20,7 +20,7 @@ export default function Hero() {
   return (
     <section
       id="top"
-      className="sticky top-0 z-0 flex h-dvh flex-col justify-between overflow-hidden"
+      className="relative z-0 flex min-h-svh flex-col justify-between overflow-hidden md:sticky md:top-0 md:h-dvh"
     >
       {/* Pozadinska slika */}
       <Image
