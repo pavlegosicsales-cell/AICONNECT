@@ -2270,14 +2270,16 @@
       .bento-col-2 { grid-column: span 1; }
       .bento-text-body { min-height: 0; }
       /* Reorder so image and text cards alternate (Monte Zone before Built to Book) */
-      .bento-grid > :nth-child(1) { order: 1; }  /* MonX (img) */
-      .bento-grid > :nth-child(2) { order: 2; }  /* Full-Stack (text) */
-      .bento-grid > :nth-child(3) { order: 4; }  /* Made to Heal (text) — after Aya's img */
-      .bento-grid > :nth-child(4) { order: 3; }  /* Aya's Touch (img) — before its text */
-      .bento-grid > :nth-child(5) { order: 5; }  /* Monte Zone (img) */
-      .bento-grid > :nth-child(6) { order: 6; }  /* Built to Book (text) */
-      .bento-grid > :nth-child(7) { order: 8; }  /* Fast by Design (text) — after Ramago */
-      .bento-grid > :nth-child(8) { order: 7; }  /* Ramago (img) — before Fast by Design */
+      .bento-grid > :nth-child(1) { order: 1; }   /* MonX (img) */
+      .bento-grid > :nth-child(2) { order: 2; }   /* Full-Stack (text) */
+      .bento-grid > :nth-child(3) { order: 3; }   /* RANDOM (img) */
+      .bento-grid > :nth-child(4) { order: 4; }   /* Made to Mark (text) — RANDOM companion */
+      .bento-grid > :nth-child(5) { order: 6; }   /* Made to Heal (text) — after Aya's img */
+      .bento-grid > :nth-child(6) { order: 5; }   /* Aya's Touch (img) — before its text */
+      .bento-grid > :nth-child(7) { order: 7; }   /* Monte Zone (img) */
+      .bento-grid > :nth-child(8) { order: 8; }   /* Built to Book (text) */
+      .bento-grid > :nth-child(9) { order: 10; }  /* Fast by Design (text) — after Ramago */
+      .bento-grid > :nth-child(10) { order: 9; }  /* Ramago (img) — before Fast by Design */
       /* Hide the desktop scroll progress rail on mobile */
       .scroll-track { display: none; }
       /* Client Stories: center the CTA, give stat cards breathing room */
@@ -2643,6 +2645,58 @@
               <span class="bento-tag">#Design</span>
               <span class="bento-tag">#Dev</span>
               <span class="bento-tag">#Brand</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RANDOM Tattoo Studio — featured wide card (LEFT) -->
+      <a href="https://random-blue-mu.vercel.app/" target="_blank" rel="noopener" class="bento-item bento-col-2 g-up">
+        <div class="bento-img">
+          <img src="aiconnect/aiconnect selected work random.png" alt="RANDOM Tattoo Studio — Custom Ink in Belgrade" style="object-position:center;">
+        </div>
+        <div class="bento-body">
+          <div class="bento-top">
+            <div class="bento-icon">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(196,154,6,0.85)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>
+            </div>
+            <span class="bento-status">Live</span>
+          </div>
+          <div class="bento-title">RANDOM <span class="bento-meta">Tattoo Studio</span></div>
+          <div class="bento-desc">A dark, cinematic site for a Belgrade tattoo studio — a striking gallery of custom work, resident-artist profiles and a frictionless consultation booking flow.</div>
+          <div class="bento-footer">
+            <div class="bento-tags">
+              <span class="bento-tag">#Tattoo</span>
+              <span class="bento-tag">#Branding</span>
+              <span class="bento-tag">#WebDesign</span>
+            </div>
+            <span class="bento-cta">View Project
+              <span class="bento-cta-arrow">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+              </span>
+            </span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Tattoo studio approach card (RANDOM companion — RIGHT) -->
+      <div class="bento-item g-up">
+        <div class="bento-text-body">
+          <div>
+            <div class="bento-top">
+              <div class="bento-icon">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(196,154,6,0.85)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              </div>
+              <span class="bento-status">Craft</span>
+            </div>
+            <div class="bento-title" style="font-size:19px;margin-top:8px;">Made to Mark</div>
+            <div class="bento-desc">Bold type, full-bleed artwork and a booking-first layout that turns portfolio browsers into booked-in clients.</div>
+          </div>
+          <div class="bento-footer">
+            <div class="bento-tags">
+              <span class="bento-tag">#Portfolio</span>
+              <span class="bento-tag">#Creative</span>
+              <span class="bento-tag">#Booking</span>
             </div>
           </div>
         </div>
@@ -3595,6 +3649,10 @@
       "View Project":"Pogledaj projekat",
       "Full-Stack Build":"Full-Stack izrada",
       "UI/UX design, front-end development, and brand system — zero to launch in 6 weeks.":"UI/UX dizajn, front-end razvoj i brend sistem — od nule do lansiranja za 6 nedelja.",
+      "Craft":"ZANAT",
+      "A dark, cinematic site for a Belgrade tattoo studio — a striking gallery of custom work, resident-artist profiles and a frictionless consultation booking flow.":"Mračan, filmski sajt za beogradski tattoo studio — upečatljiva galerija autorskih radova, profili rezidentnih umetnika i besprekoran tok zakazivanja konsultacija.",
+      "Made to Mark":"Napravljeno da ostavi trag",
+      "Bold type, full-bleed artwork and a booking-first layout that turns portfolio browsers into booked-in clients.":"Snažna tipografija, slike preko celog ekrana i raspored fokusiran na zakazivanje koji posetioce portfolija pretvara u zakazane klijente.",
       "Enterprise monitoring platform with AI-powered incident detection and real-time performance dashboards built for modern engineering teams.":"Enterprise platforma za monitoring sa detekcijom incidenata pokretanom veštačkom inteligencijom i kontrolnim tablama performansi u realnom vremenu, napravljena za moderne inženjerske timove.",
       "Built to Book":"Napravljeno za rezervacije",
       "Immersive visuals, fast load times and a conversion-focused booking flow for a premium getaway brand.":"Upečatljivi vizuali, brzo učitavanje i tok rezervacija fokusiran na konverziju za premium brend za odmor.",
