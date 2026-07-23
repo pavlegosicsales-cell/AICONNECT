@@ -2269,17 +2269,17 @@
       .bento-grid { grid-template-columns: 1fr; }
       .bento-col-2 { grid-column: span 1; }
       .bento-text-body { min-height: 0; }
-      /* Reorder so image and text cards alternate (Monte Zone before Built to Book) */
+      /* Mobile: every pair shows the site-image card first, then its text card */
       .bento-grid > :nth-child(1) { order: 1; }   /* MonX (img) */
-      .bento-grid > :nth-child(2) { order: 2; }   /* Full-Stack (text) */
-      .bento-grid > :nth-child(3) { order: 3; }   /* RANDOM (img) */
-      .bento-grid > :nth-child(4) { order: 4; }   /* Made to Mark (text) — RANDOM companion */
-      .bento-grid > :nth-child(5) { order: 6; }   /* Made to Heal (text) — after Aya's img */
-      .bento-grid > :nth-child(6) { order: 5; }   /* Aya's Touch (img) — before its text */
-      .bento-grid > :nth-child(7) { order: 7; }   /* Monte Zone (img) */
-      .bento-grid > :nth-child(8) { order: 8; }   /* Built to Book (text) */
-      .bento-grid > :nth-child(9) { order: 10; }  /* Fast by Design (text) — after Ramago */
-      .bento-grid > :nth-child(10) { order: 9; }  /* Ramago (img) — before Fast by Design */
+      .bento-grid > :nth-child(2) { order: 2; }   /* Full-Stack (text) — MonX companion */
+      .bento-grid > :nth-child(3) { order: 4; }   /* Made to Mark (text) — after RANDOM img */
+      .bento-grid > :nth-child(4) { order: 3; }   /* RANDOM (img) — before its text */
+      .bento-grid > :nth-child(5) { order: 5; }   /* Aya's Touch (img) */
+      .bento-grid > :nth-child(6) { order: 6; }   /* Made to Heal (text) — Aya's companion */
+      .bento-grid > :nth-child(7) { order: 8; }   /* Built to Book (text) — after Monte Zone img */
+      .bento-grid > :nth-child(8) { order: 7; }   /* Monte Zone (img) — before its text */
+      .bento-grid > :nth-child(9) { order: 9; }   /* Ramago (img) */
+      .bento-grid > :nth-child(10) { order: 10; } /* Fast by Design (text) — Ramago companion */
       /* Hide the desktop scroll progress rail on mobile */
       .scroll-track { display: none; }
       /* Client Stories: center the CTA, give stat cards breathing room */
@@ -2650,7 +2650,30 @@
         </div>
       </div>
 
-      <!-- RANDOM Tattoo Studio — featured wide card (LEFT) -->
+      <!-- Tattoo studio approach card (RANDOM companion — LEFT) -->
+      <div class="bento-item g-up">
+        <div class="bento-text-body">
+          <div>
+            <div class="bento-top">
+              <div class="bento-icon">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(196,154,6,0.85)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              </div>
+              <span class="bento-status">Craft</span>
+            </div>
+            <div class="bento-title" style="font-size:19px;margin-top:8px;">Made to Mark</div>
+            <div class="bento-desc">Bold type, full-bleed artwork and a booking-first layout that turns portfolio browsers into booked-in clients.</div>
+          </div>
+          <div class="bento-footer">
+            <div class="bento-tags">
+              <span class="bento-tag">#Portfolio</span>
+              <span class="bento-tag">#Creative</span>
+              <span class="bento-tag">#Booking</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RANDOM Tattoo Studio — featured wide card (RIGHT) -->
       <a href="https://random-blue-mu.vercel.app/" target="_blank" rel="noopener" class="bento-item bento-col-2 g-up">
         <div class="bento-img">
           <img src="aiconnect/aiconnect selected work random.png" alt="RANDOM Tattoo Studio — Custom Ink in Belgrade" style="object-position:center;">
@@ -2679,53 +2702,7 @@
         </div>
       </a>
 
-      <!-- Tattoo studio approach card (RANDOM companion — RIGHT) -->
-      <div class="bento-item g-up">
-        <div class="bento-text-body">
-          <div>
-            <div class="bento-top">
-              <div class="bento-icon">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(196,154,6,0.85)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-              </div>
-              <span class="bento-status">Craft</span>
-            </div>
-            <div class="bento-title" style="font-size:19px;margin-top:8px;">Made to Mark</div>
-            <div class="bento-desc">Bold type, full-bleed artwork and a booking-first layout that turns portfolio browsers into booked-in clients.</div>
-          </div>
-          <div class="bento-footer">
-            <div class="bento-tags">
-              <span class="bento-tag">#Portfolio</span>
-              <span class="bento-tag">#Creative</span>
-              <span class="bento-tag">#Booking</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Wellness / personal brand design card (Naida companion — LEFT) -->
-      <div class="bento-item g-up">
-        <div class="bento-text-body">
-          <div>
-            <div class="bento-top">
-              <div class="bento-icon">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(196,154,6,0.85)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-              </div>
-              <span class="bento-status">Wellbeing</span>
-            </div>
-            <div class="bento-title" style="font-size:19px;margin-top:8px;">Made to Heal</div>
-            <div class="bento-desc">Warm, trust-first design for wellness professionals — a site that earns client confidence before the first session.</div>
-          </div>
-          <div class="bento-footer">
-            <div class="bento-tags">
-              <span class="bento-tag">#Therapy</span>
-              <span class="bento-tag">#Personal Brand</span>
-              <span class="bento-tag">#UX</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Aya's Touch / Naida Kundurović — gestalt therapy & wellness (RIGHT) -->
+      <!-- Aya's Touch / Naida Kundurović — gestalt therapy & wellness (LEFT) -->
       <a href="https://www.ayas-touch.com" target="_blank" rel="noopener" class="bento-item bento-col-2 g-up">
         <div class="bento-img">
           <img src="aiconnect/Group 28 1.png" alt="Aya's Touch — Gestalt Psychotherapy & Bali Retreats">
@@ -2754,7 +2731,53 @@
         </div>
       </a>
 
-      <!-- Monte Zone — featured wide card (LEFT) -->
+      <!-- Wellness / personal brand design card (Naida companion — RIGHT) -->
+      <div class="bento-item g-up">
+        <div class="bento-text-body">
+          <div>
+            <div class="bento-top">
+              <div class="bento-icon">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(196,154,6,0.85)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+              </div>
+              <span class="bento-status">Wellbeing</span>
+            </div>
+            <div class="bento-title" style="font-size:19px;margin-top:8px;">Made to Heal</div>
+            <div class="bento-desc">Warm, trust-first design for wellness professionals — a site that earns client confidence before the first session.</div>
+          </div>
+          <div class="bento-footer">
+            <div class="bento-tags">
+              <span class="bento-tag">#Therapy</span>
+              <span class="bento-tag">#Personal Brand</span>
+              <span class="bento-tag">#UX</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hospitality approach card (LEFT) -->
+      <div class="bento-item g-up">
+        <div class="bento-text-body">
+          <div>
+            <div class="bento-top">
+              <div class="bento-icon">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(196,154,6,0.85)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/></svg>
+              </div>
+              <span class="bento-status">Hospitality</span>
+            </div>
+            <div class="bento-title" style="font-size:19px;margin-top:8px;">Built to Book</div>
+            <div class="bento-desc">Immersive visuals, fast load times and a conversion-focused booking flow for a premium getaway brand.</div>
+          </div>
+          <div class="bento-footer">
+            <div class="bento-tags">
+              <span class="bento-tag">#Travel</span>
+              <span class="bento-tag">#Booking</span>
+              <span class="bento-tag">#UX</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Monte Zone — featured wide card (RIGHT) -->
       <a href="https://www.monte-zone.com" target="_blank" rel="noopener" class="bento-item bento-col-2 g-up">
         <div class="bento-img">
           <img src="aiconnect/aiconnect selected work montezone.png" alt="Monte Zone — Luxury Chalets in Montenegro">
@@ -2783,53 +2806,7 @@
         </div>
       </a>
 
-      <!-- Hospitality approach card (RIGHT) -->
-      <div class="bento-item g-up">
-        <div class="bento-text-body">
-          <div>
-            <div class="bento-top">
-              <div class="bento-icon">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(196,154,6,0.85)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/></svg>
-              </div>
-              <span class="bento-status">Hospitality</span>
-            </div>
-            <div class="bento-title" style="font-size:19px;margin-top:8px;">Built to Book</div>
-            <div class="bento-desc">Immersive visuals, fast load times and a conversion-focused booking flow for a premium getaway brand.</div>
-          </div>
-          <div class="bento-footer">
-            <div class="bento-tags">
-              <span class="bento-tag">#Travel</span>
-              <span class="bento-tag">#Booking</span>
-              <span class="bento-tag">#UX</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Performance card (LEFT) -->
-      <div class="bento-item g-up">
-        <div class="bento-text-body">
-          <div>
-            <div class="bento-top">
-              <div class="bento-icon">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(196,154,6,0.85)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-              </div>
-              <span class="bento-status">Performance</span>
-            </div>
-            <div class="bento-title" style="font-size:19px;margin-top:8px;">Fast by Design</div>
-            <div class="bento-desc">Every build ships optimized for speed, SEO and conversions — so your site works as hard as you do.</div>
-          </div>
-          <div class="bento-footer">
-            <div class="bento-tags">
-              <span class="bento-tag">#Speed</span>
-              <span class="bento-tag">#SEO</span>
-              <span class="bento-tag">#Convert</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Ramago — featured wide card (RIGHT) -->
+      <!-- Ramago — featured wide card (LEFT) -->
       <a href="https://www.ramagorentacar.com" target="_blank" rel="noopener" class="bento-item bento-col-2 g-up">
         <div class="bento-img">
           <img src="aiconnect/aiconnect selected work ramago.png" alt="Ramago — Rent a Car">
@@ -2857,6 +2834,29 @@
           </div>
         </div>
       </a>
+
+      <!-- Performance card (Ramago companion — RIGHT) -->
+      <div class="bento-item g-up">
+        <div class="bento-text-body">
+          <div>
+            <div class="bento-top">
+              <div class="bento-icon">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(196,154,6,0.85)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              </div>
+              <span class="bento-status">Performance</span>
+            </div>
+            <div class="bento-title" style="font-size:19px;margin-top:8px;">Fast by Design</div>
+            <div class="bento-desc">Every build ships optimized for speed, SEO and conversions — so your site works as hard as you do.</div>
+          </div>
+          <div class="bento-footer">
+            <div class="bento-tags">
+              <span class="bento-tag">#Speed</span>
+              <span class="bento-tag">#SEO</span>
+              <span class="bento-tag">#Convert</span>
+            </div>
+          </div>
+        </div>
+      </div>
 
 
     </div>
