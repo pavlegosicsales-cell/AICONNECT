@@ -2324,9 +2324,39 @@
       .proj-top { flex-direction: column; align-items: flex-start; }
       .stat-cell { padding: 40px 24px; }
     }
+
+    /* ---------- LENIS SMOOTH SCROLL ---------------------- */
+    html.lenis, html.lenis body { height: auto; }
+    .lenis.lenis-smooth { scroll-behavior: auto !important; }
+    .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+    .lenis.lenis-stopped { overflow: hidden; }
+    .lenis.lenis-smooth iframe { pointer-events: none; }
+
+    /* ---------- PROGRESSIVE BOTTOM BLUR (only while scrolling) ----------
+       Each layer fades in from the top and stays to the bottom, so blur grows
+       cumulatively with no visible seam. Ported from the RANDOM site. */
+    .bottom-blur { position: fixed; left: 0; right: 0; bottom: 0; height: 180px; z-index: 90; pointer-events: none; opacity: 0; transition: opacity 0.5s cubic-bezier(0.16,1,0.3,1); }
+    .bottom-blur.show { opacity: 1; }
+    .bottom-blur > div { position: absolute; inset: 0; }
+    .bottom-blur > div:nth-child(1) { backdrop-filter: blur(1px);  -webkit-backdrop-filter: blur(1px);  -webkit-mask-image: linear-gradient(to bottom, transparent 0%,  #000 22%); mask-image: linear-gradient(to bottom, transparent 0%,  #000 22%); }
+    .bottom-blur > div:nth-child(2) { backdrop-filter: blur(2px);  -webkit-backdrop-filter: blur(2px);  -webkit-mask-image: linear-gradient(to bottom, transparent 16%, #000 38%); mask-image: linear-gradient(to bottom, transparent 16%, #000 38%); }
+    .bottom-blur > div:nth-child(3) { backdrop-filter: blur(4px);  -webkit-backdrop-filter: blur(4px);  -webkit-mask-image: linear-gradient(to bottom, transparent 32%, #000 54%); mask-image: linear-gradient(to bottom, transparent 32%, #000 54%); }
+    .bottom-blur > div:nth-child(4) { backdrop-filter: blur(8px);  -webkit-backdrop-filter: blur(8px);  -webkit-mask-image: linear-gradient(to bottom, transparent 48%, #000 70%); mask-image: linear-gradient(to bottom, transparent 48%, #000 70%); }
+    .bottom-blur > div:nth-child(5) { backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); -webkit-mask-image: linear-gradient(to bottom, transparent 64%, #000 86%); mask-image: linear-gradient(to bottom, transparent 64%, #000 86%); }
+    .bottom-blur > div:nth-child(6) { backdrop-filter: blur(32px); -webkit-backdrop-filter: blur(32px); -webkit-mask-image: linear-gradient(to bottom, transparent 80%, #000 100%); mask-image: linear-gradient(to bottom, transparent 80%, #000 100%); }
+    /* Mobile: native scroll (no Lenis) + cheap gradient fade instead of the 6
+       backdrop-filter layers — matches the RANDOM site's phone behaviour. */
+    @media (max-width: 760px) {
+      .bottom-blur { height: 130px; }
+      .bottom-blur > div { display: none !important; }
+      .bottom-blur.show { background: linear-gradient(to top, #080808 0%, rgba(8,8,8,0.7) 45%, transparent 100%); }
+    }
+    @media (prefers-reduced-motion: reduce) { .bottom-blur { display: none; } }
   </style>
 </head>
 <body>
+<!-- Progressive bottom blur — shows only while scrolling (ported from RANDOM) -->
+<div class="bottom-blur" aria-hidden="true"><div></div><div></div><div></div><div></div><div></div><div></div></div>
 
 <!-- SCROLL PROGRESS LINE -->
 <div class="scroll-track" aria-hidden="true">
@@ -3431,6 +3461,9 @@
 <!-- GSAP -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+<!-- Lenis smooth scroll (ported from RANDOM) -->
+<script src="vendor/lenis.min.js"></script>
 <script>
   gsap.registerPlugin(ScrollTrigger);
 
@@ -5220,6 +5253,45 @@ void main() {
       requestAnimationFrame(spinTick);
     }
     spinTick();
+  })();
+
+  /* ── SMOOTH SCROLL (Lenis) + PROGRESSIVE BOTTOM BLUR — ported from RANDOM ── */
+  (function () {
+    /* Bottom blur: visible only while scrolling (not resting at top or bottom). */
+    (function initBottomBlur() {
+      const blur = document.querySelector('.bottom-blur');
+      if (!blur) return;
+      const TOP = 80, BOTTOM = 40;
+      let ticking = false;
+      function update() {
+        ticking = false;
+        const y = window.scrollY || window.pageYOffset || 0;
+        const docH = document.documentElement.scrollHeight;
+        const atTop = y < TOP;
+        const atBottom = y + window.innerHeight >= docH - BOTTOM;
+        blur.classList.toggle('show', !atTop && !atBottom);
+      }
+      update();
+      window.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+      window.addEventListener('resize', update);
+    })();
+
+    /* Lenis smooth wheel scroll — desktop only, respects reduced motion. */
+    if (PREFERS_REDUCED || IS_MOBILE || typeof Lenis === 'undefined') return;
+    const lenis = new Lenis({ duration: 1.05, smoothWheel: true });
+    /* Keep GSAP ScrollTrigger in sync and drive Lenis from the gsap ticker. */
+    if (window.ScrollTrigger) lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+    gsap.ticker.lagSmoothing(0);
+    /* Smooth-scroll in-page hash links (offset for the fixed nav). */
+    document.querySelectorAll('a[href^="#"]').forEach((a) => {
+      a.addEventListener('click', (e) => {
+        const href = a.getAttribute('href');
+        if (!href || href.length < 2) return;
+        const t = document.querySelector(href);
+        if (t) { e.preventDefault(); lenis.scrollTo(t, { offset: -80 }); }
+      });
+    });
   })();
 </script>
 </body>
